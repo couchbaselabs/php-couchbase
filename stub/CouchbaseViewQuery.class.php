@@ -214,7 +214,7 @@ class _CouchbaseDefaultViewQuery extends CouchbaseViewQuery {
      * @return $this
      */
     public function key($key) {
-        $this->options['key'] = $key;
+        $this->options['key'] = json_encode($key);
         return $this;
     }
 
