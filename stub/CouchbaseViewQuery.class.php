@@ -214,7 +214,7 @@ class _CouchbaseDefaultViewQuery extends CouchbaseViewQuery {
      * @return $this
      */
     public function key($key) {
-        $this->options['key'] = $key;
+        $this->options['key'] = json_encode($key);
         return $this;
     }
 
@@ -270,10 +270,10 @@ class _CouchbaseDefaultViewQuery extends CouchbaseViewQuery {
             $this->options['startkey_docid'] = '';
         }
         if ($end !== NULL) {
-            $this->options['startkey_docid'] =
+            $this->options['endkey_docid'] =
                 str_replace('\\\\', '\\', json_encode($end));
         } else {
-            $this->options['startkey_docid'] = '';
+            $this->options['endkey_docid'] = '';
         }
         return $this;
     }
