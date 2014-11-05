@@ -58,7 +58,7 @@ class CouchbaseCluster {
         $bucketDsn = cbdsn_normalize($this->_dsn);
         $bucketDsn['bucket'] = $name;
         $dsnStr = cbdsn_stringify($bucketDsn);
-        return new CouchbaseBucket($dsnStr, $name, $password);
+        return new CouchbaseBucket($dsnStr, (string) $name, (string) $password);
     }
 
     /**
