@@ -188,6 +188,22 @@ int pcbc_pp_next(pcbc_pp_state *state) {
 						*(arg->ptr) = *zvalue;
 					}
 				}
+			}else if (Z_TYPE_PP(data) == IS_OBJECT){
+				zval *tmpzval, **zvalue;
+				zend_class_entry *cls;
+
+				cls = zend_get_class_entry((*data) TSRMLS_CC);
+
+
+				for (ii = 1; ii < arg_total; ++ii) {
+					pcbc_pp_state_arg * arg = &state->args[ii];
+					tmpzval = zend_read_property(cls, (*data), arg->name, strlen(arg->name), 1 TSRMLS_CC);
+
+					if(Z_TYPE_P(tmpzval) != IS_NULL){
+						*(arg->ptr) = tmpzval;
+					}	
+				}
+
 			}
 		} else if (key_type == HASH_KEY_IS_LONG) {
 			*(state->args[0].ptr) = *data;
