@@ -17,6 +17,11 @@ void cluster_free_storage(void *object TSRMLS_DC)
     zend_hash_destroy(obj->std.properties);
     FREE_HASHTABLE(obj->std.properties);
 
+    if(obj->lcb)
+    {
+        lcb_destroy(obj->lcb);    
+    }
+
     efree(obj);
 }
 
