@@ -18,10 +18,10 @@ class CouchbaseN1qlQuery {
     /**
      * Creates a new N1qlQuery instance directly from a N1QL DML.
      * @param $str
-     * @return CouchbaseNq1lQuery
+     * @return CouchbaseN1qlQuery
      */
     static public function fromString($str) {
-        $res = new CouchbaseNq1lQuery();
+        $res = new CouchbaseN1qlQuery();
         $res->querystr = $str;
         return $res;
     }
