@@ -198,11 +198,11 @@ class _CouchbaseDefaultViewQuery extends CouchbaseViewQuery {
      */
     public function group($group_level) {
         if ($group_level >= 0) {
-            $this->options['group'] = 'false';
+            unset($this->options['group']);
             $this->options['group_level'] = '' . $group_level;
         } else {
             $this->options['group'] = 'true';
-            $this->options['group_level'] = '0';
+            unset($this->options['group_level']);
         }
         return $this;
     }
