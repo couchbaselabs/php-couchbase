@@ -244,13 +244,13 @@ class _CouchbaseDefaultViewQuery extends CouchbaseViewQuery {
             $this->options['startkey'] =
                 str_replace('\\\\', '\\', json_encode($start));
         } else {
-            $this->options['startkey'] = '';
+            unset($this->options['startkey']);
         }
         if ($end !== NULL) {
             $this->options['endkey'] =
                 str_replace('\\\\', '\\', json_encode($end));
         } else {
-            $this->options['endkey'] = '';
+            unset($this->options['endkey']);
         }
         $this->options['inclusive_end'] = $inclusive_end ? 'true' : 'false';
         return $this;
