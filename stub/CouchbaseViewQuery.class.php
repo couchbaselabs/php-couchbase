@@ -198,11 +198,11 @@ class _CouchbaseDefaultViewQuery extends CouchbaseViewQuery {
      */
     public function group($group_level) {
         if ($group_level >= 0) {
-            $this->options['group'] = 'false';
+            unset($this->options['group']);
             $this->options['group_level'] = '' . $group_level;
         } else {
             $this->options['group'] = 'true';
-            $this->options['group_level'] = '0';
+            unset($this->options['group_level']);
         }
         return $this;
     }
@@ -244,13 +244,13 @@ class _CouchbaseDefaultViewQuery extends CouchbaseViewQuery {
             $this->options['startkey'] =
                 str_replace('\\\\', '\\', json_encode($start));
         } else {
-            $this->options['startkey'] = '';
+            unset($this->options['startkey']);
         }
         if ($end !== NULL) {
             $this->options['endkey'] =
                 str_replace('\\\\', '\\', json_encode($end));
         } else {
-            $this->options['endkey'] = '';
+            unset($this->options['endkey']);
         }
         $this->options['inclusive_end'] = $inclusive_end ? 'true' : 'false';
         return $this;
