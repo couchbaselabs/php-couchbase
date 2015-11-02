@@ -15,6 +15,11 @@
 		RETURN_NULL(); \
 	}
 
+static inline struct bucket_object * php_bucket_object_fetch_object(zend_object *obj) {
+      return (struct bucket_object *)((char *)obj - XtOffsetOf(struct bucket_object, std));
+}
+#define PHP_THISOBJ() php_bucket_object_fetch_object(Z_OBJ_P(getThis()));
+
 typedef struct {
 	int mapped;
 	int remaining;
@@ -40,28 +45,32 @@ void bopcookie_destroy(bopcookie *cookie) {
 
 zval * bopcookie_get_doc(const bopcookie *cookie, const char *key, uint key_len) {
 	// Maximum server keylength is currently 250
-	static char tmpstr[251];
+	char tmpstr[251];
 
-	zval *doc;
+	zval *doc_out;
 	if (Z_TYPE_P(cookie->retval) == IS_ARRAY && key != NULL) {
-		MAKE_STD_ZVAL(doc);
-		ZVAL_NULL(doc);
+        memcpy(tmpstr, key, key_len);
+        tmpstr[key_len] = '\0';
 
-		memcpy(tmpstr, key, key_len);
-		tmpstr[key_len] = '\0';
-		add_assoc_zval_ex(cookie->retval, tmpstr, key_len + 1, doc);
+	    zval doc;
+		ZVAL_NULL(&doc);
+
+		add_assoc_zval_ex(cookie->retval, tmpstr, key_len + 1, &doc);
+
+		HashTable *htretval = Z_ARRVAL_P(cookie->retval);
+		doc_out = zend_hash_str_find(htretval, tmpstr, key_len + 1);
 	} else {
-		doc = cookie->retval;
+	    doc_out = cookie->retval;
 	}
-	return doc;
+	return doc_out;
 }
 
 void bopcookie_error(const bopcookie *cookie, bucket_object *data, zval *doc,
 	lcb_error_t error TSRMLS_DC) {
-	zval *zerror = create_lcb_exception(error TSRMLS_CC);
+	zval zerror;
+	make_lcb_exception(&zerror, error TSRMLS_CC);
 	if (Z_TYPE_P(cookie->retval) == IS_ARRAY) {
-		metadoc_from_error(doc, zerror TSRMLS_CC);
-		zval_ptr_dtor(&zerror);
+		metadoc_from_error(doc, &zerror TSRMLS_CC);
 	} else {
 		data->error = zerror;
 	}
@@ -69,47 +78,38 @@ void bopcookie_error(const bopcookie *cookie, bucket_object *data, zval *doc,
 
 zend_object_handlers bucket_handlers;
 
-void bucket_free_storage(void *object TSRMLS_DC)
+void bucket_free_storage(zend_object *object TSRMLS_DC)
 {
-	bucket_object *obj = (bucket_object *)object;
+	bucket_object *obj = php_bucket_object_fetch_object(object);
 
-	zend_hash_destroy(obj->std.properties);
-	FREE_HASHTABLE(obj->std.properties);
+	//zend_hash_destroy(obj->std.properties);
+	//FREE_HASHTABLE(obj->std.properties);
 
-	zval_ptr_dtor(&obj->encoder);
-	zval_ptr_dtor(&obj->decoder);
-	zval_ptr_dtor(&obj->prefix);
-
-	efree(obj);
+	Z_TRY_DELREF_P(&obj->encoder);
+	Z_TRY_DELREF_P(&obj->decoder);
+	Z_TRY_DELREF_P(&obj->prefix);
 }
 
-zend_object_value bucket_create_handler(zend_class_entry *type TSRMLS_DC)
+zend_object * bucket_create_handler(zend_class_entry *type TSRMLS_DC)
 {
-	zend_object_value retval;
+    bucket_object *obj = ecalloc(1,
+             sizeof(struct bucket_object) +
+             zend_object_properties_size(type));
+    memset(obj, 0, sizeof(bucket_object));
 
-	bucket_object *obj = (bucket_object *)emalloc(sizeof(bucket_object));
-	memset(obj, 0, sizeof(bucket_object));
+    zend_object_std_init(&obj->std, type TSRMLS_CC);
+
 	obj->std.ce = type;
-	obj->conn = NULL;
+	obj->std.handlers = &bucket_handlers;
 
-	MAKE_STD_ZVAL(obj->encoder);
-	ZVAL_EMPTY_STRING(obj->encoder);
-	MAKE_STD_ZVAL(obj->decoder);
-	ZVAL_EMPTY_STRING(obj->decoder);
-	MAKE_STD_ZVAL(obj->prefix);
-	ZVAL_EMPTY_STRING(obj->prefix);
-
-	ALLOC_HASHTABLE(obj->std.properties);
-	zend_hash_init(obj->std.properties, 0, NULL, ZVAL_PTR_DTOR, 0);
 	phlp_object_properties_init(&obj->std, type);
 
-	retval.handle = zend_objects_store_put(obj,
-	        (zend_objects_store_dtor_t)zend_objects_destroy_object,
-	        (zend_objects_free_object_storage_t)bucket_free_storage,
-			NULL TSRMLS_CC);
-	retval.handlers = &bucket_handlers;
+	ZVAL_UNDEF(&obj->encoder);
+	ZVAL_UNDEF(&obj->decoder);
+	ZVAL_UNDEF(&obj->prefix);
+	obj->conn = NULL;
 
-	return retval;
+	return &obj->std;
 }
 
 static void get_callback(lcb_t instance, const void *cookie, lcb_error_t error,
@@ -209,7 +209,7 @@ static void http_complete_callback(lcb_http_request_t request, lcb_t instance,
 	TSRMLS_FETCH();
 
 	if (error == LCB_SUCCESS) {
-		ZVAL_STRINGL(doc, resp->v.v0.bytes, resp->v.v0.nbytes, 1);
+		ZVAL_STRINGL(doc, resp->v.v0.bytes, resp->v.v0.nbytes);
 	} else {
 		bopcookie_error(cookie, data, NULL, error TSRMLS_CC);
 	}
@@ -232,13 +232,13 @@ static void durability_callback(lcb_t instance, const void *cookie,
 static int pcbc_wait(bucket_object *obj TSRMLS_DC)
 {
 	lcb_t instance = obj->conn->lcb;
-	obj->error = NULL;
+	ZVAL_UNDEF(&obj->error);
 
 	lcb_wait(instance);
 
-	if (obj->error) {
-		zend_throw_exception_object(obj->error TSRMLS_CC);
-		obj->error = NULL;
+	if (Z_TYPE(obj->error) != IS_UNDEF) {
+		zend_throw_exception_object(&obj->error TSRMLS_CC);
+		ZVAL_UNDEF(&obj->error);
 		return 0;
 	}
 
@@ -267,35 +267,35 @@ PHP_METHOD(Bucket, __construct)
 		RETURN_NULL();
 	}
 
-	if (zdsn) {
-		if (Z_TYPE_P(zdsn) == IS_STRING) {
-			dsn = estrndup(Z_STRVAL_P(zdsn), Z_STRLEN_P(zdsn));
-		} else {
-			throw_pcbc_exception("Expected dsn as string", LCB_EINVAL);
-			RETURN_NULL();
-		}
+	if (zdsn && Z_TYPE_P(zdsn) != IS_UNDEF) {
+        if (Z_TYPE_P(zdsn) == IS_STRING) {
+            dsn = estrndup(Z_STRVAL_P(zdsn), Z_STRLEN_P(zdsn));
+        } else {
+            throw_pcbc_exception("Expected dsn as string", LCB_EINVAL);
+            RETURN_NULL();
+        }
 	}
 
-	if (zname) {
-		if (Z_TYPE_P(zname) == IS_STRING) {
-			name = estrndup(Z_STRVAL_P(zname), Z_STRLEN_P(zname));
-		} else {
-			throw_pcbc_exception("Expected bucket name as string", LCB_EINVAL);
-			if (dsn) efree(dsn);
-			RETURN_NULL();
-		}
-	}
+    if (zname && Z_TYPE_P(zname) != IS_UNDEF) {
+        if (Z_TYPE_P(zname) == IS_STRING) {
+            name = estrndup(Z_STRVAL_P(zname), Z_STRLEN_P(zname));
+        } else {
+            throw_pcbc_exception("Expected bucket name as string", LCB_EINVAL);
+            if (dsn) efree(dsn);
+            RETURN_NULL();
+        }
+    }
 
-	if (zpassword) {
-		if (Z_TYPE_P(zpassword) == IS_STRING) {
-			password = estrndup(Z_STRVAL_P(zpassword), Z_STRLEN_P(zpassword));
-		} else {
-			throw_pcbc_exception("Expected bucket password as string", LCB_EINVAL); 
-			if (dsn) efree(dsn);
-			if (name) efree(name);
-			RETURN_NULL();
-		}
-	}
+    if (zpassword && Z_TYPE_P(zpassword) != IS_UNDEF) {
+        if (Z_TYPE_P(zpassword) == IS_STRING) {
+            password = estrndup(Z_STRVAL_P(zpassword), Z_STRLEN_P(zpassword));
+        } else {
+            throw_pcbc_exception("Expected bucket password as string", LCB_EINVAL);
+            if (dsn) efree(dsn);
+            if (name) efree(name);
+            RETURN_NULL();
+        }
+    }
 
 	spprintf(&connkey, 512, "%s|%s|%s",
 			dsn ? dsn : "",
@@ -1149,13 +1149,11 @@ PHP_METHOD(Bucket, setTranscoder)
 		RETURN_NULL();
 	}
 
-	zval_ptr_dtor(&data->encoder);
-	MAKE_STD_ZVAL(data->encoder);
-	ZVAL_ZVAL(data->encoder, zencoder, 1, NULL);
+	Z_TRY_DELREF_P(&data->encoder);
+	ZVAL_COPY(&data->encoder, zencoder);
 
-	zval_ptr_dtor(&data->decoder);
-	MAKE_STD_ZVAL(data->decoder);
-	ZVAL_ZVAL(data->decoder, zdecoder, 1, NULL);
+	Z_TRY_DELREF_P(&data->decoder);
+    ZVAL_COPY(&data->decoder, zdecoder);
 
 	RETURN_NULL();
 }
@@ -1223,7 +1221,9 @@ void couchbase_init_bucket(INIT_FUNC_ARGS) {
 
 	memcpy(&bucket_handlers,
 		zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+	bucket_handlers.offset = XtOffsetOf(struct bucket_object, std);
 	bucket_handlers.clone_obj = NULL;
+	bucket_handlers.free_obj = bucket_free_storage;
 }
 
 void couchbase_shutdown_bucket(SHUTDOWN_FUNC_ARGS) {

@@ -3,7 +3,7 @@
 
 int le_cas;
 
-static void cas_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
+static void cas_dtor(zend_resource *rsrc TSRMLS_DC)
 {
     lcb_cas_t *cas_data = (lcb_cas_t*)rsrc->ptr;
     if (cas_data) {
@@ -16,8 +16,8 @@ void couchbase_init_cas(INIT_FUNC_ARGS) {
 }
 
 lcb_cas_t cas_retrieve(zval * zcas TSRMLS_DC) {
-	lcb_cas_t *cas = 0;
-	ZEND_FETCH_RESOURCE_NO_RETURN(cas, lcb_cas_t*, &zcas, -1, "CouchbaseCAS", le_cas);
+	lcb_cas_t *cas = (lcb_cas_t *)zend_fetch_resource2_ex(zcas, "CouchbaseCAS", le_cas, -1);
+
 	if (cas) {
 		return *cas;
 	} else {
@@ -25,11 +25,8 @@ lcb_cas_t cas_retrieve(zval * zcas TSRMLS_DC) {
 	}
 }
 
-zval * cas_create(lcb_cas_t value TSRMLS_DC) {
-	zval *cas;
+void cas_create(zval * zcas, lcb_cas_t value TSRMLS_DC) {
 	void *cas_data = emalloc(sizeof(lcb_cas_t));
 	*((lcb_cas_t*)cas_data) = value;
-	MAKE_STD_ZVAL(cas);
-	ZEND_REGISTER_RESOURCE(cas, cas_data, le_cas);
-	return cas;
+	ZVAL_RES(zcas, zend_register_resource(cas_data, le_cas));
 }

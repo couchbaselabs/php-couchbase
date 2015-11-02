@@ -296,7 +296,7 @@ class CouchbaseBucket {
      *
      * @internal
      */
-    public function _n1ql($queryObj) {
+    public function _n1ql($queryObj, $params) {
         $data = json_encode($queryObj->toObject());
     
         if ($this->queryhosts) {
@@ -335,12 +335,12 @@ class CouchbaseBucket {
      * @return mixed
      * @throws CouchbaseException
      */
-    public function query($query) {
+    public function query($query, $params = null) {
         if ($query instanceof _CouchbaseDefaultViewQuery ||
             $query instanceof _CouchbaseSpatialViewQuery) {
             return $this->_view($query);
         } else if ($query instanceof CouchbaseN1qlQuery) {
-            return $this->_n1ql($query);
+            return $this->_n1ql($query, $params);
         } else {
             throw new CouchbaseException(
                 'Passed object must be of type ViewQuery or N1qlQuery');

@@ -5,13 +5,13 @@
 #include "couchbase.h"
 
 typedef struct bucket_object {
-	zend_object std;
-	zval *error;
-	zval *encoder;
-	zval *decoder;
-	zval *prefix;
-
+	zval error;
+	zval encoder;
+	zval decoder;
+	zval prefix;
 	pcbc_lcb *conn;
+
+	zend_object std;
 } bucket_object;
 
 #endif // BUCKET_H_

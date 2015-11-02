@@ -27,6 +27,7 @@ class CouchbaseN1qlQuery {
     static public function fromString($str) {
         $res = new CouchbaseN1qlQuery();
         $res->options['statement'] = $str;
+        $res->adhoc = true;
         return $res;
     }
 
@@ -35,7 +36,7 @@ class CouchbaseN1qlQuery {
      *
      * @param $consistency
      * @return $this
-     * @throws CouchbaseException
+     * @throws CouchbaseN1qlQuery
      */
     public function consistency($consistency) {
         if ($consistency == self::NOT_BOUNDED) {
@@ -48,6 +49,18 @@ class CouchbaseN1qlQuery {
             throw new CouchbaseException('invalid option passed.');
         }
         return $this;
+    }
+
+    /**
+     * Specify whether this query is a one-time query, or if it
+     *   if it should be prepared.
+     *
+     * @param $adhoc
+     * @return $this
+     * @throws CouchbaseN1qlQuery
+     */
+    public function adhoc($adhoc) {
+        $this->adhoc = !!$adhoc;
     }
 
     /**

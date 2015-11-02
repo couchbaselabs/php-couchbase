@@ -6,7 +6,7 @@
 typedef struct {
     char name[16];
     zval **ptr;
-    zval *val;
+    zval val;
 } pcbc_pp_state_arg;
 
 typedef struct {
@@ -15,14 +15,14 @@ typedef struct {
     int arg_opt;
     int arg_named;
     int cur_idx;
-    zval *zids;
+    zval zids;
     zval tmpzid;
     HashPosition hash_pos;
 } pcbc_pp_state;
 
 // assumes first parameter in the spec is the ids (`id|`).
 int pcbc_pp_begin(int param_count TSRMLS_DC, pcbc_pp_state *state, const char *spec, ...) {
-    zval **args[PCBC_PP_MAX_ARGS];
+    zval args[PCBC_PP_MAX_ARGS];
     char arg_name[16];
     const char *spec_iter = spec;
     char *arg_iter = arg_name;
@@ -38,7 +38,7 @@ int pcbc_pp_begin(int param_count TSRMLS_DC, pcbc_pp_state *state, const char *s
         return FAILURE;
     }
 
-    state->zids = *args[0];
+    state->zids = args[0];
     state->cur_idx = 0;
     state->arg_req = 0;
     state->arg_opt = 0;
@@ -54,9 +54,9 @@ int pcbc_pp_begin(int param_count TSRMLS_DC, pcbc_pp_state *state, const char *s
                 arg->ptr = va_arg(vl, zval**);
 
                 if (arg_num > 0 && arg_num < param_count) {
-                    arg->val = *args[arg_num];
+                    arg->val = args[arg_num];
                 } else {
-                    arg->val = NULL;
+                    ZVAL_UNDEF(&arg->val);
                 }
 
                 if (arg_type == 0) {
@@ -93,7 +93,7 @@ int pcbc_pp_begin(int param_count TSRMLS_DC, pcbc_pp_state *state, const char *s
 
     arg_unnamed = state->arg_req + state->arg_opt;
     if (param_count > arg_unnamed) {
-        znamed = *args[arg_unnamed];
+        znamed = &args[arg_unnamed];
 
         // Ensure that it is an options array!
         if (Z_TYPE_P(znamed) != IS_ARRAY) {
@@ -110,23 +110,23 @@ int pcbc_pp_begin(int param_count TSRMLS_DC, pcbc_pp_state *state, const char *s
 
         if (znamed) {
             HashTable *htoptions = Z_ARRVAL_P(znamed);
-            zval **zvalue;
+            zval *zvalue = zend_hash_str_find(
+                    htoptions, arg->name, strlen(arg->name)+1);
 
-            if (zend_hash_find(htoptions, arg->name, strlen(arg->name)+1,
-                               (void**)&zvalue) == SUCCESS) {
+            if (zvalue) {
                 arg->val = *zvalue;
             } else {
-                arg->val = NULL;
+                ZVAL_UNDEF(&arg->val);
             }
         } else {
-            arg->val = NULL;
+            ZVAL_UNDEF(&arg->val);
         }
     }
 
-    if (Z_TYPE_P(state->zids) == IS_STRING) {
+    if (Z_TYPE(state->zids) == IS_STRING) {
         // Good to Go
-    } else if (Z_TYPE_P(state->zids) == IS_ARRAY) {
-        HashTable *hash = Z_ARRVAL_P(state->zids);
+    } else if (Z_TYPE(state->zids) == IS_ARRAY) {
+        HashTable *hash = Z_ARRVAL(state->zids);
         zend_hash_internal_pointer_reset_ex(hash, &state->hash_pos);
     } else {
         // Error probably
@@ -136,14 +136,14 @@ int pcbc_pp_begin(int param_count TSRMLS_DC, pcbc_pp_state *state, const char *s
 }
 
 int pcbc_pp_ismapped(pcbc_pp_state *state) {
-    return Z_TYPE_P(state->zids) != IS_STRING;
+    return Z_TYPE(state->zids) != IS_STRING;
 }
 
 int pcbc_pp_keycount(pcbc_pp_state *state) {
-    if (Z_TYPE_P(state->zids) == IS_STRING) {
+    if (Z_TYPE(state->zids) == IS_STRING) {
         return 1;
-    } else if (Z_TYPE_P(state->zids) == IS_ARRAY) {
-        return zend_hash_num_elements(Z_ARRVAL_P(state->zids));
+    } else if (Z_TYPE(state->zids) == IS_ARRAY) {
+        return zend_hash_num_elements(Z_ARRVAL(state->zids));
     } else {
         return 0;
     }
@@ -155,48 +155,54 @@ int pcbc_pp_next(pcbc_pp_state *state) {
 
     // Set everything to 'base' values
     for (ii = 1; ii < arg_total; ++ii) {
-        *(state->args[ii].ptr) = state->args[ii].val;
+        if (Z_TYPE(state->args[ii].val) == IS_UNDEF) {
+            *(state->args[ii].ptr) = NULL;
+        } else {
+            *(state->args[ii].ptr) = &state->args[ii].val;
+        }
     }
 
-    if (Z_TYPE_P(state->zids) == IS_STRING) {
+    if (Z_TYPE(state->zids) == IS_STRING) {
         if (state->cur_idx > 0) {
             return 0;
         }
-        *(state->args[0].ptr) = state->zids;
+        *(state->args[0].ptr) = &state->zids;
         state->cur_idx++;
         return 1;
-    } else if (Z_TYPE_P(state->zids) == IS_ARRAY) {
-        HashTable *hash = Z_ARRVAL_P(state->zids);
-        zval **data;
-        char *keystr;
-        uint keystr_len, key_type;
-        ulong keyidx;
+    } else if (Z_TYPE(state->zids) == IS_ARRAY) {
+        HashTable *hash = Z_ARRVAL(state->zids);
+        zval *data;
+        zend_string *keystr;
+        int key_type;
+        zend_ulong keyidx;
 
-        if (zend_hash_get_current_data_ex(hash, (void**) &data, &state->hash_pos) != SUCCESS) {
+        data = zend_hash_get_current_data_ex(hash, &state->hash_pos);
+        if (data == 0) {
             return 0;
         }
 
-        key_type = zend_hash_get_current_key_ex(hash, &keystr, &keystr_len, &keyidx, 0, &state->hash_pos);
+        key_type = zend_hash_get_current_key_ex(hash, &keystr, &keyidx, &state->hash_pos);
 
         if (key_type == HASH_KEY_IS_STRING) {
-            ZVAL_STRINGL(&state->tmpzid, keystr, keystr_len-1, 0);
+            ZVAL_STR(&state->tmpzid, keystr);
             *(state->args[0].ptr) = &state->tmpzid;
 
-            if (Z_TYPE_PP(data) == IS_ARRAY) {
-                HashTable *htdata = Z_ARRVAL_PP(data);
-                zval **zvalue;
+            if (Z_TYPE_P(data) == IS_ARRAY) {
+                HashTable *htdata = Z_ARRVAL_P(data);
+                zval *zvalue;
 
                 for (ii = 1; ii < arg_total; ++ii) {
                     pcbc_pp_state_arg * arg = &state->args[ii];
 
-                    if (zend_hash_find(htdata, arg->name, strlen(arg->name)+1,
-                                       (void**)&zvalue) == SUCCESS) {
-                        *(arg->ptr) = *zvalue;
+                    zvalue = zend_hash_str_find(
+                            htdata, arg->name, strlen(arg->name));
+                    if (zvalue) {
+                        *(arg->ptr) = zvalue;
                     }
                 }
             }
         } else if (key_type == HASH_KEY_IS_LONG) {
-            *(state->args[0].ptr) = *data;
+            *(state->args[0].ptr) = data;
         }
 
         zend_hash_move_forward_ex(hash, &state->hash_pos);

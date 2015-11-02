@@ -38,8 +38,6 @@ ZEND_EXTERN_MODULE_GLOBALS(couchbase)
 #define PCBCG(v) (couchbase_globals.v)
 #endif
 
-#define PHP_THISOBJ() zend_object_store_get_object(getThis() TSRMLS_CC)
-
 void couchbase_init_exceptions(INIT_FUNC_ARGS);
 void couchbase_init_cluster(INIT_FUNC_ARGS);
 void couchbase_init_bucket(INIT_FUNC_ARGS);

@@ -828,6 +828,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "    static public function fromString($str) {\n" \
 "        $res = new CouchbaseN1qlQuery();\n" \
 "        $res->options['statement'] = $str;\n" \
+"        $res->adhoc = true;\n" \
 "        return $res;\n" \
 "    }\n" \
 "\n" \
@@ -836,7 +837,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     *\n" \
 "     * @param $consistency\n" \
 "     * @return $this\n" \
-"     * @throws CouchbaseException\n" \
+"     * @throws CouchbaseN1qlQuery\n" \
 "     */\n" \
 "    public function consistency($consistency) {\n" \
 "        if ($consistency == self::NOT_BOUNDED) {\n" \
@@ -849,6 +850,18 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "            throw new CouchbaseException('invalid option passed.');\n" \
 "        }\n" \
 "        return $this;\n" \
+"    }\n" \
+"\n" \
+"    /**\n" \
+"     * Specify whether this query is a one-time query, or if it\n" \
+"     *   if it should be prepared.\n" \
+"     *\n" \
+"     * @param $adhoc\n" \
+"     * @return $this\n" \
+"     * @throws CouchbaseN1qlQuery\n" \
+"     */\n" \
+"    public function adhoc($adhoc) {\n" \
+"        $this->adhoc = !!$adhoc;\n" \
 "    }\n" \
 "\n" \
 "    /**\n" \
@@ -1356,7 +1369,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     *\n" \
 "     * @internal\n" \
 "     */\n" \
-"    public function _n1ql($queryObj) {\n" \
+"    public function _n1ql($queryObj, $params) {\n" \
 "        $data = json_encode($queryObj->toObject());\n" \
 "    \n" \
 "        if ($this->queryhosts) {\n" \
@@ -1395,12 +1408,12 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     * @return mixed\n" \
 "     * @throws CouchbaseException\n" \
 "     */\n" \
-"    public function query($query) {\n" \
+"    public function query($query, $params = null) {\n" \
 "        if ($query instanceof _CouchbaseDefaultViewQuery ||\n" \
 "            $query instanceof _CouchbaseSpatialViewQuery) {\n" \
 "            return $this->_view($query);\n" \
 "        } else if ($query instanceof CouchbaseN1qlQuery) {\n" \
-"            return $this->_n1ql($query);\n" \
+"            return $this->_n1ql($query, $params);\n" \
 "        } else {\n" \
 "            throw new CouchbaseException(\n" \
 "                'Passed object must be of type ViewQuery or N1qlQuery');\n" \

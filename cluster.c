@@ -7,33 +7,34 @@
 
 zend_object_handlers cluster_handlers;
 
-void cluster_free_storage(void *object TSRMLS_DC)
+static inline struct cluster_object * php_cluster_object_fetch_object(zend_object *obj) {
+      return (struct cluster_object *)((char *)obj - XtOffsetOf(struct cluster_object, std));
+}
+#define PHP_THISOBJ() php_cluster_object_fetch_object(Z_OBJ_P(getThis()));
+
+void cluster_free_storage(zend_object *object TSRMLS_DC)
 {
-	cluster_object *obj = (cluster_object *)object;
+    cluster_object *obj = php_cluster_object_fetch_object(object);
 
-	zend_hash_destroy(obj->std.properties);
-	FREE_HASHTABLE(obj->std.properties);
-
-	efree(obj);
+	//zend_hash_destroy(obj->std.properties);
+	//FREE_HASHTABLE(obj->std.properties);
 }
 
-zend_object_value cluster_create_handler(zend_class_entry *type TSRMLS_DC)
+zend_object * cluster_create_handler(zend_class_entry *type TSRMLS_DC)
 {
-	zend_object_value retval;
+    cluster_object *obj = ecalloc(1,
+             sizeof(struct cluster_object) +
+             zend_object_properties_size(type));
 
-	cluster_object *obj = (cluster_object *)emalloc(sizeof(cluster_object));
-	memset(obj, 0, sizeof(cluster_object));
+    memset(obj, 0, sizeof(cluster_object));
+
+    zend_object_std_init(&obj->std, type TSRMLS_CC);
 	obj->std.ce = type;
+	obj->std.handlers = &cluster_handlers;
 
-	ALLOC_HASHTABLE(obj->std.properties);
-	zend_hash_init(obj->std.properties, 0, NULL, ZVAL_PTR_DTOR, 0);
-	phlp_object_properties_init(&obj->std, type);
+    phlp_object_properties_init(&obj->std, type);
 
-	retval.handle = zend_objects_store_put(obj, NULL,
-		cluster_free_storage, NULL TSRMLS_CC);
-	retval.handlers = &cluster_handlers;
-
-	return retval;
+	return &obj->std;
 }
 
 typedef struct {
@@ -51,12 +52,7 @@ copcookie * copcookie_init(cluster_object *clusterobj, zval *return_value) {
 
 void ccookie_error(const copcookie *cookie, cluster_object *data, zval *doc,
 				  lcb_error_t error TSRMLS_DC) {
-	zval *zerror = create_lcb_exception(error TSRMLS_CC); 
-	if (Z_TYPE_P(cookie->retval) == IS_ARRAY) {
-		metadoc_from_error(doc, zerror TSRMLS_CC);
-	} else {
-		data->error = zerror;
-	}
+    make_lcb_exception(&data->error, error TSRMLS_CC);
 }
 
 static void http_complete_callback(lcb_http_request_t request, lcb_t instance,
@@ -67,7 +63,7 @@ static void http_complete_callback(lcb_http_request_t request, lcb_t instance,
 	TSRMLS_FETCH();
 
 	if (error == LCB_SUCCESS) {
-		ZVAL_STRINGL(doc, resp->v.v0.bytes, resp->v.v0.nbytes, 1);
+		ZVAL_STRINGL(doc, resp->v.v0.bytes, resp->v.v0.nbytes);
 	} else {
 		ccookie_error(cookie, data, NULL, error TSRMLS_CC);
 	}
@@ -76,15 +72,15 @@ static void http_complete_callback(lcb_http_request_t request, lcb_t instance,
 static int pcbc_wait(cluster_object *obj TSRMLS_DC)
 {
 	lcb_t instance = obj->lcb;
-	obj->error = NULL;
+	ZVAL_UNDEF(&obj->error);
 
 	lcb_wait(instance);
 
-	if (obj->error) {
-		zend_throw_exception_object(obj->error TSRMLS_CC);
-		obj->error = NULL;
-		return 0;
-	}
+    if (Z_TYPE(obj->error) != IS_UNDEF) {
+        zend_throw_exception_object(&obj->error TSRMLS_CC);
+        ZVAL_UNDEF(&obj->error);
+        return 0;
+    }
 
 	return 1;
 }
@@ -258,5 +254,7 @@ void couchbase_init_cluster(INIT_FUNC_ARGS) {
 
 	memcpy(&cluster_handlers,
 			zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+	cluster_handlers.offset = XtOffsetOf(struct cluster_object, std);
 	cluster_handlers.clone_obj = NULL;
+	cluster_handlers.free_obj = cluster_free_storage;
 }

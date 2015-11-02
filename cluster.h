@@ -5,9 +5,10 @@
 #include <php.h>
 
 typedef struct cluster_object {
-	zend_object std;
 	lcb_t lcb;
-	zval *error;
+	zval error;
+
+	zend_object std;
 } cluster_object;
 
 #endif // CLUSTER_H_
