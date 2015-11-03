@@ -18,7 +18,7 @@
 static inline struct bucket_object * php_bucket_object_fetch_object(zend_object *obj) {
       return (struct bucket_object *)((char *)obj - XtOffsetOf(struct bucket_object, std));
 }
-#define PHP_THISOBJ() php_bucket_object_fetch_object(Z_OBJ_P(getThis()));
+#define PHP_THISOBJ(...) php_bucket_object_fetch_object(Z_OBJ_P(getThis()))
 
 typedef struct {
 	int mapped;
@@ -66,9 +66,9 @@ zval * bopcookie_get_doc(const bopcookie *cookie, const char *key, uint key_len)
 }
 
 void bopcookie_error(const bopcookie *cookie, bucket_object *data, zval *doc,
-	lcb_error_t error TSRMLS_DC) {
+	lcb_error_t error, const char *msg TSRMLS_DC) {
 	zval zerror;
-	make_lcb_exception(&zerror, error TSRMLS_CC);
+	make_lcb_exception(&zerror, error, msg TSRMLS_CC);
 	if (Z_TYPE_P(cookie->retval) == IS_ARRAY) {
 		metadoc_from_error(doc, &zerror TSRMLS_CC);
 	} else {
@@ -123,11 +123,12 @@ static void get_callback(lcb_t instance, const void *cookie, lcb_error_t error,
 	if (error == LCB_SUCCESS) {
 		if (metadoc_from_bytes(data, doc, resp->v.v0.bytes, resp->v.v0.nbytes,
 				resp->v.v0.cas, resp->v.v0.flags, resp->v.v0.datatype TSRMLS_CC) == FAILURE) {
-			bopcookie_error(cookie, data, doc, LCB_ERROR TSRMLS_CC);
+			bopcookie_error(cookie, data, doc, LCB_ERROR,
+			        "Failed to decode via transcoder." TSRMLS_CC);
 			return;
 		}
 	} else {
-		bopcookie_error(cookie, data, doc, error TSRMLS_CC);
+		bopcookie_error(cookie, data, doc, error, NULL TSRMLS_CC);
 	}
 }
 
@@ -141,11 +142,12 @@ static void store_callback(lcb_t instance, const void *cookie,
 
 	if (error == LCB_SUCCESS) {
 		if (metadoc_from_bytes(data, doc, NULL, 0, resp->v.v0.cas, 0, 0 TSRMLS_CC) == FAILURE) {
-			bopcookie_error(cookie, data, doc, LCB_ERROR TSRMLS_CC);
+			bopcookie_error(cookie, data, doc, LCB_ERROR,
+			        "Failed to decode via transcoder." TSRMLS_CC);
 			return;
 		}
 	} else {
-		bopcookie_error(cookie, data, doc, error TSRMLS_CC);
+		bopcookie_error(cookie, data, doc, error, NULL TSRMLS_CC);
 	}
 }
 
@@ -158,11 +160,12 @@ static void arithmetic_callback(lcb_t instance, const void *cookie,
 
 	if (error == LCB_SUCCESS) {
 		if (metadoc_from_long(doc, resp->v.v0.value, resp->v.v0.cas, 0, 0 TSRMLS_CC) == FAILURE) {
-			bopcookie_error(cookie, data, doc, LCB_ERROR TSRMLS_CC);
+			bopcookie_error(cookie, data, doc, LCB_ERROR,
+			        "Failed to decode via transcoder" TSRMLS_CC);
 			return;
 		}
 	} else {
-		bopcookie_error(cookie, data, doc, error TSRMLS_CC);
+		bopcookie_error(cookie, data, doc, error, NULL TSRMLS_CC);
 	}
 }
 
@@ -175,11 +178,12 @@ static void remove_callback(lcb_t instance, const void *cookie,
 
 	if (error == LCB_SUCCESS) {
 		if (metadoc_create(doc, NULL, resp->v.v0.cas, 0, 0 TSRMLS_CC) == FAILURE) {
-			bopcookie_error(cookie, data, doc, LCB_ERROR TSRMLS_CC);
+			bopcookie_error(cookie, data, doc, LCB_ERROR,
+			        "Failed to decode via transcoder" TSRMLS_CC);
 			return;
 		}
 	} else {
-		bopcookie_error(cookie, data, doc, error TSRMLS_CC);
+		bopcookie_error(cookie, data, doc, error, NULL TSRMLS_CC);
 	}
 }
 
@@ -192,11 +196,12 @@ static void touch_callback(lcb_t instance, const void *cookie,
 
 	if (error == LCB_SUCCESS) {
 		if (metadoc_create(doc, NULL, resp->v.v0.cas, 0, 0 TSRMLS_CC) == FAILURE) {
-			bopcookie_error(cookie, data, doc, LCB_ERROR TSRMLS_CC);
+			bopcookie_error(cookie, data, doc, LCB_ERROR,
+			        "Failed to decode via transcoder" TSRMLS_CC);
 			return;
 		}
 	} else {
-		bopcookie_error(cookie, data, doc, error TSRMLS_CC);
+		bopcookie_error(cookie, data, doc, error, NULL TSRMLS_CC);
 	}
 }
 
@@ -211,8 +216,30 @@ static void http_complete_callback(lcb_http_request_t request, lcb_t instance,
 	if (error == LCB_SUCCESS) {
 		ZVAL_STRINGL(doc, resp->v.v0.bytes, resp->v.v0.nbytes);
 	} else {
-		bopcookie_error(cookie, data, NULL, error TSRMLS_CC);
+		bopcookie_error(cookie, data, NULL, error, NULL TSRMLS_CC);
 	}
+}
+
+static void n1ql_callback(lcb_t instance, int ignoreme,
+        const lcb_RESPN1QL *resp)
+{
+    bopcookie *op = (bopcookie*)resp->cookie;
+    bucket_object *data = op->owner;
+    zval *doc = bopcookie_get_doc(op, NULL, 0);
+    zval *results, rowdata;
+    TSRMLS_FETCH();
+
+    if (resp->rflags & LCB_RESP_F_FINAL)
+    {
+        ZVAL_STRINGL(&rowdata, resp->row, resp->nrow);
+        zend_hash_str_add(Z_ARRVAL_P(doc), "meta", 4, &rowdata);
+        return;
+    }
+
+    results = zend_hash_str_find(Z_ARRVAL_P(doc), "results", 7);
+
+    ZVAL_STRINGL(&rowdata, resp->row, resp->nrow);
+    zend_hash_next_index_insert(Z_ARRVAL_P(results), &rowdata);
 }
 
 static void durability_callback(lcb_t instance, const void *cookie,
@@ -225,7 +252,7 @@ static void durability_callback(lcb_t instance, const void *cookie,
 	if (error == LCB_SUCCESS) {
 		ZVAL_TRUE(doc);
 	} else {
-		bopcookie_error(cookie, data, doc, error TSRMLS_CC);
+		bopcookie_error(cookie, data, doc, error, NULL TSRMLS_CC);
 	}
 }
 
@@ -1014,6 +1041,42 @@ PHP_METHOD(Bucket, counter)
 	efree(cmd);
 }
 
+PHP_METHOD(Bucket, n1ql_request)
+{
+    bucket_object *data = PHP_THISOBJ();
+    lcb_CMDN1QL cmd = { 0 };
+    bopcookie *cookie;
+    zval *zbody, *zadhoc;
+    zval zResults;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "zz",
+                &zbody, &zadhoc) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    cmd.callback = n1ql_callback;
+    cmd.content_type = "application/json";
+    cmd.query = Z_STRVAL_P(zbody);
+    cmd.nquery = Z_STRLEN_P(zbody);
+
+    if (Z_TYPE_P(zadhoc) == IS_FALSE) {
+        cmd.cmdflags |= LCB_CMDN1QL_F_PREPCACHE;
+    }
+
+    cookie = bopcookie_init(data, return_value, 0);
+
+    // Setup basic structure
+    array_init(return_value);
+    array_init(&zResults);
+    add_assoc_zval(return_value, "results", &zResults);
+
+    lcb_n1ql_query(data->conn->lcb, cookie, &cmd);
+    pcbc_wait(data TSRMLS_CC);
+
+    bopcookie_destroy(cookie);
+
+}
+
 PHP_METHOD(Bucket, http_request)
 {
 	bucket_object *data = PHP_THISOBJ();
@@ -1204,6 +1267,7 @@ zend_function_entry bucket_methods[] = {
 	PHP_ME(Bucket,  counter,         NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(Bucket,  unlock,          NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(Bucket,  http_request,    NULL, ZEND_ACC_PUBLIC)
+	PHP_ME(Bucket,  n1ql_request,    NULL, ZEND_ACC_PUBLIC)
 	PHP_ME(Bucket,  durability,      NULL, ZEND_ACC_PUBLIC)
 
 	PHP_ME(Bucket,  setTranscoder,   NULL, ZEND_ACC_PUBLIC)

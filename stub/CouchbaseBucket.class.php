@@ -277,10 +277,10 @@ class CouchbaseBucket {
      *
      * @internal
      */
-    public function _view($queryObj) {
+    public function _view($queryObj, $json_asarray) {
         $path = $queryObj->toString();
         $res = $this->me->http_request(1, 1, $path, NULL, 1);
-        $out = json_decode($res, true);
+        $out = json_decode($res, $json_asarray);
         if (isset($out['error'])) {
             throw new CouchbaseException($out['error'] . ': ' . $out['reason']);
         }
@@ -296,36 +296,29 @@ class CouchbaseBucket {
      *
      * @internal
      */
-    public function _n1ql($queryObj, $params) {
-        $data = json_encode($queryObj->toObject());
-    
-        if ($this->queryhosts) {
-            $hostidx = array_rand($this->queryhosts, 1);
-            $host = $this->queryhosts[$hostidx];
-    
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, 'http://' . $host . '/query');
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json',
-                    'Content-Length: ' . strlen($data))
-            );
-            $res = curl_exec($ch);
-            curl_close($ch);
-        } else {
-            $res = $this->me->http_request(3, 2, NULL, $data, 1);
+    public function _n1ql($queryObj, $params, $json_asarray) {
+        $data = $queryObj->options;
+        if (is_array($params)) {
+            foreach ($params as $key => $value) {
+                $data['$' + $key] = $value;
+            }
+        }
+        $dataStr = json_encode($data, true);
+        $dataOut = $this->me->n1ql_request($dataStr, $queryObj->adhoc);
+        
+        $meta = json_decode($dataOut['meta'], true);
+        if (isset($meta['errors']) && count($meta['errors']) > 0) {
+            $err = $meta['errors'][0];
+            $ex = new CouchbaseException($err['msg']);
+            $ex->qCode = $err['code'];
+            throw $ex;
         }
         
-        $resjson = json_decode($res, true);
-
-        if (isset($resjson['errors'])) {
-            throw new CouchbaseException($resjson['errors'][0]['msg'], 999);
+        $rows = array();
+        foreach ($dataOut['results'] as $row) {
+            $rows[] = json_decode($row, $json_asarray);
         }
-
-        return $resjson['results'];
+        return $rows;
     }
 
     /**
@@ -335,12 +328,12 @@ class CouchbaseBucket {
      * @return mixed
      * @throws CouchbaseException
      */
-    public function query($query, $params = null) {
+    public function query($query, $params = null, $json_asarray = false) {
         if ($query instanceof _CouchbaseDefaultViewQuery ||
             $query instanceof _CouchbaseSpatialViewQuery) {
-            return $this->_view($query);
+            return $this->_view($query, $json_asarray);
         } else if ($query instanceof CouchbaseN1qlQuery) {
-            return $this->_n1ql($query, $params);
+            return $this->_n1ql($query, $params, $json_asarray);
         } else {
             throw new CouchbaseException(
                 'Passed object must be of type ViewQuery or N1qlQuery');

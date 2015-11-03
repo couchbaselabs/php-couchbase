@@ -2,6 +2,9 @@
 #define COUCHBASE_H_
 
 #include <libcouchbase/couchbase.h>
+#include <libcouchbase/api3.h>
+#include <libcouchbase/views.h>
+#include <libcouchbase/n1ql.h>
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

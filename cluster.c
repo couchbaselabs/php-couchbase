@@ -52,7 +52,7 @@ copcookie * copcookie_init(cluster_object *clusterobj, zval *return_value) {
 
 void ccookie_error(const copcookie *cookie, cluster_object *data, zval *doc,
 				  lcb_error_t error TSRMLS_DC) {
-    make_lcb_exception(&data->error, error TSRMLS_CC);
+    make_lcb_exception(&data->error, error, NULL TSRMLS_CC);
 }
 
 static void http_complete_callback(lcb_http_request_t request, lcb_t instance,

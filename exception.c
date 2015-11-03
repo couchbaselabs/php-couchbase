@@ -22,9 +22,13 @@ void make_pcbc_exception(zval *ex, const char *message, long code TSRMLS_DC) {
 	make_exception(ex, cb_exception_ce, message, code TSRMLS_CC);
 }
 
-void make_lcb_exception(zval *ex, long code TSRMLS_DC) {
-	const char *str = lcb_strerror(NULL, (lcb_error_t)code);
-	return make_exception(ex, cb_exception_ce, str, code TSRMLS_CC);
+void make_lcb_exception(zval *ex, long code, const char *msg TSRMLS_DC) {
+    if (msg) {
+        return make_exception(ex, cb_exception_ce, msg, code TSRMLS_CC);
+    } else {
+        const char *str = lcb_strerror(NULL, (lcb_error_t)code);
+	    return make_exception(ex, cb_exception_ce, str, code TSRMLS_CC);
+    }
 }
 
 #define setup(var, name, parent) \

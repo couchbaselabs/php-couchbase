@@ -3,7 +3,7 @@
 
 void make_exception(zval *ex, zend_class_entry *exception_ce, const char *message, long code TSRMLS_DC);
 void make_pcbc_exception(zval *ex, const char *message, long code TSRMLS_DC);
-void make_lcb_exception(zval *ex, long code TSRMLS_DC);
+void make_lcb_exception(zval *ex, long code, const char *msg TSRMLS_DC);
 
 #define throw_pcbc_exception(message, code) { \
     zval zerror; \
@@ -11,7 +11,7 @@ void make_lcb_exception(zval *ex, long code TSRMLS_DC);
     zend_throw_exception_object(&zerror TSRMLS_CC); }
 #define throw_lcb_exception(code) { \
     zval zerror; \
-    make_lcb_exception(&zerror, code TSRMLS_CC); \
+    make_lcb_exception(&zerror, code, NULL TSRMLS_CC); \
 	zend_throw_exception_object(&zerror TSRMLS_CC); }
 
 extern zend_class_entry *default_exception_ce;
