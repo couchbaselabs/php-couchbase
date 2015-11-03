@@ -288,7 +288,7 @@ PHP_METHOD(Bucket, __construct)
 	struct lcb_create_st create_options;
 	char *connkey = NULL;
 	pcbc_lcb *conn_iter, *conn;
-	
+
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|zzz",
 			&zdsn, &zname, &zpassword) == FAILURE) {
 		RETURN_NULL();

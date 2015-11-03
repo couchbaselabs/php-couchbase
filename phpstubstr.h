@@ -1145,7 +1145,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     */\n" \
 "    public function __construct($connstr, $name, $password) {\n" \
 "        $this->me = new _CouchbaseBucket($connstr, $name, $password);\n" \
-"        $this->me->setTranscoder(\"couchbase_default_encoder\", \"couchbase_default_decoder\");\n" \
+"        //$this->me->setTranscoder(\"couchbase_default_encoder\", \"couchbase_default_decoder\");\n" \
 "        $this->name = $name;\n" \
 "    }\n" \
 "\n" \

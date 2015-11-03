@@ -72,7 +72,7 @@ class CouchbaseBucket {
      */
     public function __construct($connstr, $name, $password) {
         $this->me = new _CouchbaseBucket($connstr, $name, $password);
-        $this->me->setTranscoder("couchbase_default_encoder", "couchbase_default_decoder");
+        //$this->me->setTranscoder("couchbase_default_encoder", "couchbase_default_decoder");
         $this->name = $name;
     }
 

@@ -6,15 +6,13 @@ zend_class_entry *default_exception_ce;
 zend_class_entry *cb_exception_ce;
 
 void make_exception(zval *ex, zend_class_entry *exception_ce, const char *message, long code TSRMLS_DC) {
-	zend_class_entry *default_exception_ce = zend_exception_get_default(TSRMLS_C);
-
-	object_init_ex(ex, exception_ce);
+	object_init_ex(ex, cb_exception_ce);
 
 	if (message) {
-		zend_update_property_string(default_exception_ce, ex, "message", sizeof("message")-1, message TSRMLS_CC);
+		zend_update_property_string(cb_exception_ce, ex, "message", sizeof("message")-1, message TSRMLS_CC);
 	}
 	if (code) {
-		zend_update_property_long(default_exception_ce, ex, "code", sizeof("code")-1, code TSRMLS_CC);
+		zend_update_property_long(cb_exception_ce, ex, "code", sizeof("code")-1, code TSRMLS_CC);
 	}
 }
 
@@ -42,4 +40,5 @@ void couchbase_init_exceptions(INIT_FUNC_ARGS) {
     default_exception_ce = (zend_class_entry *)phlp_zend_exception_get_default();
 
 	setup(cb_exception_ce, "CouchbaseException", default_exception_ce);
+	zend_declare_property_long(cb_exception_ce, "code", sizeof("code")-1, 0, ZEND_ACC_PROTECTED);
 }

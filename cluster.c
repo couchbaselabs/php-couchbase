@@ -105,7 +105,7 @@ PHP_METHOD(Cluster, __construct)
 		RETURN_NULL();
 	}
 
-	if (zdsn) {
+	if (zdsn && Z_TYPE_P(zdsn) != IS_UNDEF) {
 		if (Z_TYPE_P(zdsn) == IS_STRING) {
 			dsn = estrndup(Z_STRVAL_P(zdsn), Z_STRLEN_P(zdsn));
 		} else {
@@ -114,7 +114,7 @@ PHP_METHOD(Cluster, __construct)
 		}
 	}
 
-	if (zname) {
+	if (zname && Z_TYPE_P(zname) != IS_UNDEF) {
 		if (Z_TYPE_P(zname) == IS_STRING) {
 			name = estrndup(Z_STRVAL_P(zname), Z_STRLEN_P(zname));
 		} else {
@@ -124,7 +124,7 @@ PHP_METHOD(Cluster, __construct)
 		}
 	}
 
-	if (zpassword) {
+	if (zpassword && Z_TYPE_P(zpassword) != IS_UNDEF) {
 		if (Z_TYPE_P(zpassword) == IS_STRING) {
 			password = estrndup(Z_STRVAL_P(zpassword), Z_STRLEN_P(zpassword));
 		} else {
