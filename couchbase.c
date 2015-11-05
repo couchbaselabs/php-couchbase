@@ -2,7 +2,7 @@
 #include "cas.h"
 #include "metadoc.h"
 #include "phpstubstr.h"
-#include "fastlz/fastlz.h"
+#include <fastlz.h>
 
 #if HAVE_ZLIB
 #include <zlib.h>
