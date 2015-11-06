@@ -31,8 +31,8 @@ class CouchbaseBucketManager {
      * @private
      * @ignore
      *
-     * @param $binding
-     * @param $name
+     * @param string $binding
+     * @param string $name
      */
     public function __construct($binding, $name) {
         $this->_me = $binding;
@@ -60,10 +60,10 @@ class CouchbaseBucketManager {
      * Inserts a design document to this bucket.  Failing if a design
      * document with the same name already exists.
      *
-     * @param $name Name of the design document.
-     * @param $data The design document data.
+     * @param string $name Name of the design document.
+     * @param string $data The design document data.
      * @throws CouchbaseException
-     * @returns true
+     * @return boolean
      */
     public function insertDesignDocument($name, $data) {
         if ($this->getDesignDocument($name)) {
@@ -76,9 +76,9 @@ class CouchbaseBucketManager {
      * Inserts a design document to this bucket.  Overwriting any existing
      * design document with the same name.
      *
-     * @param $name Name of the design document.
-     * @param $data The design document data.
-     * @returns true
+     * @param string $name Name of the design document.
+     * @param string $data The design document data.
+     * @return boolean
      */
     public function upsertDesignDocument($name, $data) {
         $path = '_design/' . $name;
@@ -89,7 +89,7 @@ class CouchbaseBucketManager {
     /**
      * Retrieves a design documents from the bucket.
      *
-     * @param $name Name of the design document.
+     * @param string $name Name of the design document.
      * @return mixed
      */
     public function getDesignDocument($name) {
@@ -105,7 +105,7 @@ class CouchbaseBucketManager {
     /**
      * Deletes a design document from the bucket.
      *
-     * @param $name Name of the design document.
+     * @param string $name Name of the design document.
      * @return mixed
      */
     public function removeDesignDocument($name) {
@@ -135,8 +135,7 @@ class CouchbaseBucketManager {
      *
      * @return mixed The status information.
      */
-    public function info()
-    {
+    public function info() {
         $path = "/pools/default/buckets/" . $this->_name;
         $res = $this->_me->http_request(2, 1, $path, NULL, 2);
         return json_decode($res, true);
