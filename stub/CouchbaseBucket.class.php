@@ -300,7 +300,7 @@ class CouchbaseBucket {
         $data = $queryObj->options;
         if (is_array($params)) {
             foreach ($params as $key => $value) {
-                $data['$' + $key] = $value;
+                $data['$' . $key] = $value;
             }
         }
         $dataStr = json_encode($data, true);

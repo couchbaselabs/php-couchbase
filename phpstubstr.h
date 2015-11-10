@@ -1373,7 +1373,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "        $data = $queryObj->options;\n" \
 "        if (is_array($params)) {\n" \
 "            foreach ($params as $key => $value) {\n" \
-"                $data['$' + $key] = $value;\n" \
+"                $data['$' . $key] = $value;\n" \
 "            }\n" \
 "        }\n" \
 "        $dataStr = json_encode($data, true);\n" \
