@@ -53,6 +53,11 @@ into the bucket and then retrieving its contents:
   // }
 ```
 
+### Version Support
+
+As of March 2016, this extension supports PHP 5.x releases and is being ported
+to PHP 7.  Contributions toward that update are welcome!  The work in progress
+is posted at http://review.couchbase.org/#/c/58547/
 
 ## Documentation
 
@@ -72,7 +77,7 @@ checked out source code.
 
 
 ## License
-Copyright 2013 Couchbase Inc.
+Copyright 2016 Couchbase Inc.
 
 Licensed under the Apache License, Version 2.0.
 
