@@ -468,6 +468,15 @@ class CouchbaseBucket {
     }
 
     /**
+     * returns bucket name
+     * @return string name of the bucket
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * Magic function to handle the retrieval of various properties.
      *
      * @internal
