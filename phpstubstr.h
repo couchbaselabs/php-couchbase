@@ -2595,7 +2595,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     *\n" \
 "     * @param string|array $ids\n" \
 "     * @param mixed $val\n" \
-"     * @param array $options expiry,flags\n" \
+"     * @param array $options expiry(integer), persist_to(integer), replicate_to(integer)\n" \
 "     * @return mixed\n" \
 "     */\n" \
 "    public function insert($ids, $val = NULL, $options = array()) {\n" \
@@ -2608,7 +2608,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     *\n" \
 "     * @param string|array $ids\n" \
 "     * @param mixed $val\n" \
-"     * @param array $options expiry,flags\n" \
+"     * @param array $options expiry(integer), persist_to(integer), replicate_to(integer)\n" \
 "     * @return mixed\n" \
 "     */\n" \
 "    public function upsert($ids, $val = NULL, $options = array()) {\n" \
@@ -2620,7 +2620,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     *\n" \
 "     * @param string|array $ids\n" \
 "     * @param mixed $val\n" \
-"     * @param array $options cas,expiry,flags\n" \
+"     * @param array $options cas(string), expiry(integer), persist_to(integer), replicate_to(integer)\n" \
 "     * @return mixed\n" \
 "     */\n" \
 "    public function replace($ids, $val = NULL, $options = array()) {\n" \
@@ -2632,7 +2632,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     *\n" \
 "     * @param string|array $ids\n" \
 "     * @param mixed $val\n" \
-"     * @param array $options cas\n" \
+"     * @param array $options cas(string), persist_to(integer), replicate_to(integer)\n" \
 "     * @return mixed\n" \
 "     */\n" \
 "    public function append($ids, $val = NULL, $options = array()) {\n" \
@@ -2644,7 +2644,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     *\n" \
 "     * @param string|array $ids\n" \
 "     * @param mixed $val\n" \
-"     * @param array $options cas\n" \
+"     * @param array $options cas(string), persist_to(integer), replicate_to(integer)\n" \
 "     * @return mixed\n" \
 "     */\n" \
 "    public function prepend($ids, $val = NULL, $options = array()) {\n" \
@@ -2655,7 +2655,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     * Deletes a document.\n" \
 "     *\n" \
 "     * @param string|array $ids\n" \
-"     * @param array $options cas\n" \
+"     * @param array $options cas(string), persist_to(integer), replicate_to(integer)\n" \
 "     * @return mixed\n" \
 "     */\n" \
 "    public function remove($ids, $options = array()) {\n" \
@@ -2667,7 +2667,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     * Retrieves a document.\n" \
 "     *\n" \
 "     * @param string|array $ids\n" \
-"     * @param array $options lock\n" \
+"     * @param array $options lock(integer), expiry(integer)\n" \
 "     * @return mixed\n" \
 "     */\n" \
 "    public function get($ids, $options = array()) {\n" \
@@ -2704,7 +2704,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     * Retrieves a document from a replica.\n" \
 "     *\n" \
 "     * @param string $id\n" \
-"     * @param array $options\n" \
+"     * @param array $options index(integer)\n" \
 "     * @return mixed\n" \
 "     */\n" \
 "    public function getFromReplica($id, $options = array()) {\n" \
@@ -2728,7 +2728,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "     *\n" \
 "     * @param string|array $ids\n" \
 "     * @param integer $delta\n" \
-"     * @param array $options initial,expiry\n" \
+"     * @param array $options initial(integer), expiry(integer)\n" \
 "     * @return mixed\n" \
 "     */\n" \
 "    public function counter($ids, $delta, $options = array()) {\n" \
@@ -2739,7 +2739,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "    /**\n" \
 "     * Unlocks a key previous locked with a call to get().\n" \
 "     * @param string|array $ids\n" \
-"     * @param array $options cas\n" \
+"     * @param array $options cas(string)\n" \
 "     * @return mixed\n" \
 "     */\n" \
 "    public function unlock($ids, $options = array()) {\n" \
@@ -2802,7 +2802,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "            'status' => $meta['status'],\n" \
 "            'metrics' => $meta['metrics']\n" \
 "        );\n" \
-"        return (object)$result;\n" \
+"        return $result;\n" \
 "    }\n" \
 "\n" \
 "    public function _search($queryObj, $json_asarray) {\n" \
@@ -2830,7 +2830,7 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "        if (isset($meta['facets'])) {\n" \
 "            $result['facets'] = $meta['facets'];\n" \
 "        }\n" \
-"        return (object)$result;\n" \
+"        return $result;\n" \
 "    }\n" \
 "\n" \
 "    /**\n" \
