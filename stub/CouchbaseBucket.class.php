@@ -332,6 +332,11 @@ class CouchbaseBucket {
             'status' => $meta['status'],
             'metrics' => $meta['metrics']
         );
+
+        if ( ! $json_asarray) {
+            return (object)$result;
+        }
+
         return $result;
     }
 
@@ -360,6 +365,11 @@ class CouchbaseBucket {
         if (isset($meta['facets'])) {
             $result['facets'] = $meta['facets'];
         }
+
+        if ( ! $json_asarray) {
+            return (object)$result;
+        }
+
         return $result;
     }
 
