@@ -60,6 +60,9 @@ class CouchbaseBucket {
 
     private $authenticator;
 
+    private $n1qlQueryLoggingEnabled = false;
+    private $onN1qlExecutedCallbacks = [];
+
     /**
      * Constructs a bucket connection.
      *
@@ -332,6 +335,16 @@ class CouchbaseBucket {
             'status' => $meta['status'],
             'metrics' => $meta['metrics']
         );
+
+        if ($this->n1qlQueryLoggingEnabled == true)  {
+            foreach ($this->onN1qlExecutedCallbacks as $onN1qlExecutedCallback) {
+                $onN1qlExecutedCallback($queryObj, [
+                    'status' => $meta['status'],
+                    'metrics' => $meta['metrics']
+                ]);
+            }
+        }
+
         return (object)$result;
     }
 
@@ -573,6 +586,16 @@ class CouchbaseBucket {
             ' on line ' . $trace[0]['line'],
             E_USER_NOTICE);
         return null;
+    }
+
+    public function enableN1qlLogging($bool)
+    {
+        $this->n1qlQueryLoggingEnabled = $bool;
+    }
+
+    public function listenN1ql(Callable $callable)
+    {
+        $this->onN1qlExecutedCallbacks[] = $callable;
     }
 }
 
