@@ -66,7 +66,7 @@ class CouchbaseBucketManager {
      * @returns true
      */
     public function insertDesignDocument($name, $data) {
-        if ($this->getDesignDocument($name)) {
+        if (array_key_exists('error', $this->getDesignDocument($name))) {
             throw new CouchbaseException('design document already exists');
         }
         return $this->upsertDesignDocument($name, $data);
