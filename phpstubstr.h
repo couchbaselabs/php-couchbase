@@ -2809,7 +2809,12 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "            'status' => $meta['status'],\n" \
 "            'metrics' => $meta['metrics']\n" \
 "        );\n" \
-"        return (object)$result;\n" \
+"\n" \
+"        if ( ! $json_asarray) {\n" \
+"            return (object)$result;\n" \
+"        }\n" \
+"\n" \
+"        return $result;\n" \
 "    }\n" \
 "\n" \
 "    public function _search($queryObj, $json_asarray) {\n" \
@@ -2837,7 +2842,12 @@ pcbc_stub_data PCBC_PHP_CODESTR[] = {
 "        if (isset($meta['facets'])) {\n" \
 "            $result['facets'] = $meta['facets'];\n" \
 "        }\n" \
-"        return (object)$result;\n" \
+"\n" \
+"        if ( ! $json_asarray) {\n" \
+"            return (object)$result;\n" \
+"        }\n" \
+"\n" \
+"        return $result;\n" \
 "    }\n" \
 "\n" \
 "    /**\n" \

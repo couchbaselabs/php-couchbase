@@ -332,7 +332,12 @@ class CouchbaseBucket {
             'status' => $meta['status'],
             'metrics' => $meta['metrics']
         );
-        return (object)$result;
+
+        if ( ! $json_asarray) {
+            return (object)$result;
+        }
+
+        return $result;
     }
 
     public function _search($queryObj, $json_asarray) {
@@ -360,7 +365,12 @@ class CouchbaseBucket {
         if (isset($meta['facets'])) {
             $result['facets'] = $meta['facets'];
         }
-        return (object)$result;
+
+        if ( ! $json_asarray) {
+            return (object)$result;
+        }
+
+        return $result;
     }
 
     /**
