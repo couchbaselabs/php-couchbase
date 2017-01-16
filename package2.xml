@@ -27,7 +27,7 @@
 
     <date>2016-12-26</date>
     <version>
-        <release>2.2.4</release>
+        <release>3.0.0</release>
         <api>2.2.0</api>
     </version>
     <stability>
@@ -37,8 +37,8 @@
     <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2
     </license>
     <notes>
-        This is the GA release of the 2.2.4 SDK. It is a maitenance release
-        with several fixes:
+        This is the GA release of the 3.0.0 SDK. It is a major release
+        with a new dependency and several fixes:
 
         Changes:
         * PCBC-401: embed PHP classes using pcs. This fixes performance issue,
