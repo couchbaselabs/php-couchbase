@@ -283,7 +283,7 @@ PHP_METHOD(Bucket, query)
         }
         smart_str_0(&buf);
         PCBC_SMARTSTR_SET(buf, cmd.query, cmd.nquery);
-        if (Z_N1QL_QUERY_OBJ_P(query)->adhoc) {
+        if (!Z_N1QL_QUERY_OBJ_P(query)->adhoc) {
             cmd.cmdflags |= LCB_CMDN1QL_F_PREPCACHE;
         }
         if (Z_N1QL_QUERY_OBJ_P(query)->cross_bucket) {
