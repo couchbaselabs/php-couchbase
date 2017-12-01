@@ -1,8 +1,8 @@
 PHP_ARG_WITH(couchbase, whether to enable Couchbase support,
 [  --with-couchbase   Include Couchbase support])
 
-PHP_ARG_WITH(system-fastlz, wheter to use system FastLZ bibrary,
-    [  --with-system-fastlz   Use system FastLZ bibrary], no, no)
+PHP_ARG_WITH(system-fastlz, wheter to use system FastLZ library,
+    [  --with-system-fastlz   Use system FastLZ library], no, no)
 
 if test "$PHP_COUCHBASE" != "no"; then
   if test -r $PHP_COUCHBASE/include/libcouchbase/couchbase.h; then
