@@ -144,6 +144,7 @@ static lcb_error_t pcbc_normalize_connstr(lcb_type_t type, char *connstr, const 
         smart_str_appends(&buf, connstr);
         smart_str_0(&buf);
         PCBC_SMARTSTR_DUP(buf, with_schema);
+        smart_str_free(&buf);
         pcbc_log(LOGARGS(NULL, DEBUG), "Rewrite connection string from \"%s\" to \"%s\"", connstr, with_schema);
         need_free = 1;
         connstr = with_schema;
