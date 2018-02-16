@@ -21,13 +21,27 @@ It supports 5.x and 7.x releases of PHP interpreter.
 The target system should have libcouchbase installed. Detailed guide and links to the most recent versions
 located here: https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk.
 
+### PECL
+
 Couchbase PHP client generally available through PECL: http://pecl.php.net/package/couchbase
 
 ```bash
 pecl install couchbase
 ```
 
-RPM packages available for Fedora 24-27 and RHEL 6-7 linux on https://rpms.remirepo.net/.
+### Binary packages
+
+RPM package for Fedora available in official repository, its name is [php-pecl-couchbase2](https://apps.fedoraproject.org/packages/php-pecl-couchbase2).
+
+```bash
+dnf install php-pecl-couchbase2
+```
+
+RPM package for RHEL and CentOS linux available on [Remi's repository](https://rpms.remirepo.net/).
+
+```bash
+yum install php-pecl-couchbase2
+```
 
 Additionally Windows builds available from [Release Notes and Archives](http://developer.couchbase.com/server/other-products/release-notes-archives/php-sdk) page.
 
@@ -37,6 +51,8 @@ On MacOS platform, the library could be installed via Homebrew:
 brew tap homebrew/homebrew-php
 brew install php70-couchbase # or other version instead of 70 (PHP 7.0)
 ```
+
+### Build from sources
 
 If you are going to prepare patches, or just need to install the most recent
 version from git, make sure you have PHP development tools and headers
