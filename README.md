@@ -31,13 +31,13 @@ pecl install couchbase
 
 ### Binary packages
 
-RPM package for Fedora 24-27 available in official repository, its name is [php-pecl-couchbase2](https://apps.fedoraproject.org/packages/php-pecl-couchbase2).
+RPM package for Fedora available in official repository, its name is [php-pecl-couchbase2](https://apps.fedoraproject.org/packages/php-pecl-couchbase2).
 
 ```bash
 dnf install php-pecl-couchbase2
 ```
 
-RPM package for RHEL and CentOS 6-7 linux available on [Remi's repository](https://rpms.remirepo.net/).
+RPM package for RHEL and CentOS linux available on [Remi's repository](https://rpms.remirepo.net/).
 
 ```bash
 yum install php-pecl-couchbase2
