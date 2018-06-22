@@ -124,7 +124,7 @@ PHP_METHOD(ClusterManager, removeBucket)
     if (rv == FAILURE) {
         return;
     }
-    path_len = spprintf(&path, 0, "/pools/default/buckets/%*s", name_len, name);
+    path_len = spprintf(&path, 0, "/pools/default/buckets/%*s", (int)name_len, name);
     cmd.type = LCB_HTTP_TYPE_MANAGEMENT;
     cmd.method = LCB_HTTP_METHOD_DELETE;
     LCB_CMD_SET_KEY(&cmd, path, path_len);
@@ -208,10 +208,10 @@ PHP_METHOD(ClusterManager, getUser)
     }
     switch (domain) {
     case PCBC_CLUSTER_MANAGER_RBAC_DOMAIN_LOCAL:
-        path_len = spprintf(&path, 0, "/settings/rbac/users/local/%*s", name_len, name);
+        path_len = spprintf(&path, 0, "/settings/rbac/users/local/%*s", (int)name_len, name);
         break;
     case PCBC_CLUSTER_MANAGER_RBAC_DOMAIN_EXTERNAL:
-        path_len = spprintf(&path, 0, "/settings/rbac/users/external/%*s", name_len, name);
+        path_len = spprintf(&path, 0, "/settings/rbac/users/external/%*s", (int)name_len, name);
         break;
     default:
         throw_pcbc_exception("Invalid arguments.", LCB_EINVAL);
@@ -244,10 +244,10 @@ PHP_METHOD(ClusterManager, removeUser)
     }
     switch (domain) {
     case PCBC_CLUSTER_MANAGER_RBAC_DOMAIN_LOCAL:
-        path_len = spprintf(&path, 0, "/settings/rbac/users/local/%*s", name_len, name);
+        path_len = spprintf(&path, 0, "/settings/rbac/users/local/%*s", (int)name_len, name);
         break;
     case PCBC_CLUSTER_MANAGER_RBAC_DOMAIN_EXTERNAL:
-        path_len = spprintf(&path, 0, "/settings/rbac/users/external/%*s", name_len, name);
+        path_len = spprintf(&path, 0, "/settings/rbac/users/external/%*s", (int)name_len, name);
         break;
     default:
         throw_pcbc_exception("Invalid arguments.", LCB_EINVAL);
@@ -293,10 +293,10 @@ PHP_METHOD(ClusterManager, upsertUser)
     user = Z_USER_SETTINGS_OBJ_P(settings);
     switch (domain) {
     case PCBC_CLUSTER_MANAGER_RBAC_DOMAIN_LOCAL:
-        path_len = spprintf(&path, 0, "/settings/rbac/users/local/%*s", name_len, name);
+        path_len = spprintf(&path, 0, "/settings/rbac/users/local/%*s", (int)name_len, name);
         break;
     case PCBC_CLUSTER_MANAGER_RBAC_DOMAIN_EXTERNAL:
-        path_len = spprintf(&path, 0, "/settings/rbac/users/external/%*s", name_len, name);
+        path_len = spprintf(&path, 0, "/settings/rbac/users/external/%*s", (int)name_len, name);
         break;
     default:
         throw_pcbc_exception("Invalid arguments.", LCB_EINVAL);
