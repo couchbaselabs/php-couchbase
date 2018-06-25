@@ -174,7 +174,7 @@ PHP_METHOD(N1qlQuery, scanCap)
     }
 
     PCBC_READ_PROPERTY(options, pcbc_n1ql_query_ce, getThis(), "options", 0);
-    spprintf(&val, 0, "%d", scan_cap);
+    spprintf(&val, 0, "%ld", scan_cap);
     ADD_ASSOC_STRING(options, "scan_cap", val);
     efree(val);
 
@@ -195,7 +195,7 @@ PHP_METHOD(N1qlQuery, pipelineBatch)
     }
 
     PCBC_READ_PROPERTY(options, pcbc_n1ql_query_ce, getThis(), "options", 0);
-    spprintf(&val, 0, "%d", pipeline_batch);
+    spprintf(&val, 0, "%ld", pipeline_batch);
     ADD_ASSOC_STRING(options, "pipeline_batch", val);
     efree(val);
 
@@ -216,7 +216,7 @@ PHP_METHOD(N1qlQuery, pipelineCap)
     }
 
     PCBC_READ_PROPERTY(options, pcbc_n1ql_query_ce, getThis(), "options", 0);
-    spprintf(&val, 0, "%d", pipeline_cap);
+    spprintf(&val, 0, "%ld", pipeline_cap);
     ADD_ASSOC_STRING(options, "pipeline_cap", val);
     efree(val);
 
@@ -237,7 +237,7 @@ PHP_METHOD(N1qlQuery, maxParallelism)
     }
 
     PCBC_READ_PROPERTY(options, pcbc_n1ql_query_ce, getThis(), "options", 0);
-    spprintf(&val, 0, "%d", max_parallelism);
+    spprintf(&val, 0, "%ld", max_parallelism);
     ADD_ASSOC_STRING(options, "max_parallelism", val);
     efree(val);
 

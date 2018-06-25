@@ -117,7 +117,7 @@ PHP_METHOD(BucketManager, insertDesignDocument)
         return;
     }
 
-    path_len = spprintf(&path, 0, "/_design/%*s", name_len, name);
+    path_len = spprintf(&path, 0, "/_design/%*s", (int)name_len, name);
 
     cmd.type = LCB_HTTP_TYPE_VIEW;
     cmd.method = LCB_HTTP_METHOD_GET;
@@ -187,7 +187,7 @@ PHP_METHOD(BucketManager, upsertDesignDocument)
 
     cmd.type = LCB_HTTP_TYPE_VIEW;
     cmd.method = LCB_HTTP_METHOD_PUT;
-    path_len = spprintf(&path, 0, "/_design/%*s", name_len, name);
+    path_len = spprintf(&path, 0, "/_design/%*s", (int)name_len, name);
     LCB_CMD_SET_KEY(&cmd, path, path_len);
     cmd.content_type = PCBC_CONTENT_TYPE_JSON;
 
@@ -239,7 +239,7 @@ PHP_METHOD(BucketManager, removeDesignDocument)
 
     cmd.type = LCB_HTTP_TYPE_VIEW;
     cmd.method = LCB_HTTP_METHOD_DELETE;
-    path_len = spprintf(&path, 0, "/_design/%*s", name_len, name);
+    path_len = spprintf(&path, 0, "/_design/%*s", (int)name_len, name);
     LCB_CMD_SET_KEY(&cmd, path, path_len);
     cmd.content_type = PCBC_CONTENT_TYPE_FORM;
     pcbc_http_request(return_value, obj->conn->lcb, &cmd, 1 TSRMLS_CC);
@@ -264,7 +264,7 @@ PHP_METHOD(BucketManager, getDesignDocument)
 
     cmd.type = LCB_HTTP_TYPE_VIEW;
     cmd.method = LCB_HTTP_METHOD_GET;
-    path_len = spprintf(&path, 0, "/_design/%*s", name_len, name);
+    path_len = spprintf(&path, 0, "/_design/%*s", (int)name_len, name);
     LCB_CMD_SET_KEY(&cmd, path, path_len);
     cmd.content_type = PCBC_CONTENT_TYPE_FORM;
     pcbc_http_request(return_value, obj->conn->lcb, &cmd, 1 TSRMLS_CC);

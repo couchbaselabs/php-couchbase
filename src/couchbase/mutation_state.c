@@ -205,7 +205,7 @@ void pcbc_mutation_state_export_for_n1ql(pcbc_mutation_state_t *obj, zval *scan_
             add_next_index_long(PCBC_P(pair), PCBC_MUTATION_TOKEN_SEQ(token));
             snprintf(buf, 21, "%llu", (unsigned long long)PCBC_MUTATION_TOKEN_ID(token));
             ADD_NEXT_INDEX_STRING(PCBC_P(pair), buf);
-            snprintf(buf, 21, "%d\0", (int)PCBC_MUTATION_TOKEN_VB(token));
+            snprintf(buf, 21, "%d", (int)PCBC_MUTATION_TOKEN_VB(token));
 #if PHP_VERSION_ID >= 70000
             zend_hash_str_update(Z_ARRVAL_P(bucket_group), buf, strlen(buf), PCBC_P(pair) TSRMLS_CC);
 #else

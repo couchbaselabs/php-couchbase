@@ -156,11 +156,19 @@ static lcb_error_t pcbc_normalize_connstr(lcb_type_t type, char *connstr, const 
             // rebuild connection string with username as the bucket
             smart_str buf = {0};
             if (url->scheme) {
+#if PHP_VERSION_ID < 70300
                 smart_str_appends(&buf, url->scheme);
+#else
+                smart_str_appendl(&buf, ZSTR_VAL(url->scheme), ZSTR_LEN(url->scheme));
+#endif
                 smart_str_appendl(&buf, "://", 3);
             }
             if (url->host) {
+#if PHP_VERSION_ID < 70300
                 smart_str_appends(&buf, url->host);
+#else
+                smart_str_appendl(&buf, ZSTR_VAL(url->host), ZSTR_LEN(url->host));
+#endif
             }
             if (url->port) {
                 smart_str_appendc(&buf, ':');
@@ -170,7 +178,11 @@ static lcb_error_t pcbc_normalize_connstr(lcb_type_t type, char *connstr, const 
             smart_str_appends(&buf, bucketname);
             if (url->query) {
                 smart_str_appendc(&buf, '?');
+#if PHP_VERSION_ID < 70300
                 smart_str_appends(&buf, url->query);
+#else
+                smart_str_appendl(&buf, ZSTR_VAL(url->query), ZSTR_LEN(url->query));
+#endif
             }
             smart_str_0(&buf);
             PCBC_SMARTSTR_DUP(buf, *normalized);
@@ -181,15 +193,27 @@ static lcb_error_t pcbc_normalize_connstr(lcb_type_t type, char *connstr, const 
         }
         break;
     case LCB_TYPE_CLUSTER:
+#if PHP_VERSION_ID < 70300
         if (url->path != NULL && url->path[0] != '\0') {
+#else
+        if (url->path != NULL && ZSTR_VAL(url->path)[0] != '\0') {
+#endif
             // strip bucket from the connection string
             smart_str buf = {0};
             if (url->scheme) {
+#if PHP_VERSION_ID < 70300
                 smart_str_appends(&buf, url->scheme);
+#else
+                smart_str_appendl(&buf, ZSTR_VAL(url->scheme), ZSTR_LEN(url->scheme));
+#endif
                 smart_str_appendl(&buf, "://", 3);
             }
             if (url->host) {
+#if PHP_VERSION_ID < 70300
                 smart_str_appends(&buf, url->host);
+#else
+                smart_str_appendl(&buf, ZSTR_VAL(url->host), ZSTR_LEN(url->host));
+#endif
             }
             if (url->port) {
                 smart_str_appendc(&buf, ':');
@@ -197,7 +221,11 @@ static lcb_error_t pcbc_normalize_connstr(lcb_type_t type, char *connstr, const 
             }
             if (url->query) {
                 smart_str_appendc(&buf, '?');
+#if PHP_VERSION_ID < 70300
                 smart_str_appends(&buf, url->query);
+#else
+                smart_str_appendl(&buf, ZSTR_VAL(url->query), ZSTR_LEN(url->query));
+#endif
             }
             smart_str_0(&buf);
             PCBC_SMARTSTR_DUP(buf, *normalized);
@@ -252,7 +280,11 @@ static lcb_error_t pcbc_connection_cache(smart_str *plist_key, pcbc_connection_t
     zend_resource res;
     res.type = pcbc_res_couchbase;
     res.ptr = conn;
+#if PHP_VERSION_ID < 70300
     GC_REFCOUNT(&res) = 1;
+#else
+    GC_SET_REFCOUNT(&res, 1);
+#endif
 
     if (zend_hash_str_update_mem(&EG(persistent_list), PCBC_SMARTSTR_VAL(*plist_key), PCBC_SMARTSTR_LEN(*plist_key),
                                  &res, sizeof(res)) == NULL) {
