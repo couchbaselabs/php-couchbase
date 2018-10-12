@@ -169,7 +169,7 @@ void pcbc_bucket_get(pcbc_bucket_t *obj, pcbc_pp_state *pp_state, pcbc_pp_id *id
 
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "get", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "get", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);
@@ -302,7 +302,7 @@ PHP_METHOD(Bucket, getFromReplica)
         }
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "get_from_replica", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "get_from_replica", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);

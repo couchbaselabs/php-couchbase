@@ -95,7 +95,7 @@ PHP_METHOD(Bucket, remove)
         }
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "remove", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "remove", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);

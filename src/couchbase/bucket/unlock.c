@@ -131,7 +131,7 @@ PHP_METHOD(Bucket, unlock)
         }
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "unlock", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "unlock", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);

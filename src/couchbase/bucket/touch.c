@@ -88,7 +88,7 @@ PHP_METHOD(Bucket, touch)
         }
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "touch", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "touch", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);

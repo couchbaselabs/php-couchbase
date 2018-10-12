@@ -1067,9 +1067,9 @@ lcb_error_t proc_store_results(pcbc_bucket_t *bucket, zval *return_value, opcook
 #define proc_remove_results proc_store_results
 #define proc_touch_results proc_store_results
 
-#define pcbc_assert_number_of_commands(lcb, cmd, nscheduled, ntotal)                                                   \
+#define pcbc_assert_number_of_commands(lcb, cmd, nscheduled, ntotal, err)                                                   \
     if (nscheduled != ntotal) {                                                                                        \
-        pcbc_log(LOGARGS(lcb, ERROR), "Failed to schedule %s commands (%d out of %d sent)", cmd, nscheduled, ntotal);  \
+        pcbc_log(LOGARGS(lcb, ERROR), "Failed to schedule %s commands (%d out of %d sent). Last error: %s.", cmd, nscheduled, ntotal, lcb_strerror_short(err));  \
     }
 
 #if PHP_VERSION_ID >= 70000

@@ -184,7 +184,7 @@ PHP_METHOD(Bucket, insert)
         }
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "insert", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "insert", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);
@@ -310,7 +310,7 @@ PHP_METHOD(Bucket, upsert)
         }
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "upsert", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "upsert", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);
@@ -440,7 +440,7 @@ PHP_METHOD(Bucket, replace)
         }
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "replace", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "replace", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);
@@ -565,7 +565,7 @@ PHP_METHOD(Bucket, append)
         }
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "append", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "append", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);
@@ -690,7 +690,7 @@ PHP_METHOD(Bucket, prepend)
         }
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "prepend", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "prepend", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);

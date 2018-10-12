@@ -153,7 +153,7 @@ PHP_METHOD(Bucket, counter)
         }
         nscheduled++;
     }
-    pcbc_assert_number_of_commands(obj->conn->lcb, "counter", nscheduled, ncmds);
+    pcbc_assert_number_of_commands(obj->conn->lcb, "counter", nscheduled, ncmds, err);
 
     if (nscheduled) {
         lcb_wait(obj->conn->lcb);
