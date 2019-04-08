@@ -1425,6 +1425,62 @@ namespace Couchbase {
          *   will be thrown unless this is set to true.
          */
         public function dropN1qlIndex($name, $ignoreIfNotExist = false) {}
+
+
+	/**
+	 * Returns index manager for Full Text Search service.
+	 *
+	 * @return \Couchbase\SearchIndexManager
+	 */
+	public function searchIndexManager();
+    }
+
+    /**
+     * Interface for working with Full Text Search indexes.
+     */
+    class SearchIndexManager {
+        /** @ignore */
+        final private function __construct() {}
+
+	/**
+	 * Returns list of currently defined search indexes.
+	 *
+	 * @return array of index definitions
+	 */
+	public function listIndexDefinitions();
+
+	/**
+	 * Retrieves search index definition by its name.
+	 *
+	 * @param string $name index name
+	 *
+	 * @return array representing index
+	 */
+	public function getIndexDefinition($name);
+
+	/**
+	 * Retrieves number of the documents currently covered by the index
+	 *
+	 * @param string $name index name
+	 *
+	 * @return int
+	 */
+	public function getIndexDocumentsCount($name);
+
+	/**
+	 * Creates search index with specified name and definition
+	 *
+	 * @param string $name index name
+	 * @param string $definition JSON-encoded index definition
+	 */
+	public function createIndex($name, $definition);
+
+	/**
+	 * Deletes search index by its name.
+	 *
+	 * @param string $name index name
+	 */
+	public function deleteIndex($name);
     }
 
     /**
