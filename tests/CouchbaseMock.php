@@ -53,7 +53,7 @@ class CouchbaseMock {
         socket_write($this->ctl, json_encode($payload) . "\n");
         $response = socket_read($this->ctl, 100000, PHP_NORMAL_READ);
         $json = strstr($response, '{');
-        if ($json && count($json)) {
+        if ($json && strlen($json)) {
             $decoded = json_decode($json, TRUE);
             if (array_key_exists('error', $decoded)) {
                 throw new Exception($decoded['error']);
