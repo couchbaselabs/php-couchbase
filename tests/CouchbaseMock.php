@@ -1,15 +1,34 @@
 <?php
+// vim: et ts=4 sw=4 sts=4
 
 class CouchbaseMock {
-    const VERSION = '1.5.12';
+    const VERSION = '1.5.23';
 
     private $jarPath;
     private $ctlServer;
     private $ctl;
 
-    public function __construct() {
+    private $port;
+
+    private static $instance = null;
+
+    public static function get() {
+        $port = getenv('CB_MOCK_CTL_PORT');
+        if ($port) {
+            if (self::$instance) {
+                return self::$instance;
+            }
+            self::$instance = new CouchbaseMock((int)$port);
+            return self::$instance;
+        } else {
+            return new CouchbaseMock();
+        }
+    }
+
+    public function __construct($port = null) {
         $this->jarPath = join(DIRECTORY_SEPARATOR, [__DIR__, "CouchbaseMock.jar"]);
         $this->download();
+        $this->port = $port;
     }
 
     public function download($version = CouchbaseMock::VERSION) {
@@ -19,7 +38,7 @@ class CouchbaseMock {
         }
     }
 
-    public function start() {
+    private function startFork() {
         $this->ctlServer = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         socket_bind($this->ctlServer, '127.0.0.1');
         socket_listen($this->ctlServer);
@@ -41,12 +60,32 @@ class CouchbaseMock {
                 exit(0);
             }
         }
+    }
 
+    private function startMonitor() {
+        if ($this->ctl) {
+            return;
+        }
+        $this->ctlServer = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        socket_set_option($this->ctlServer, SOL_SOCKET, SO_REUSEADDR, 1);
+        socket_bind($this->ctlServer, '127.0.0.1', $this->port);
+        socket_listen($this->ctlServer);
+        $this->ctl = socket_accept($this->ctlServer);
+    }
+
+    public function start() {
+        if ($this->port) {
+            $this->startMonitor();
+        } else {
+            $this->startFork();
+        }
     }
 
     public function stop() {
-        socket_close($this->ctl);
-        socket_close($this->ctlServer);
+        if (!$this->port) {
+            socket_close($this->ctl);
+            socket_close($this->ctlServer);
+        }
     }
 
     protected function send($payload) {

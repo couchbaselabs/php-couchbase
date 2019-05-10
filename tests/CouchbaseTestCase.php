@@ -14,7 +14,7 @@ class CouchbaseTestCase extends \PHPUnit_Framework_TestCase {
 
     protected function setUp() {
         if (getenv('CB_MOCK')) {
-            $this->mock = new \CouchbaseMock();
+            $this->mock = \CouchbaseMock::get();
             $this->mock->start();
             $this->mock->setCCCP(true);
 

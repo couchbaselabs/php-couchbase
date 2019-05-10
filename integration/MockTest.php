@@ -11,7 +11,7 @@ class MockTest extends \PHPUnit_Framework_TestCase {
     protected $mock;
 
     protected function setUp() {
-        $this->mock = new CouchbaseMock();
+        $this->mock = CouchbaseMock::get();
         $this->mock->start();
         $this->mock->setCCCP(true);
     }
