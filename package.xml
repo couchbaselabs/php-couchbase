@@ -18,9 +18,9 @@
         <active>yes</active>
     </lead>
 
-    <date>2018-10-05</date>
+    <date>2019-06-03</date>
     <version>
-        <release>2.6.0</release>
+        <release>2.6.1</release>
         <api>2.3.0</api>
     </version>
     <stability>
@@ -30,8 +30,8 @@
     <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2
     </license>
     <notes>
-        * PCBC-562: Allow disabling caching (persistent) connections by setting couchbase.pool.max_idle_time_sec to zero.
-        * PCBC-560: Positional, named and raw parameters for Analytics
+        * documentation updates
+        * improved test integration with CouchbaseMock
     </notes>
     <contents>
         <dir name="/">
@@ -185,6 +185,23 @@
     <providesextension>couchbase</providesextension>
     <extsrcrelease/>
     <changelog>
+        <release>
+            <date>2018-10-05</date>
+            <version>
+                <release>2.6.0</release>
+                <api>2.3.0</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2
+            </license>
+            <notes>
+                * PCBC-562: Allow disabling caching (persistent) connections by setting couchbase.pool.max_idle_time_sec to zero.
+                * PCBC-560: Positional, named and raw parameters for Analytics
+            </notes>
+        </release>
         <release>
             <date>2018-08-10</date>
             <version>
