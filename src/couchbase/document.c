@@ -42,7 +42,7 @@ void pcbc_document_init_decode(zval *return_value, pcbc_bucket_t *bucket, const 
 {
     object_init_ex(return_value, pcbc_document_ce);
 
-    if (bytes_len) {
+    {
         PCBC_ZVAL val;
         PCBC_ZVAL_ALLOC(val);
         pcbc_decode_value(PCBC_P(val), bucket, bytes, bytes_len, flags, datatype TSRMLS_CC);

@@ -93,6 +93,36 @@ class BucketTest extends CouchbaseTestCase {
     }
 
     /**
+     * Test blank string storage and retrieval
+     *
+     * @depends testConnect
+     */
+    function testBlankStringTrans($b) {
+        $key = $this->makeKey('blankStringTrans');
+
+        $res = $b->upsert($key, '');
+        $this->assertValidMetaDoc($res, 'cas');
+
+        $res = $b->get($key);
+        $this->assertValidMetaDoc($res, 'cas', 'flags');
+        $this->assertEquals($res->value, '');
+    }
+
+    /**
+     * Test handing NULL values
+     *
+     * @depends testConnect
+     */
+    function testEmptyNullValues($b) {
+        $key = $this->makeKey('nullValue');
+        $res = $b->upsert($key, null);
+        $this->assertValidMetaDoc($res, 'cas');
+        $res = $b->get($key);
+        $this->assertValidMetaDoc($res, 'cas', 'flags');
+        $this->assertEquals(null, $res->value);
+    }
+
+    /**
      * Test multi upsert
      *
      * @depends testConnect
