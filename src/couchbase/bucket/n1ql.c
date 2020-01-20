@@ -81,8 +81,13 @@ static void n1qlrow_callback(lcb_t instance, int ignoreme, const lcb_RESPN1QL *r
             }
         }
         if (!reported) {
-            pcbc_log(LOGARGS(instance, ERROR), "Failed to perform N1QL query. %d: %.*s", (int)resp->htresp->htstatus,
-                     (int)resp->nrow, (char *)resp->row);
+            if (resp->htresp) {
+                pcbc_log(LOGARGS(instance, ERROR), "Failed to perform N1QL query. %d: %.*s", (int)resp->htresp->htstatus,
+                         (int)resp->nrow, (char *)resp->row);
+            } else {
+                pcbc_log(LOGARGS(instance, ERROR), "Failed to perform N1QL query. %.*s",
+                         (int)resp->nrow, (char *)resp->row);
+            }
         }
     }
 
