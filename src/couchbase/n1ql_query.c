@@ -110,7 +110,7 @@ PHP_METHOD(N1qlQuery, namedParams)
         while (zend_hash_get_current_data_ex(Z_ARRVAL_P(params), (void **)&entry, &pos) == SUCCESS) {
             if (zend_hash_get_current_key_type_ex(Z_ARRVAL_P(params), &pos) == HASH_KEY_IS_STRING) {
                 char *key = NULL, *prefixed_key = NULL;
-                uint key_len = 0;
+                unsigned key_len = 0;
                 zend_hash_get_current_key_ex(Z_ARRVAL_P(params), &key, &key_len, NULL, 0, &pos);
                 spprintf(&prefixed_key, 0, "$%s", key);
                 add_assoc_zval(options, prefixed_key, *entry);

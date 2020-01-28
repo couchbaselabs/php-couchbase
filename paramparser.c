@@ -48,7 +48,7 @@ static zend_always_inline int pcbc_get_parameters_array_ex(int param_count, PCBC
 
 #if PHP_VERSION_ID >= 70000
 #define PCBC_HASH_GET_CURRENT_DATA_EX(ht, pos) zend_hash_get_current_data_ex(ht, pos)
-static zend_always_inline int pcbc_hash_str_get_current_key_ex(HashTable *ht, char **str, uint *len,
+static zend_always_inline int pcbc_hash_str_get_current_key_ex(HashTable *ht, char **str, unsigned *len,
                                                                zend_ulong *num_index, HashPosition *pos)
 {
     zend_string *zstr = NULL;
@@ -72,10 +72,10 @@ static zend_always_inline PCBC_ZVAL *pcbc_hash_get_current_data_ex(HashTable *ht
     return result;
 }
 #define PCBC_HASH_GET_CURRENT_DATA_EX(ht, pos) pcbc_hash_get_current_data_ex(ht, pos)
-static zend_always_inline int pcbc_hash_str_get_current_key_ex(HashTable *ht, char **str, uint *len,
+static zend_always_inline int pcbc_hash_str_get_current_key_ex(HashTable *ht, char **str, unsigned *len,
                                                                zend_ulong *num_index, HashPosition *pos)
 {
-    uint len_out = 0;
+    unsigned len_out = 0;
     int key_type = zend_hash_get_current_key_ex(ht, str, &len_out, num_index, 0, pos);
     if (len != NULL) {
         *len = len_out - 1;
@@ -252,7 +252,7 @@ int pcbc_pp_next(pcbc_pp_state *state)
         PCBC_ZVAL *data;
         zend_ulong keyidx, key_type;
         char *keystr;
-        uint keystr_len;
+        unsigned keystr_len;
 
         data = PCBC_HASH_GET_CURRENT_DATA_EX(hash, &state->hash_pos);
         if (data == 0) {

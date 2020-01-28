@@ -708,7 +708,7 @@ typedef struct {
 
 typedef struct {
     char *str;
-    uint len;
+    unsigned len;
 } pcbc_pp_id;
 
 typedef struct {

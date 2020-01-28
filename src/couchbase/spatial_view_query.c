@@ -305,7 +305,7 @@ PHP_METHOD(SpatialViewQuery, custom)
         while (zend_hash_get_current_data_ex(Z_ARRVAL_P(custom_options), (void **)&entry, &pos) == SUCCESS) {
             if (zend_hash_get_current_key_type_ex(Z_ARRVAL_P(custom_options), &pos) == HASH_KEY_IS_STRING) {
                 char *key = NULL;
-                uint key_len = 0;
+                unsigned key_len = 0;
                 zend_hash_get_current_key_ex(Z_ARRVAL_P(custom_options), &key, &key_len, NULL, 0, &pos);
                 add_assoc_zval_ex(obj->options, key, key_len, *entry);
                 PCBC_ADDREF_P(*entry);
