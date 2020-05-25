@@ -190,7 +190,7 @@ ZEND_END_ARG_INFO()
 PHP_METHOD(Collection, getAllReplicas);
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_Collection_getAllReplicas, IS_ARRAY, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetAllReplicaOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetAllReplicasOptions, 0)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, upsert);

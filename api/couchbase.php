@@ -98,56 +98,56 @@ namespace Couchbase {
         /**
          * Returns the query execution status
          *
-         * @return ?string
+         * @return string|null
          */
         public function status(): ?string;
 
         /**
          * Returns the identifier associated with the query
          *
-         * @return ?string
+         * @return string|null
          */
         public function requestId(): ?string;
 
         /**
          * Returns the client context id associated with the query
          *
-         * @return ?string
+         * @return string|null
          */
         public function clientContextId(): ?string;
 
         /**
          * Returns the signature of the query
          *
-         * @return ?array
+         * @return array|null
          */
         public function signature(): ?array;
 
         /**
          * Returns any warnings generated during query execution
          *
-         * @return ?array
+         * @return array|null
          */
         public function warnings(): ?array;
 
         /**
          * Returns any errors generated during query execution
          *
-         * @return ?array
+         * @return array|null
          */
         public function errors(): ?array;
 
         /**
          * Returns metrics generated during query execution such as timings and counts
          *
-         * @return ?array
+         * @return array|null
          */
         public function metrics(): ?array;
 
         /**
          * Returns the profile of the query if enabled
          *
-         * @return ?array
+         * @return array|null
          */
         public function profile(): ?array;
     }
@@ -160,42 +160,42 @@ namespace Couchbase {
         /**
         * Returns the number of pindexes successfully queried
         *
-        * @return ?int
+        * @return int|null
         */
         public function successCount(): ?int;
 
         /**
         * Returns the number of errors messages reported by individual pindexes
         *
-        * @return ?int
+        * @return int|null
         */
         public function errorCount(): ?int;
 
         /**
         * Returns the time taken to complete the query
         *
-        * @return ?int
+        * @return int|null
         */
         public function took(): ?int;
 
         /**
         * Returns the total number of matches for this result
         *
-        * @return ?int
+        * @return int|null
         */
         public function totalHits(): ?int;
 
         /**
         * Returns the highest score of all documents for this search query.
         *
-        * @return ?float
+        * @return float|null
         */
         public function maxScore(): ?float;
 
         /**
         * Returns the metrics generated during execution of this search query.
         *
-        * @return ?array
+        * @return array|null
         */
         public function metrics(): ?array;
     }
@@ -208,14 +208,14 @@ namespace Couchbase {
         /**
         * Returns the total number of rows returned by this view query
         *
-        * @return ?int
+        * @return int|null
         */
         public function totalRows(): ?int;
 
         /**
         * Returns debug information for this view query if enabled
         *
-        * @return ?array
+        * @return array|null
         */
         public function debug(): ?array;
     }
@@ -228,7 +228,7 @@ namespace Couchbase {
         /**
         * Returns the CAS value for the document
         *
-        * @return ?string
+        * @return string|null
         */
         public function cas(): ?string;
     }
@@ -241,7 +241,7 @@ namespace Couchbase {
         /**
         * Returns the content of the document fetched
         *
-        * @return ?array
+        * @return array|null
         */
         public function content(): ?array;
     }
@@ -254,7 +254,7 @@ namespace Couchbase {
         /**
         * Returns the content of the document fetched
         *
-        * @return ?array
+        * @return array|null
         */
         public function content(): ?array;
 
@@ -287,7 +287,7 @@ namespace Couchbase {
         /**
         * Returns the mutation token generated during the mutation
         *
-        * @return ?MutationToken
+        * @return MutationToken|null
         */
         public function mutationToken(): ?MutationToken;
     }
@@ -314,7 +314,7 @@ namespace Couchbase {
         * Returns the value located at the index specified
         *
         * @param int $index the index to retrieve content from
-        * @return ?object
+        * @return object|null
         */
         public function content(int $index): ?object;
 
@@ -344,7 +344,7 @@ namespace Couchbase {
         * Returns any value located at the index specified
         *
         * @param int $index the index to retrieve content from
-        * @return ?array
+        * @return array|null
         */
         public function content(int $index): ?array;
     }
@@ -357,14 +357,14 @@ namespace Couchbase {
         /**
          * Returns metadata generated during query execution such as errors and metrics
          *
-         * @return ?QueryMetaData
+         * @return QueryMetaData|null
          */
         public function metaData(): ?QueryMetaData;
 
         /**
          * Returns the rows returns during query execution
          *
-         * @return ?array
+         * @return array|null
          */
         public function rows(): ?array;
     }
@@ -377,14 +377,14 @@ namespace Couchbase {
         /**
         * Returns metadata generated during query execution
         *
-        * @return ?QueryMetaData
+        * @return QueryMetaData|null
         */
         public function metaData(): ?QueryMetaData;
 
         /**
         * Returns the rows returned during query execution
         *
-        * @return ?array
+        * @return array|null
         */
         public function rows(): ?array;
     }
@@ -397,21 +397,21 @@ namespace Couchbase {
         /**
         * Returns metadata generated during query execution
         *
-        * @return ?SearchMetaData
+        * @return SearchMetaData|null
         */
         public function metaData(): ?SearchMetaData;
 
         /**
         * Returns any facets returned by the query
         *
-        * @return ?array
+        * @return array|null
         */
         public function facets(): ?array;
 
         /**
         * Returns any rows returned by the query
         *
-        * @return ?array
+        * @return array|null
         */
         public function rows(): ?array;
     }
@@ -424,14 +424,14 @@ namespace Couchbase {
         /**
         * Returns metadata generated during query execution
         *
-        * @return ?ViewMetaData
+        * @return ViewMetaData|null
         */
         public function metaData(): ?ViewMetaData;
 
         /**
         * Returns any rows returned by the query
         *
-        * @return ?array
+        * @return array|null
         */
         public function rows(): ?array;
     }
@@ -444,7 +444,7 @@ namespace Couchbase {
         /**
         * Returns the id of the row
         *
-        * @return ?string
+        * @return string|null
         */
         public function id(): ?string
         {
@@ -483,7 +483,7 @@ namespace Couchbase {
         /**
         * Returns the underling reference string, if any
         *
-        * @return ?string
+        * @return string|null
         */
         public function ref(): ?string
         {
@@ -492,7 +492,7 @@ namespace Couchbase {
         /**
         * Returns the underling error context, if any
         *
-        * @return ?object
+        * @return object|null
         */
         public function context(): ?object
         {
@@ -1376,9 +1376,9 @@ namespace Couchbase {
          * @param string $id the key of the document
          * @param string $value the value to append
          * @param AppendOptions $options the options to use for the operation
-         * @return StoreResult
+         * @return MutationResult
          */
-        public function append(string $id, string $value, AppendOptions $options = null): StoreResult
+        public function append(string $id, string $value, AppendOptions $options = null): MutationResult
         {
         }
 
@@ -1388,9 +1388,9 @@ namespace Couchbase {
          * @param string $id the key of the document
          * @param string $value the value to prepend
          * @param PrependOptions $options the options to use for the operation
-         * @return StoreResult
+         * @return MutationResult
          */
-        public function prepend(string $id, string $value, PrependOptions $options = null): StoreResult
+        public function prepend(string $id, string $value, PrependOptions $options = null): MutationResult
         {
         }
 
@@ -1498,10 +1498,10 @@ namespace Couchbase {
          * Returns an array of documents, one per server.
          *
          * @param string $id the key of the document
-         * @param GetAllReplicaOptions $options the options to use for the operation
+         * @param GetAllReplicasOptions $options the options to use for the operation
          * @return array
          */
-        public function getAllReplicas(string $id, GetAllReplicaOptions $options = null): array
+        public function getAllReplicas(string $id, GetAllReplicasOptions $options = null): array
         {
         }
 
@@ -1509,11 +1509,11 @@ namespace Couchbase {
          * Creates a document if it doesn't exist, otherwise updates it.
          *
          * @param string $id the key of the document
-         * @param $value the value to use for the document
+         * @param mixed $value the value to use for the document
          * @param UpsertOptions $options the options to use for the operation
-         * @return StoreResult
+         * @return MutationResult
          */
-        public function upsert(string $id, $value, UpsertOptions $options = null): StoreResult
+        public function upsert(string $id, $value, UpsertOptions $options = null): MutationResult
         {
         }
 
@@ -1521,11 +1521,11 @@ namespace Couchbase {
          * Inserts a document if it doesn't exist, errors if it does exist.
          *
          * @param string $id the key of the document
-         * @param $value the value to use for the document
+         * @param mixed $value the value to use for the document
          * @param InsertOptions $options the options to use for the operation
-         * @return StoreResult
+         * @return MutationResult
          */
-        public function insert(string $id, $value, InsertOptions $options = null): StoreResult
+        public function insert(string $id, $value, InsertOptions $options = null): MutationResult
         {
         }
 
@@ -1533,11 +1533,11 @@ namespace Couchbase {
          * Replaces a document if it exists, errors if it doesn't exist.
          *
          * @param string $id the key of the document
-         * @param $value the value to use for the document
+         * @param mixed $value the value to use for the document
          * @param ReplaceOptions $options the options to use for the operation
-         * @return StoreResult
+         * @return MutationResult
          */
-        public function replace(string $id, $value, ReplaceOptions $options = null): StoreResult
+        public function replace(string $id, $value, ReplaceOptions $options = null): MutationResult
         {
         }
 
@@ -1545,9 +1545,8 @@ namespace Couchbase {
          * Removes a document.
          *
          * @param string $id the key of the document
-         * @param $value the value to use for the document
          * @param RemoveOptions $options the options to use for the operation
-         * @return StoreResult
+         * @return MutationResult
          */
         public function remove(string $id, RemoveOptions $options = null): MutationResult
         {
@@ -1735,7 +1734,7 @@ namespace Couchbase {
         /**
          * Sets the default transcoder to be used when fetching or sending data.
          *
-         * @param callable $encode the encoder to use to encode data when sending data to the server
+         * @param callable $encoder the encoder to use to encode data when sending data to the server
          * @param callable $decoder the decoder to use to decode data when retrieving data from the server
          */
         public function setTranscoder(callable $encoder, callable $decoder)
@@ -1785,8 +1784,8 @@ namespace Couchbase {
          * Executes a ping for each service against each node in the cluster. This can be used for determining
          * the current health of the cluster.
          *
-         * @param $services the services to ping against
-         * @param $reportId a name which will be included within the ping result
+         * @param mixed $services the services to ping against
+         * @param mixed $reportId a name which will be included within the ping result
          */
         public function ping($services, $reportId)
         {
@@ -1796,7 +1795,7 @@ namespace Couchbase {
          * Returns diagnostics information about connections that the SDK has to the cluster. This does not perform
          * any operations.
          *
-         * @param $reportId a name which will be included within the ping result
+         * @param mixed $reportId a name which will be included within the ping result
          */
         public function diagnostics($reportId)
         {
@@ -2076,8 +2075,8 @@ namespace Couchbase {
         /**
          * Sets the server side timeout in milliseconds
          *
-         * @param int $serverSideTimeout the server side timeout to apply
-         * @return SearchQuery
+         * @param int $ms the server side timeout to apply
+         * @return SearchOptions
          */
         public function timeout(int $ms): SearchOptions
         {
@@ -2087,6 +2086,7 @@ namespace Couchbase {
          * Add a limit to the query on the number of hits it can return
          *
          * @param int $limit the maximum number of hits to return
+         * @return SearchOptions
          */
         public function limit(int $limit): SearchOptions
         {
@@ -2096,7 +2096,7 @@ namespace Couchbase {
          * Set the number of hits to skip (eg. for pagination).
          *
          * @param int $skip the number of results to skip
-         * @return SearchQuery
+         * @return SearchOptions
          */
         public function skip(int $skip): SearchOptions
         {
@@ -2106,7 +2106,7 @@ namespace Couchbase {
          * Activates the explanation of each result hit in the response
          *
          * @param bool $explain
-         * @return SearchQuery
+         * @return SearchOptions
          */
         public function explain(bool $explain): SearchOptions
         {
@@ -2119,7 +2119,7 @@ namespace Couchbase {
          * This replaces any consistency tuning previously set.
          *
          * @param MutationState $state the mutation state information to work with
-         * @return SearchQuery
+         * @return SearchOptions
          */
         public function consistentWith(string $index, MutationState $state): SearchOptions
         {
@@ -2132,7 +2132,7 @@ namespace Couchbase {
          * Note that to be highlighted, the fields must be stored in the FTS index.
          *
          * @param string ...$fields
-         * @return SearchQuery
+         * @return SearchOptions
          */
         public function fields(array $fields): SearchOptions
         {
@@ -2171,8 +2171,8 @@ namespace Couchbase {
          * If no sort is provided, it is equal to sort("-_score"), since the server will sort it by score in descending
          * order.
          *
-         * @param sort the fields that should take part in the sorting.
-         * @return SearchQuery
+         * @param array $specs sort the fields that should take part in the sorting.
+         * @return SearchOptions
          */
         public function sort(array $specs): SearchOptions
         {
@@ -2185,7 +2185,7 @@ namespace Couchbase {
          *   HIGHLIGHT_ANSI, HIGHLIGHT_SIMPLE.
          * @param string ...$fields the optional fields on which to highlight.
          *   If none, all fields where there is a match are highlighted.
-         * @return SearchQuery
+         * @return SearchOptions
          *
          * @see \SearchHighlightMode::HTML
          * @see \SearchHighlightMode::ANSI
@@ -2670,7 +2670,7 @@ namespace Couchbase {
          * @param bool $inclusive
          * @return NumericRangeSearchQuery
          */
-        public function min(loat $min, bool $inclusive = false): NumericRangeSearchQuery
+        public function min(float $min, bool $inclusive = false): NumericRangeSearchQuery
         {
         }
 
@@ -2948,7 +2948,7 @@ namespace Couchbase {
          * @param string $name
          * @param float $min
          * @param float $max
-         * @return NumericSearchFacet
+         * @return NumericRangeSearchFacet
          */
         public function addRange(string $name, float $min = null, float $max = null): NumericRangeSearchFacet
         {
@@ -2970,7 +2970,7 @@ namespace Couchbase {
          * @param string $name
          * @param int|string $start
          * @param int|string $end
-         * @return DateSearchFacet
+         * @return DateRangeSearchFacet
          */
         public function addRange(string $name, $start = null, $end = null): DateRangeSearchFacet
         {
@@ -3181,7 +3181,7 @@ namespace Couchbase {
          * operation into a subdocument operation fetching only the required
          * fields.
          *
-         * @param bool $arg the array of field names
+         * @param array $arg the array of field names
          * @return GetOptions
          */
         public function project(array $arg): GetOptions
@@ -3234,9 +3234,9 @@ namespace Couchbase {
          * Sets the operation timeout in milliseconds.
          *
          * @param int $arg the operation timeout to apply
-         * @return GetAnyReplicasOptions
+         * @return GetAnyReplicaOptions
          */
-        public function timeout(int $arg): GetAnyReplicasOptions
+        public function timeout(int $arg): GetAnyReplicaOptions
         {
         }
     }
@@ -3629,7 +3629,7 @@ namespace Couchbase {
         /**
          * Sets the cas value to use when performing this operation.
          *
-         * @param int $arg the cas value to use
+         * @param string $arg the cas value to use
          * @return RemoveOptions
          */
         public function cas(string $arg): RemoveOptions
@@ -3643,7 +3643,7 @@ namespace Couchbase {
          * Sets the operation timeout in milliseconds.
          *
          * @param int $arg the operation timeout to apply
-         * @return PrependOptions
+         * @return LookupInOptions
          */
         public function timeout(int $arg): LookupInOptions
         {
@@ -3680,7 +3680,7 @@ namespace Couchbase {
         /**
          * Sets the cas value to use when performing this operation.
          *
-         * @param int $arg the cas value to use
+         * @param string $arg the cas value to use
          * @return MutateInOptions
          */
         public function cas(string $arg): MutateInOptions
@@ -3927,7 +3927,7 @@ namespace Couchbase {
         /**
          * Sets the positional parameters for this query.
          *
-         * @param array $pairs the array of parameters
+         * @param array $args the array of parameters
          * @return QueryOptions
          */
         public function positionalParameters(array $args): QueryOptions
