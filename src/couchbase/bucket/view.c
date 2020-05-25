@@ -396,7 +396,7 @@ PHP_METHOD(ViewOptions, range)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        add_assoc_str_ex(data, ZEND_STRL("starkey"), buf.s TSRMLS_CC);
+        add_assoc_str_ex(data, ZEND_STRL("startkey"), buf.s TSRMLS_CC);
     }
     if (end != NULL) {
         smart_str buf = {0};
