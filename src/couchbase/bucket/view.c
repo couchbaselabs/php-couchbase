@@ -475,6 +475,7 @@ PHP_METHOD(ViewOptions, keys)
         Z_DELREF_P(data);
     }
     add_assoc_zval_ex(data, ZEND_STRL("keys"), arg);
+    Z_ADDREF_P(arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
