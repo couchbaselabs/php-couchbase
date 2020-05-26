@@ -97,7 +97,7 @@ PHP_METHOD(Collection, getAnyReplica)
     lcb_STATUS err;
 
     int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O", &id, &options, pcbc_get_any_replica_options_ce);
+        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &id, &options, pcbc_get_any_replica_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -170,7 +170,7 @@ PHP_METHOD(Collection, getAllReplicas)
     lcb_STATUS err;
 
     int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O", &id, &options, pcbc_get_all_replicas_options_ce);
+        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &id, &options, pcbc_get_all_replicas_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }

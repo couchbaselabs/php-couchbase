@@ -82,7 +82,7 @@ PHP_METHOD(Collection, exists)
     zval *options = NULL;
     lcb_STATUS err;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O", &id, &options, pcbc_exists_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &id, &options, pcbc_exists_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }

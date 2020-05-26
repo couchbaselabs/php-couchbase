@@ -232,7 +232,7 @@ PHP_METHOD(Collection, lookupIn)
     int rv;
 
     rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sh|O", &id, &spec, &options, pcbc_lookup_in_options_ce);
+        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sh|O!", &id, &spec, &options, pcbc_lookup_in_options_ce);
     if (rv == FAILURE) {
         return;
     }
@@ -417,7 +417,7 @@ PHP_METHOD(Collection, mutateIn)
     int rv;
 
     rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sh|O", &id, &spec, &options, pcbc_mutate_in_options_ce);
+        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sh|O!", &id, &spec, &options, pcbc_mutate_in_options_ce);
     if (rv == FAILURE) {
         return;
     }

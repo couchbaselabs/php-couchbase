@@ -567,7 +567,7 @@ PHP_METHOD(Bucket, viewQuery)
     zend_string *view_name;
     zval *options = NULL;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O", &design_doc, &view_name, &options,
+    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O!", &design_doc, &view_name, &options,
                                pcbc_view_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();

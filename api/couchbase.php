@@ -1327,7 +1327,7 @@ namespace Couchbase {
         {
         }
 
-        public function upsertUser(User $user)
+        public function upsertUser(User $user, UpsertUserOptions $options = null)
         {
         }
 

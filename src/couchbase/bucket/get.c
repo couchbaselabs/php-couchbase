@@ -117,7 +117,7 @@ PHP_METHOD(Collection, get)
     zval *options = NULL;
     lcb_STATUS err;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O", &id, &options, pcbc_get_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &id, &options, pcbc_get_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -190,7 +190,7 @@ PHP_METHOD(Collection, getAndLock)
     zend_long expiry;
     lcb_STATUS err;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sl|O", &id, &expiry, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sl|O!", &id, &expiry, &options,
                                          pcbc_get_and_lock_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -266,7 +266,7 @@ PHP_METHOD(Collection, getAndTouch)
     zend_long expiry;
     lcb_STATUS err;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sl|O", &id, &expiry, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sl|O!", &id, &expiry, &options,
                                          pcbc_get_and_touch_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();

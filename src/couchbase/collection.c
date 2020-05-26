@@ -158,94 +158,94 @@ ZEND_END_ARG_INFO()
 PHP_METHOD(Collection, get);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_get, 0, 1, \\Couchbase\\GetResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, getAndLock);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_getAndLock, 0, 2, \\Couchbase\\GetResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, lockTime, IS_LONG, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetAndLockOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetAndLockOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, getAndTouch);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_getAndTouch, 0, 2, \\Couchbase\\GetResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, expiry, IS_LONG, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetAndTouchOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetAndTouchOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, exists);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_exists, 0, 1, \\Couchbase\\ExistsResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\ExistsOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\ExistsOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, getAnyReplica);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_getAnyReplica, 0, 1, \\Couchbase\\GetReplicaResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetAnyReplicaOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetAnyReplicaOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, getAllReplicas);
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_Collection_getAllReplicas, IS_ARRAY, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetAllReplicaOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\GetAllReplicasOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, upsert);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_upsert, 0, 2, \\Couchbase\\MutationResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_INFO(0, value)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\UpsertOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\UpsertOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, insert);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_insert, 0, 2, \\Couchbase\\MutationResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_INFO(0, value)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\InsertOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\InsertOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, replace);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_replace, 0, 2, \\Couchbase\\MutationResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_INFO(0, value)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\ReplaceOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\ReplaceOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, remove);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_remove, 0, 1, \\Couchbase\\MutationResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\RemoveOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\RemoveOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, unlock);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_unlock, 0, 2, \\Couchbase\\Result, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, cas, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\UnlockOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\UnlockOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, touch);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_touch, 0, 2, \\Couchbase\\Result, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, expiry, IS_LONG, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\TouchOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\TouchOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, lookupIn);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_lookupIn, 0, 2, \\Couchbase\\LookupInResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, specs, IS_ARRAY, 0)
-ZEND_ARG_TYPE_INFO(0, options, IS_OBJECT, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\LookupInOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, mutateIn);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_mutateIn, 0, 2, \\Couchbase\\MutateInResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, specs, IS_ARRAY, 0)
-ZEND_ARG_TYPE_INFO(0, options, IS_OBJECT, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\MutateInOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Collection, binary);
@@ -259,26 +259,26 @@ PHP_METHOD(BinaryCollection, append);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BinaryCollection_append, 0, 2, \\Couchbase\\MutationResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, value, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\AppendOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\AppendOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BinaryCollection, prepend);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BinaryCollection_prepend, 0, 2, \\Couchbase\\MutationResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, value, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\PrependOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\PrependOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BinaryCollection, increment);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BinaryCollection_increment, 0, 1, \\Couchbase\\CounterResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\IncrementOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\IncrementOptions, 1)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BinaryCollection, decrement);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BinaryCollection_decrement, 0, 1, \\Couchbase\\CounterResult, 0)
 ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\DecrementOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\DecrementOptions, 1)
 ZEND_END_ARG_INFO()
 
 // clang-format off

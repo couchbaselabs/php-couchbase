@@ -159,7 +159,7 @@ PHP_METHOD(UserManager, getUser)
     zend_string *username;
 
     int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O", &username, &options, pcbc_get_user_options_ce);
+        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &username, &options, pcbc_get_user_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -214,7 +214,7 @@ PHP_METHOD(UserManager, getAllUsers)
     size_t path_len = strlen(path);
     int need_to_free_path = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "|O", &options, pcbc_get_all_users_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "|O!", &options, pcbc_get_all_users_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -246,7 +246,7 @@ PHP_METHOD(UserManager, upsertUser)
     zval *options = NULL;
     zval *user;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "O|O", &user, pcbc_user_ce, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "O|O!", &user, pcbc_user_ce, &options,
                                          pcbc_upsert_user_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -350,7 +350,7 @@ PHP_METHOD(UserManager, dropUser)
     zend_string *username;
 
     int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O", &username, &options, pcbc_drop_user_options_ce);
+        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &username, &options, pcbc_drop_user_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -647,6 +647,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_UserManager_upsertUser, 0, 0, 1)
 ZEND_ARG_OBJ_INFO(0, user, \\Couchbase\\User, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\UpsertUserOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_UserManager_dropUser, 0, 0, 1)

@@ -149,7 +149,7 @@ PHP_METHOD(Collection, remove)
     zval *options = NULL;
     lcb_STATUS err;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O", &id, &options, pcbc_remove_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &id, &options, pcbc_remove_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }

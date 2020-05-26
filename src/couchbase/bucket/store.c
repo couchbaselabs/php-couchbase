@@ -156,7 +156,7 @@ PHP_METHOD(Collection, insert)
     zval *value, *options = NULL;
     lcb_STATUS err = LCB_ERR_INVALID_ARGUMENT;
 
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "Sz|O", &id, &value, &options, pcbc_insert_options_ce);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "Sz|O!", &id, &value, &options, pcbc_insert_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -319,7 +319,7 @@ PHP_METHOD(Collection, upsert)
     zval *value, *options = NULL;
     lcb_STATUS err = LCB_ERR_INVALID_ARGUMENT;
 
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "Sz|O", &id, &value, &options, pcbc_upsert_options_ce);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "Sz|O!", &id, &value, &options, pcbc_upsert_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -493,7 +493,7 @@ PHP_METHOD(Collection, replace)
     zval *value, *options = NULL;
     lcb_STATUS err = LCB_ERR_INVALID_ARGUMENT;
 
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "Sz|O", &id, &value, &options, pcbc_replace_options_ce);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "Sz|O!", &id, &value, &options, pcbc_replace_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -650,7 +650,7 @@ PHP_METHOD(BinaryCollection, append)
     zval *options = NULL;
     lcb_STATUS err;
 
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O", &id, &value, &options, pcbc_append_options_ce);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O!", &id, &value, &options, pcbc_append_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -777,7 +777,7 @@ PHP_METHOD(BinaryCollection, prepend)
     zval *options = NULL;
     lcb_STATUS err;
 
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O", &id, &value, &options, pcbc_prepend_options_ce);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O!", &id, &value, &options, pcbc_prepend_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }

@@ -119,7 +119,7 @@ PHP_METHOD(Cluster, searchQuery)
     zval *options = NULL;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SO|O", &index, &query, pcbc_search_query_ce, &options,
+    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SO|O!", &index, &query, pcbc_search_query_ce, &options,
                                pcbc_search_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();

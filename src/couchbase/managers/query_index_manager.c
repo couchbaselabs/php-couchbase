@@ -130,7 +130,7 @@ PHP_METHOD(QueryIndexManager, createIndex)
     zval *fields, *options = NULL, *where = NULL;
     zend_bool ignore_exists_error = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "SSa|O", &bucket, &index, &fields, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "SSa|O!", &bucket, &index, &fields, &options,
                                          pcbc_create_query_index_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -211,7 +211,7 @@ PHP_METHOD(QueryIndexManager, createPrimaryIndex)
     zval *index = NULL, *options = NULL;
     zend_bool ignore_exists_error = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O", &bucket, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &bucket, &options,
                                          pcbc_create_query_primary_index_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -305,7 +305,7 @@ PHP_METHOD(QueryIndexManager, dropIndex)
     zval *options = NULL;
     zend_bool ignore_not_exists_error = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O", &bucket, &index, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O!", &bucket, &index, &options,
                                          pcbc_drop_query_index_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -344,7 +344,7 @@ PHP_METHOD(QueryIndexManager, dropPrimaryIndex)
     zval *options = NULL, *index = NULL;
     zend_bool ignore_not_exists_error = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O", &bucket, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &bucket, &options,
                                          pcbc_drop_query_primary_index_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -453,7 +453,7 @@ PHP_METHOD(QueryIndexManager, watchIndexes)
     zval *indexes = NULL, *options = NULL;
     zend_long timeout;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sal|O", &bucket, &indexes, &timeout, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sal|O!", &bucket, &indexes, &timeout, &options,
                                          pcbc_watch_query_indexes_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -531,30 +531,30 @@ ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_createIndex, 0, 0, 3)
 ZEND_ARG_TYPE_INFO(0, bucketName, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, indexName, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, fields, IS_ARRAY, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\CreateQueryIndexOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\CreateQueryIndexOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_createPrimaryIndex, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, bucketName, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\CreateQueryPrimaryIndexOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\CreateQueryPrimaryIndexOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_dropIndex, 0, 0, 2)
 ZEND_ARG_TYPE_INFO(0, bucketName, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, indexName, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\DropQueryIndexOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\DropQueryIndexOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_dropPrimaryIndex, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, bucketName, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\DropQueryPrimaryIndexOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\DropQueryPrimaryIndexOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_watchIndexes, 0, 0, 3)
 ZEND_ARG_TYPE_INFO(0, bucketName, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, indexNames, IS_ARRAY, 0)
 ZEND_ARG_TYPE_INFO(0, timeout, IS_LONG, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\WatchQueryIndexesOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\WatchQueryIndexesOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_buildDeferredIndexes, 0, 0, 1)

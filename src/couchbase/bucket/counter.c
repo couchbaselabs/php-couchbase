@@ -195,7 +195,7 @@ PHP_METHOD(BinaryCollection, increment)
     zend_string *id;
     zval *options = NULL;
 
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S|O", &id, &options, pcbc_increment_options_ce);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &id, &options, pcbc_increment_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -377,7 +377,7 @@ PHP_METHOD(BinaryCollection, decrement)
     zend_string *id;
     zval *options = NULL;
 
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S|O", &id, &options, pcbc_decrement_options_ce);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &id, &options, pcbc_decrement_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }

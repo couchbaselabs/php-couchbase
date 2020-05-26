@@ -85,7 +85,7 @@ PHP_METHOD(Collection, unlock)
     zend_string *id, *cas;
     zval *options = NULL;
 
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O", &id, &cas, &options, pcbc_unlock_options_ce);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O!", &id, &cas, &options, pcbc_unlock_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
