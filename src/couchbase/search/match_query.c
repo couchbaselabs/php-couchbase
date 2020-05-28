@@ -161,23 +161,23 @@ ZEND_BEGIN_ARG_INFO_EX(ai_MatchSearchQuery_construct, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, value, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchSearchQuery_field, 0, 1, \\Couchbase\\MatchSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchSearchQuery_field, 0, 1, Couchbase\\MatchSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, field, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchSearchQuery_analyzer, 0, 1, \\Couchbase\\MatchSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchSearchQuery_analyzer, 0, 1, Couchbase\\MatchSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, analyzer, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchSearchQuery_prefixLength, 0, 1, \\Couchbase\\MatchSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchSearchQuery_prefixLength, 0, 1, Couchbase\\MatchSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, prefix_length, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchSearchQuery_fuzziness, 0, 1, \\Couchbase\\MatchSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchSearchQuery_fuzziness, 0, 1, Couchbase\\MatchSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, fuzziness, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchSearchQuery_boost, 0, 1, \\Couchbase\\MatchSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchSearchQuery_boost, 0, 1, Couchbase\\MatchSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, boost, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 

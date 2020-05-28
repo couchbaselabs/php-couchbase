@@ -178,8 +178,8 @@ PHP_METHOD(MutationState, __construct) {}
 ZEND_BEGIN_ARG_INFO_EX(ai_MutationState_none, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_MutationState_add, \\Couchbase\\MutationState, 0)
-ZEND_ARG_OBJ_INFO(0, source, \\Couchbase\\MutationResult, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_MutationState_add, Couchbase\\MutationState, 0)
+ZEND_ARG_OBJ_INFO(0, source, Couchbase\\MutationResult, 0)
 ZEND_END_ARG_INFO()
 
 // clang-format off

@@ -271,7 +271,7 @@ static const zend_function_entry pcbc_exists_result_impl_methods[] = {
     PHP_FE_END
 };
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_MutationResult_mutationToken, \\Couchbase\\MutationToken, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_MutationResult_mutationToken, Couchbase\\MutationToken, 1)
 ZEND_END_ARG_INFO()
 
 zend_class_entry *pcbc_mutation_result_ce;
@@ -403,7 +403,7 @@ static const zend_function_entry pcbc_mutate_in_result_entry_methods[] = {
     PHP_FE_END
 };
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_QueryResult_metaData, \\Couchbase\\QueryMetaData, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_QueryResult_metaData, Couchbase\\QueryMetaData, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_QueryResult_rows, IS_ARRAY, 1)
@@ -426,7 +426,7 @@ static const zend_function_entry pcbc_query_result_impl_methods[] = {
     PHP_FE_END
 };
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_AnalyticsResult_metaData, \\Couchbase\\QueryMetaData, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_AnalyticsResult_metaData, Couchbase\\QueryMetaData, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_AnalyticsResult_rows, IS_ARRAY, 1)
@@ -449,7 +449,7 @@ static const zend_function_entry pcbc_analytics_result_impl_methods[] = {
     PHP_FE_END
 };
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_SearchResult_metaData, \\Couchbase\\SearchMetaData, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_SearchResult_metaData, Couchbase\\SearchMetaData, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_SearchResult_facets, IS_ARRAY, 1)
@@ -478,7 +478,7 @@ static const zend_function_entry pcbc_search_result_impl_methods[] = {
     PHP_FE_END
 };
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_ViewResult_metaData, \\Couchbase\\ViewMetaData, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_ViewResult_metaData, Couchbase\\ViewMetaData, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_ViewResult_rows, IS_ARRAY, 1)

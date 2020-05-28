@@ -101,11 +101,11 @@ ZEND_BEGIN_ARG_INFO_EX(ai_RegexpSearchQuery_construct, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, regexp, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_RegexpSearchQuery_field, 0, 1, \\Couchbase\\RegexpSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_RegexpSearchQuery_field, 0, 1, Couchbase\\RegexpSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, field, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_RegexpSearchQuery_boost, 0, 1, \\Couchbase\\RegexpSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_RegexpSearchQuery_boost, 0, 1, Couchbase\\RegexpSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, boost, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 

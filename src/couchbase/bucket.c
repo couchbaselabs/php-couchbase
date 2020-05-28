@@ -246,10 +246,10 @@ ZEND_ARG_TYPE_INFO(0, encoder, IS_CALLABLE, 0)
 ZEND_ARG_TYPE_INFO(0, decoder, IS_CALLABLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_viewQuery, 0, 2, \\Couchbase\\ViewResult, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_viewQuery, 0, 2, Couchbase\\ViewResult, 0)
 ZEND_ARG_TYPE_INFO(0, designDoc, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, viewName, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, viewOptions, \\Couchbase\\ViewOptions, 1)
+ZEND_ARG_OBJ_INFO(0, viewOptions, Couchbase\\ViewOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_Bucket_ping, 0, 0, 2)
@@ -262,22 +262,22 @@ ZEND_ARG_INFO(0, reportId)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Bucket, defaultCollection);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_defaultCollection, 0, 0, \\Couchbase\\Collection, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_defaultCollection, 0, 0, Couchbase\\Collection, 0)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Bucket, defaultScope);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_defaultScope, 0, 0, \\Couchbase\\Scope, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_defaultScope, 0, 0, Couchbase\\Scope, 0)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(Bucket, scope);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_scope, 0, 1, \\Couchbase\\Scope, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_scope, 0, 1, Couchbase\\Scope, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_collections, 0, 1, \\Couchbase\\CollectionManager, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_collections, 0, 1, Couchbase\\CollectionManager, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_viewIndexes, 0, 1, \\Couchbase\\ViewIndexManager, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_viewIndexes, 0, 1, Couchbase\\ViewIndexManager, 0)
 ZEND_END_ARG_INFO()
 
 // clang-format off

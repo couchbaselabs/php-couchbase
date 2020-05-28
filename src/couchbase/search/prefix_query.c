@@ -101,11 +101,11 @@ ZEND_BEGIN_ARG_INFO_EX(ai_PrefixSearchQuery_construct, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, prefix, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PrefixSearchQuery_field, 0, 1, \\Couchbase\\PrefixSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PrefixSearchQuery_field, 0, 1, Couchbase\\PrefixSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, field, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PrefixSearchQuery_boost, 0, 1, \\Couchbase\\PrefixSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PrefixSearchQuery_boost, 0, 1, Couchbase\\PrefixSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, boost, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 

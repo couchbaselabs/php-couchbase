@@ -114,11 +114,11 @@ ZEND_ARG_TYPE_INFO(0, longitude, IS_DOUBLE, 0)
 ZEND_ARG_TYPE_INFO(0, latitude, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortGeoDistance_descending, 0, 1, \\Couchbase\\SearchSortGeoDistance, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortGeoDistance_descending, 0, 1, Couchbase\\SearchSortGeoDistance, 0)
 ZEND_ARG_TYPE_INFO(0, descending, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortGeoDistance_unit, 0, 1, \\Couchbase\\SearchSortGeoDistance, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortGeoDistance_unit, 0, 1, Couchbase\\SearchSortGeoDistance, 0)
 ZEND_ARG_TYPE_INFO(0, unit, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 

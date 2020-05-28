@@ -284,12 +284,12 @@ ZEND_BEGIN_ARG_INFO_EX(ai_BucketManager_flush, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketManager_getBucket, 0, 1, \\Couchbase\\BucketSettings, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketManager_getBucket, 0, 1, Couchbase\\BucketSettings, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_BucketManager_createBucket, 0, 0, 1)
-ZEND_ARG_OBJ_INFO(0, settings, \\Couchbase\\BucketSettings, 0)
+ZEND_ARG_OBJ_INFO(0, settings, Couchbase\\BucketSettings, 0)
 ZEND_ARG_INFO(0, options)
 ZEND_END_ARG_INFO()
 
@@ -309,7 +309,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BucketSettings_name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BucketSettings, setName);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setName, 0, 1, \\Couchbase\\BucketSettings, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setName, 0, 1, Couchbase\\BucketSettings, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
@@ -318,7 +318,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BucketSettings_flushEnabled, _IS_BOOL, 0
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BucketSettings, enableFlush);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_enableFlush, 0, 1, \\Couchbase\\BucketSettings, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_enableFlush, 0, 1, Couchbase\\BucketSettings, 0)
 ZEND_ARG_TYPE_INFO(0, enable, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
@@ -327,7 +327,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BucketSettings_ramQuotaMb, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BucketSettings, setRamQuotaMb);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setRamQuotaMb, 0, 1, \\Couchbase\\BucketSettings, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setRamQuotaMb, 0, 1, Couchbase\\BucketSettings, 0)
 ZEND_ARG_TYPE_INFO(0, sizeInMb, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
@@ -336,7 +336,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BucketSettings_numReplicas, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BucketSettings, setNumReplicas);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setNumReplicas, 0, 1, \\Couchbase\\BucketSettings, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setNumReplicas, 0, 1, Couchbase\\BucketSettings, 0)
 ZEND_ARG_TYPE_INFO(0, numberReplicas, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
@@ -345,7 +345,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BucketSettings_replicaIndexes, _IS_BOOL,
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BucketSettings, enableReplicaIndexes);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_enableReplicaIndexes, 0, 1, \\Couchbase\\BucketSettings, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_enableReplicaIndexes, 0, 1, Couchbase\\BucketSettings, 0)
 ZEND_ARG_TYPE_INFO(0, enable, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
@@ -354,7 +354,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BucketSettings_bucketType, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BucketSettings, setBucketType);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setBucketType, 0, 1, \\Couchbase\\BucketSettings, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setBucketType, 0, 1, Couchbase\\BucketSettings, 0)
 ZEND_ARG_TYPE_INFO(0, type, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
@@ -363,7 +363,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BucketSettings_ejectionMethod, IS_STRING
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BucketSettings, setEjectionMethod);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setEjectionMethod, 0, 1, \\Couchbase\\BucketSettings, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setEjectionMethod, 0, 1, Couchbase\\BucketSettings, 0)
 ZEND_ARG_TYPE_INFO(0, method, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
@@ -372,7 +372,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BucketSettings_maxTtl, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BucketSettings, setMaxTtl);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setMaxTtl, 0, 1, \\Couchbase\\BucketSettings, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setMaxTtl, 0, 1, Couchbase\\BucketSettings, 0)
 ZEND_ARG_TYPE_INFO(0, ttlSeconds, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
@@ -381,7 +381,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BucketSettings_compressionMode, IS_STRIN
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(BucketSettings, setCompressionMode);
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setCompressionMode, 0, 1, \\Couchbase\\BucketSettings, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BucketSettings_setCompressionMode, 0, 1, Couchbase\\BucketSettings, 0)
 ZEND_ARG_TYPE_INFO(0, mode, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 

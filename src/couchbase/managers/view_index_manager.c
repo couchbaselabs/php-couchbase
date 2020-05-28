@@ -243,10 +243,10 @@ ZEND_ARG_INFO(0, name)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_ViewIndexManager_upsertDesignDocument, 0, 0, 1)
-ZEND_ARG_OBJ_INFO(0, document, \\Couchbase\\DesignDocument, 0)
+ZEND_ARG_OBJ_INFO(0, document, Couchbase\\DesignDocument, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ViewIndexManager_getDesignDocument, 0, 1, \\Couchbase\\DesignDocument, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ViewIndexManager_getDesignDocument, 0, 1, Couchbase\\DesignDocument, 0)
 ZEND_ARG_INFO(0, name)
 ZEND_END_ARG_INFO()
 
@@ -309,11 +309,11 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_DesignDocument_views, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DesignDocument_setName, 0, 1, \\Couchbase\\DesignDocument, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DesignDocument_setName, 0, 1, Couchbase\\DesignDocument, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DesignDocument_setViews, 0, 1, \\Couchbase\\DesignDocument, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DesignDocument_setViews, 0, 1, Couchbase\\DesignDocument, 0)
 ZEND_ARG_TYPE_INFO(0, views, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
@@ -381,15 +381,15 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_View_reduce, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_View_setName, 0, 1, \\Couchbase\\View, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_View_setName, 0, 1, Couchbase\\View, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_View_setMap, 0, 1, \\Couchbase\\View, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_View_setMap, 0, 1, Couchbase\\View, 0)
 ZEND_ARG_TYPE_INFO(0, map_js_code, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_View_setReduce, 0, 1, \\Couchbase\\View, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_View_setReduce, 0, 1, Couchbase\\View, 0)
 ZEND_ARG_TYPE_INFO(0, reduce_js_code, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 

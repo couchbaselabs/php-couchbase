@@ -129,15 +129,15 @@ PHP_METHOD(InsertOptions, durabilityLevel)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_InsertOptions_timeout, 0, 1, \\Couchbase\\InsertOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_InsertOptions_timeout, 0, 1, Couchbase\\InsertOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_InsertOptions_expiry, 0, 1, \\Couchbase\\InsertOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_InsertOptions_expiry, 0, 1, Couchbase\\InsertOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_InsertOptions_durabilityLevel, 0, 1, \\Couchbase\\InsertOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_InsertOptions_durabilityLevel, 0, 1, Couchbase\\InsertOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
@@ -287,19 +287,19 @@ PHP_METHOD(UpsertOptions, durabilityLevel)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_cas, 0, 1, \\Couchbase\\UpsertOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_cas, 0, 1, Couchbase\\UpsertOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_timeout, 0, 1, \\Couchbase\\UpsertOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_timeout, 0, 1, Couchbase\\UpsertOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_expiry, 0, 1, \\Couchbase\\UpsertOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_expiry, 0, 1, Couchbase\\UpsertOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_durabilityLevel, 0, 1, \\Couchbase\\UpsertOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_durabilityLevel, 0, 1, Couchbase\\UpsertOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
@@ -461,19 +461,19 @@ PHP_METHOD(ReplaceOptions, durabilityLevel)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_cas, 0, 1, \\Couchbase\\ReplaceOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_cas, 0, 1, Couchbase\\ReplaceOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_timeout, 0, 1, \\Couchbase\\ReplaceOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_timeout, 0, 1, Couchbase\\ReplaceOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_expiry, 0, 1, \\Couchbase\\ReplaceOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_expiry, 0, 1, Couchbase\\ReplaceOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_durabilityLevel, 0, 1, \\Couchbase\\ReplaceOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_durabilityLevel, 0, 1, Couchbase\\ReplaceOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
@@ -623,15 +623,15 @@ PHP_METHOD(AppendOptions, durabilityLevel)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AppendOptions_cas, 0, 1, \\Couchbase\\AppendOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AppendOptions_cas, 0, 1, Couchbase\\AppendOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AppendOptions_timeout, 0, 1, \\Couchbase\\AppendOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AppendOptions_timeout, 0, 1, Couchbase\\AppendOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AppendOptions_durabilityLevel, 0, 1, \\Couchbase\\AppendOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AppendOptions_durabilityLevel, 0, 1, Couchbase\\AppendOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
@@ -750,15 +750,15 @@ PHP_METHOD(PrependOptions, durabilityLevel)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PrependOptions_cas, 0, 1, \\Couchbase\\PrependOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PrependOptions_cas, 0, 1, Couchbase\\PrependOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PrependOptions_timeout, 0, 1, \\Couchbase\\PrependOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PrependOptions_timeout, 0, 1, Couchbase\\PrependOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PrependOptions_durabilityLevel, 0, 1, \\Couchbase\\PrependOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PrependOptions_durabilityLevel, 0, 1, Couchbase\\PrependOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 

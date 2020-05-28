@@ -31,7 +31,7 @@ PHP_METHOD(ClusterOptions, credentials)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ClusterOptions_credentials, 0, 1, \\Couchbase\\ClusterOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ClusterOptions_credentials, 0, 1, Couchbase\\ClusterOptions, 0)
 ZEND_ARG_TYPE_INFO(0, username, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, password, IS_STRING, 0)
 ZEND_END_ARG_INFO()

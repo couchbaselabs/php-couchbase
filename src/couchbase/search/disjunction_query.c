@@ -153,15 +153,15 @@ ZEND_BEGIN_ARG_INFO_EX(ai_DisjunctionSearchQuery_construct, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, queries, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DisjunctionSearchQuery_boost, 0, 1, \\Couchbase\\DisjunctionSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DisjunctionSearchQuery_boost, 0, 1, Couchbase\\DisjunctionSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, boost, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DisjunctionSearchQuery_either, 0, 1, \\Couchbase\\DisjunctionSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DisjunctionSearchQuery_either, 0, 1, Couchbase\\DisjunctionSearchQuery, 0)
 PCBC_ARG_VARIADIC_INFO(0, queries)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DisjunctionSearchQuery_min, 0, 1, \\Couchbase\\DisjunctionSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DisjunctionSearchQuery_min, 0, 1, Couchbase\\DisjunctionSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, min, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 

@@ -109,7 +109,7 @@ ZEND_ARG_TYPE_INFO(0, field, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, limit, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_NumericRangeSearchFacet_addRange, 0, 3, \\Couchbase\\NumericRangeSearchFacet,
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_NumericRangeSearchFacet_addRange, 0, 3, Couchbase\\NumericRangeSearchFacet,
                                        0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, min, IS_DOUBLE, 1)

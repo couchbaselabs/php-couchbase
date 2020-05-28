@@ -156,39 +156,39 @@ PHP_METHOD(Cluster, users)
 
 ZEND_BEGIN_ARG_INFO_EX(ai_Cluster_constructor, 0, 0, 2)
 ZEND_ARG_TYPE_INFO(0, connstr, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\ClusterOptions, 0)
+ZEND_ARG_OBJ_INFO(0, options, Couchbase\\ClusterOptions, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_bucket, 0, 1, \\Couchbase\\Bucket, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_bucket, 0, 1, Couchbase\\Bucket, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_buckets, 0, 0, \\Couchbase\\BucketManager, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_buckets, 0, 0, Couchbase\\BucketManager, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_users, 0, 0, \\Couchbase\\UserManager, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_users, 0, 0, Couchbase\\UserManager, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_queryIndexes, 0, 0, \\Couchbase\\QueryIndexManager, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_queryIndexes, 0, 0, Couchbase\\QueryIndexManager, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_searchIndexes, 0, 0, \\Couchbase\\SearchIndexManager, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_searchIndexes, 0, 0, Couchbase\\SearchIndexManager, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_query, 0, 1, \\Couchbase\\QueryResult, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_query, 0, 1, Couchbase\\QueryResult, 0)
 ZEND_ARG_TYPE_INFO(0, statement, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, queryOptions, \\Couchbase\\QueryOptions, 1)
+ZEND_ARG_OBJ_INFO(0, queryOptions, Couchbase\\QueryOptions, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_analyticsQuery, 0, 1, \\Couchbase\\AnalyticsResult, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_analyticsQuery, 0, 1, Couchbase\\AnalyticsResult, 0)
 ZEND_ARG_TYPE_INFO(0, statement, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, queryOptions, \\Couchbase\\AnalyticsOptions, 1)
+ZEND_ARG_OBJ_INFO(0, queryOptions, Couchbase\\AnalyticsOptions, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_searchQuery, 0, 2, \\Couchbase\\SearchResult, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_searchQuery, 0, 2, Couchbase\\SearchResult, 0)
 ZEND_ARG_TYPE_INFO(0, indexName, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, query, \\Couchbase\\SearchQuery, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\SearchOptions, 1)
+ZEND_ARG_OBJ_INFO(0, query, Couchbase\\SearchQuery, 0)
+ZEND_ARG_OBJ_INFO(0, options, Couchbase\\SearchOptions, 1)
 ZEND_END_ARG_INFO()
 
 // clang-format off

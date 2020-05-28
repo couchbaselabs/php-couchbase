@@ -140,19 +140,19 @@ ZEND_BEGIN_ARG_INFO_EX(ai_SearchSortField_construct, 0, 0, 0)
 ZEND_ARG_TYPE_INFO(0, field, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortField_descending, 0, 1, \\Couchbase\\SearchSortField, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortField_descending, 0, 1, Couchbase\\SearchSortField, 0)
 ZEND_ARG_TYPE_INFO(0, descending, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortField_type, 0, 1, \\Couchbase\\SearchSortField, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortField_type, 0, 1, Couchbase\\SearchSortField, 0)
 ZEND_ARG_TYPE_INFO(0, type, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortField_mode, 0, 1, \\Couchbase\\SearchSortField, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortField_mode, 0, 1, Couchbase\\SearchSortField, 0)
 ZEND_ARG_TYPE_INFO(0, mode, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortField_missing, 0, 1, \\Couchbase\\SearchSortField, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortField_missing, 0, 1, Couchbase\\SearchSortField, 0)
 ZEND_ARG_TYPE_INFO(0, missing, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 

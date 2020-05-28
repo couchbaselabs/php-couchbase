@@ -90,15 +90,15 @@ PHP_METHOD(GetOptions, project)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetOptions_timeout, 0, 1, \\Couchbase\\GetOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetOptions_timeout, 0, 1, Couchbase\\GetOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetOptions_withExpiry, 0, 1, \\Couchbase\\GetOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetOptions_withExpiry, 0, 1, Couchbase\\GetOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetOptions_project, 0, 1, \\Couchbase\\GetOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetOptions_project, 0, 1, Couchbase\\GetOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
@@ -174,7 +174,7 @@ PHP_METHOD(GetAndLockOptions, timeout)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAndLockOptions_timeout, 0, 1, \\Couchbase\\GetAndLockOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAndLockOptions_timeout, 0, 1, Couchbase\\GetAndLockOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
@@ -248,7 +248,7 @@ PHP_METHOD(GetAndTouchOptions, timeout)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAndTouchOptions_timeout, 0, 1, \\Couchbase\\GetAndTouchOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAndTouchOptions_timeout, 0, 1, Couchbase\\GetAndTouchOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 

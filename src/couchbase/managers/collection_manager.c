@@ -291,7 +291,7 @@ PHP_METHOD(CollectionManager, dropCollection)
     efree(path);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CollectionManager_getScope, 0, 1, \\Couchbase\\ScopeSpec, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CollectionManager_getScope, 0, 1, Couchbase\\ScopeSpec, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
@@ -307,11 +307,11 @@ ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_CollectionManager_createCollection, 0, 0, 1)
-ZEND_ARG_OBJ_INFO(0, collection, \\Couchbase\\CollectionSpec, 0)
+ZEND_ARG_OBJ_INFO(0, collection, Couchbase\\CollectionSpec, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_CollectionManager_dropCollection, 0, 0, 1)
-ZEND_ARG_OBJ_INFO(0, collection, \\Couchbase\\CollectionSpec, 0)
+ZEND_ARG_OBJ_INFO(0, collection, Couchbase\\CollectionSpec, 0)
 ZEND_END_ARG_INFO()
 
 // clang-format off
@@ -412,11 +412,11 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(ai_CollectionSpec_scopeName, 0, 0, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CollectionSpec_setName, 0, 1, \\Couchbase\\CollectionSpec, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CollectionSpec_setName, 0, 1, Couchbase\\CollectionSpec, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CollectionSpec_setScopeName, 0, 1, \\Couchbase\\CollectionSpec, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CollectionSpec_setScopeName, 0, 1, Couchbase\\CollectionSpec, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 

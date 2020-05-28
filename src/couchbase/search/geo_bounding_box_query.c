@@ -131,12 +131,12 @@ ZEND_ARG_TYPE_INFO(0, buttom_right_longitude, IS_DOUBLE, 0)
 ZEND_ARG_TYPE_INFO(0, buttom_right_latitude, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GeoBoundingBoxSearchQuery_field, 0, 1, \\Couchbase\\GeoBoundingBoxSearchQuery,
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GeoBoundingBoxSearchQuery_field, 0, 1, Couchbase\\GeoBoundingBoxSearchQuery,
                                        0)
 ZEND_ARG_TYPE_INFO(0, field, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GeoBoundingBoxSearchQuery_boost, 0, 1, \\Couchbase\\GeoBoundingBoxSearchQuery,
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GeoBoundingBoxSearchQuery_boost, 0, 1, Couchbase\\GeoBoundingBoxSearchQuery,
                                        0)
 ZEND_ARG_TYPE_INFO(0, boost, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()

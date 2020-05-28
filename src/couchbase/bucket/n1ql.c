@@ -370,64 +370,64 @@ PHP_METHOD(QueryOptions, raw)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_timeout, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_timeout, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_consistency, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_consistency, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_consistentWith, 0, 1, \\Couchbase\\QueryOptions, 0)
-ZEND_ARG_OBJ_INFO(0, arg, \\Couchbase\\MutationState, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_consistentWith, 0, 1, Couchbase\\QueryOptions, 0)
+ZEND_ARG_OBJ_INFO(0, arg, Couchbase\\MutationState, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_scanCap, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_scanCap, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_pipelineCap, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_pipelineCap, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_pipelineBatch, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_pipelineBatch, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_maxParallelism, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_maxParallelism, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_profile, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_profile, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_readonly, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_readonly, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_adhoc, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_adhoc, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_metrics, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_metrics, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_namedParameters, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_namedParameters, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_positionalParameters, 0, 1, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_positionalParameters, 0, 1, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_raw, 0, 2, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_raw, 0, 2, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, key, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, value, 0, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_clientContextId, 0, 2, \\Couchbase\\QueryOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_QueryOptions_clientContextId, 0, 2, Couchbase\\QueryOptions, 0)
 ZEND_ARG_TYPE_INFO(0, value, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 

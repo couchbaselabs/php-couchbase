@@ -247,36 +247,36 @@ PHP_METHOD(AnalyticsOptions, readonly)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_timeout, 0, 1, \\Couchbase\\AnalyticsOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_timeout, 0, 1, Couchbase\\AnalyticsOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_namedParameters, 0, 1, \\Couchbase\\AnalyticsOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_namedParameters, 0, 1, Couchbase\\AnalyticsOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_positionalParameters, 0, 1, \\Couchbase\\AnalyticsOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_positionalParameters, 0, 1, Couchbase\\AnalyticsOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_raw, 0, 2, \\Couchbase\\AnalyticsOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_raw, 0, 2, Couchbase\\AnalyticsOptions, 0)
 ZEND_ARG_TYPE_INFO(0, key, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, value, 0, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_clientContextId, 0, 2, \\Couchbase\\AnalyticsOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_clientContextId, 0, 2, Couchbase\\AnalyticsOptions, 0)
 ZEND_ARG_TYPE_INFO(0, value, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_readonly, 0, 1, \\Couchbase\\AnalyticsOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_readonly, 0, 1, Couchbase\\AnalyticsOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_scanConsistency, 0, 1, \\Couchbase\\AnalyticsOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_scanConsistency, 0, 1, Couchbase\\AnalyticsOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_priority, 0, 1, \\Couchbase\\AnalyticsOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_AnalyticsOptions_priority, 0, 1, Couchbase\\AnalyticsOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 

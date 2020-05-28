@@ -198,25 +198,25 @@ PHP_METHOD(DateRangeSearchQuery, jsonSerialize)
 ZEND_BEGIN_ARG_INFO_EX(ai_DateRangeSearchQuery_none, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DateRangeSearchQuery_field, 0, 1, \\Couchbase\\DateRangeSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DateRangeSearchQuery_field, 0, 1, Couchbase\\DateRangeSearchQuery, 0)
 ZEND_ARG_INFO(0, field)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DateRangeSearchQuery_boost, 0, 1, \\Couchbase\\DateRangeSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DateRangeSearchQuery_boost, 0, 1, Couchbase\\DateRangeSearchQuery, 0)
 ZEND_ARG_INFO(0, boost)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DateRangeSearchQuery_start, 0, 1, \\Couchbase\\DateRangeSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DateRangeSearchQuery_start, 0, 1, Couchbase\\DateRangeSearchQuery, 0)
 ZEND_ARG_INFO(0, start)
 ZEND_ARG_TYPE_INFO(0, inclusive, _IS_BOOL, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DateRangeSearchQuery_end, 0, 1, \\Couchbase\\DateRangeSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DateRangeSearchQuery_end, 0, 1, Couchbase\\DateRangeSearchQuery, 0)
 ZEND_ARG_INFO(0, end)
 ZEND_ARG_TYPE_INFO(0, inclusive, _IS_BOOL, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DateRangeSearchQuery_dateTimeParser, 0, 1, \\Couchbase\\DateRangeSearchQuery,
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DateRangeSearchQuery_dateTimeParser, 0, 1, Couchbase\\DateRangeSearchQuery,
                                        0)
 ZEND_ARG_TYPE_INFO(0, dateTimeParser, IS_STRING, 0)
 ZEND_END_ARG_INFO()

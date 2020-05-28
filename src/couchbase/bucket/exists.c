@@ -65,7 +65,7 @@ PHP_METHOD(ExistsOptions, timeout)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ExistsOptions_timeout, 0, 1, \\Couchbase\\ExistsOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ExistsOptions_timeout, 0, 1, Couchbase\\ExistsOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 

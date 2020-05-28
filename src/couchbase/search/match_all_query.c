@@ -51,7 +51,7 @@ PHP_METHOD(MatchAllSearchQuery, jsonSerialize)
 ZEND_BEGIN_ARG_INFO_EX(ai_MatchAllSearchQuery_none, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchAllSearchQuery_boost, 0, 1, \\Couchbase\\MatchAllSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MatchAllSearchQuery_boost, 0, 1, Couchbase\\MatchAllSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, boost, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 

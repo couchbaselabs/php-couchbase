@@ -140,19 +140,19 @@ ZEND_BEGIN_ARG_INFO_EX(ai_TermSearchQuery_construct, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, term, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_TermSearchQuery_field, 0, 1, \\Couchbase\\TermSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_TermSearchQuery_field, 0, 1, Couchbase\\TermSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, field, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_TermSearchQuery_prefixLength, 0, 1, \\Couchbase\\TermSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_TermSearchQuery_prefixLength, 0, 1, Couchbase\\TermSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, prefix_length, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_TermSearchQuery_fuzziness, 0, 1, \\Couchbase\\TermSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_TermSearchQuery_fuzziness, 0, 1, Couchbase\\TermSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, fuzziness, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_TermSearchQuery_boost, 0, 1, \\Couchbase\\TermSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_TermSearchQuery_boost, 0, 1, Couchbase\\TermSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, boost, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 

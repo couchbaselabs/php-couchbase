@@ -445,7 +445,7 @@ PHP_METHOD(SearchIndexManager, analyzeDocument)
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_SearchIndexManager_getAllIndexes, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndexManager_getIndex, 0, 1, \\Couchbase\\SearchIndex, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndexManager_getIndex, 0, 1, Couchbase\\SearchIndex, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
@@ -454,7 +454,7 @@ ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_SearchIndexManager_upsertIndex, 0, 0, 2)
-ZEND_ARG_OBJ_INFO(0, indexDefinition, \\Couchbase\\SearchIndex, 0)
+ZEND_ARG_OBJ_INFO(0, indexDefinition, Couchbase\\SearchIndex, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(ai_SearchIndexManager_getIndexedDocumentsCount, 0, 1, IS_LONG, 0)
@@ -751,35 +751,35 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_SearchIndex_sourceParams, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setType, 0, 1, \\Couchbase\\SearchIndex, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setType, 0, 1, Couchbase\\SearchIndex, 0)
 ZEND_ARG_TYPE_INFO(0, type, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setUuid, 0, 1, \\Couchbase\\SearchIndex, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setUuid, 0, 1, Couchbase\\SearchIndex, 0)
 ZEND_ARG_TYPE_INFO(0, uuid, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setName, 0, 1, \\Couchbase\\SearchIndex, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setName, 0, 1, Couchbase\\SearchIndex, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setParams, 0, 1, \\Couchbase\\SearchIndex, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setParams, 0, 1, Couchbase\\SearchIndex, 0)
 ZEND_ARG_TYPE_INFO(0, params, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setSourceType, 0, 1, \\Couchbase\\SearchIndex, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setSourceType, 0, 1, Couchbase\\SearchIndex, 0)
 ZEND_ARG_TYPE_INFO(0, type, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setSourceUuid, 0, 1, \\Couchbase\\SearchIndex, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setSourceUuid, 0, 1, Couchbase\\SearchIndex, 0)
 ZEND_ARG_TYPE_INFO(0, uuid, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setSourceName, 0, 1, \\Couchbase\\SearchIndex, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setSourceName, 0, 1, Couchbase\\SearchIndex, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setSourceParams, 0, 1, \\Couchbase\\SearchIndex, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setSourceParams, 0, 1, Couchbase\\SearchIndex, 0)
 ZEND_ARG_TYPE_INFO(0, params, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 

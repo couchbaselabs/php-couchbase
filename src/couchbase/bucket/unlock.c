@@ -67,7 +67,7 @@ PHP_METHOD(UnlockOptions, timeout)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UnlockOptions_timeout, 0, 1, \\Couchbase\\UnlockOptions, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UnlockOptions_timeout, 0, 1, Couchbase\\UnlockOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 

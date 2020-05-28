@@ -531,30 +531,30 @@ ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_createIndex, 0, 0, 3)
 ZEND_ARG_TYPE_INFO(0, bucketName, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, indexName, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, fields, IS_ARRAY, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\CreateQueryIndexOptions, 1)
+ZEND_ARG_OBJ_INFO(0, options, Couchbase\\CreateQueryIndexOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_createPrimaryIndex, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, bucketName, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\CreateQueryPrimaryIndexOptions, 1)
+ZEND_ARG_OBJ_INFO(0, options, Couchbase\\CreateQueryPrimaryIndexOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_dropIndex, 0, 0, 2)
 ZEND_ARG_TYPE_INFO(0, bucketName, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, indexName, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\DropQueryIndexOptions, 1)
+ZEND_ARG_OBJ_INFO(0, options, Couchbase\\DropQueryIndexOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_dropPrimaryIndex, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, bucketName, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\DropQueryPrimaryIndexOptions, 1)
+ZEND_ARG_OBJ_INFO(0, options, Couchbase\\DropQueryPrimaryIndexOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_watchIndexes, 0, 0, 3)
 ZEND_ARG_TYPE_INFO(0, bucketName, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, indexNames, IS_ARRAY, 0)
 ZEND_ARG_TYPE_INFO(0, timeout, IS_LONG, 0)
-ZEND_ARG_OBJ_INFO(0, options, \\Couchbase\\WatchQueryIndexesOptions, 1)
+ZEND_ARG_OBJ_INFO(0, options, Couchbase\\WatchQueryIndexesOptions, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_QueryIndexManager_buildDeferredIndexes, 0, 0, 1)
@@ -730,22 +730,22 @@ PHP_METHOD(CreateQueryIndexOptions, numReplicas)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CreateQueryIndexOptions_condition, 0, 1, \\Couchbase\\CreateQueryIndexOptions,
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CreateQueryIndexOptions_condition, 0, 1, Couchbase\\CreateQueryIndexOptions,
                                        0)
 ZEND_ARG_TYPE_INFO(0, condition, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CreateQueryIndexOptions_ignoreIfExists, 0,
-                                       1, \\Couchbase\\CreateQueryIndexOptions, 0)
+                                       1, Couchbase\\CreateQueryIndexOptions, 0)
 ZEND_ARG_TYPE_INFO(0, shouldIgnore, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CreateQueryIndexOptions_numReplicas, 0,
-                                       1, \\Couchbase\\CreateQueryIndexOptions, 0)
+                                       1, Couchbase\\CreateQueryIndexOptions, 0)
 ZEND_ARG_TYPE_INFO(0, number, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CreateQueryIndexOptions_deferred, 0, 1, \\Couchbase\\CreateQueryIndexOptions,
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CreateQueryIndexOptions_deferred, 0, 1, Couchbase\\CreateQueryIndexOptions,
                                        0)
 ZEND_ARG_TYPE_INFO(0, isDeferred, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
@@ -809,22 +809,22 @@ PHP_METHOD(CreateQueryPrimaryIndexOptions, numReplicas)
 }
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CreateQueryPrimaryIndexOptions_indexName, 0,
-                                       1, \\Couchbase\\CreateQueryPrimaryIndexOptions, 0)
+                                       1, Couchbase\\CreateQueryPrimaryIndexOptions, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CreateQueryPrimaryIndexOptions_ignoreIfExists, 0,
-                                       1, \\Couchbase\\CreateQueryPrimaryIndexOptions, 0)
+                                       1, Couchbase\\CreateQueryPrimaryIndexOptions, 0)
 ZEND_ARG_TYPE_INFO(0, shouldIgnore, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CreateQueryPrimaryIndexOptions_numReplicas, 0,
-                                       1, \\Couchbase\\CreateQueryPrimaryIndexOptions, 0)
+                                       1, Couchbase\\CreateQueryPrimaryIndexOptions, 0)
 ZEND_ARG_TYPE_INFO(0, number, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_CreateQueryPrimaryIndexOptions_deferred, 0,
-                                       1, \\Couchbase\\CreateQueryPrimaryIndexOptions, 0)
+                                       1, Couchbase\\CreateQueryPrimaryIndexOptions, 0)
 ZEND_ARG_TYPE_INFO(0, isDeferred, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
@@ -851,7 +851,7 @@ PHP_METHOD(DropQueryIndexOptions, ignoreIfNotExists)
 }
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DropQueryIndexOptions_ignoreIfNotExists, 0,
-                                       1, \\Couchbase\\DropQueryIndexOptions, 0)
+                                       1, Couchbase\\DropQueryIndexOptions, 0)
 ZEND_ARG_TYPE_INFO(0, shouldIgnore, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
@@ -887,12 +887,12 @@ PHP_METHOD(DropQueryPrimaryIndexOptions, ignoreIfNotExists)
 }
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DropQueryPrimaryIndexOptions_indexName, 0,
-                                       1, \\Couchbase\\DropQueryPrimaryIndexOptions, 0)
+                                       1, Couchbase\\DropQueryPrimaryIndexOptions, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_DropQueryPrimaryIndexOptions_ignoreIfNotExists, 0,
-                                       1, \\Couchbase\\DropQueryPrimaryIndexOptions, 0)
+                                       1, Couchbase\\DropQueryPrimaryIndexOptions, 0)
 ZEND_ARG_TYPE_INFO(0, shouldIgnore, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
@@ -917,7 +917,7 @@ PHP_METHOD(WatchQueryIndexesOptions, watchPrimary)
 }
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_WatchQueryIndexesOptions_watchPrimary, 0,
-                                       1, \\Couchbase\\WatchQueryIndexesOptions, 0)
+                                       1, Couchbase\\WatchQueryIndexesOptions, 0)
 ZEND_ARG_TYPE_INFO(0, shouldWatch, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 

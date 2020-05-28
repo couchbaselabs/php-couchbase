@@ -189,11 +189,11 @@ PHP_METHOD(BooleanSearchQuery, jsonSerialize)
 ZEND_BEGIN_ARG_INFO_EX(ai_BooleanSearchQuery_none, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BooleanSearchQuery_boost, 0, 1, \\Couchbase\\BooleanSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BooleanSearchQuery_boost, 0, 1, Couchbase\\BooleanSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, boost, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BooleanSearchQuery_queries, 0, 1, \\Couchbase\\BooleanSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BooleanSearchQuery_queries, 0, 1, Couchbase\\BooleanSearchQuery, 0)
 PCBC_ARG_VARIADIC_INFO(0, queries)
 ZEND_END_ARG_INFO()
 

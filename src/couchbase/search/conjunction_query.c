@@ -131,11 +131,11 @@ ZEND_BEGIN_ARG_INFO_EX(ai_ConjunctionSearchQuery_construct, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, queries, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ConjunctionSearchQuery_boost, 0, 1, \\Couchbase\\ConjunctionSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ConjunctionSearchQuery_boost, 0, 1, Couchbase\\ConjunctionSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, boost, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ConjunctionSearchQuery_every, 0, 1, \\Couchbase\\ConjunctionSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ConjunctionSearchQuery_every, 0, 1, Couchbase\\ConjunctionSearchQuery, 0)
 PCBC_ARG_VARIADIC_INFO(0, queries)
 ZEND_END_ARG_INFO()
 

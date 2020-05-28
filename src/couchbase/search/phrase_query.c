@@ -123,11 +123,11 @@ ZEND_BEGIN_ARG_INFO_EX(ai_PhraseSearchQuery_construct, 0, 0, 1)
 ZEND_ARG_VARIADIC_INFO(0, terms)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PhraseSearchQuery_field, 0, 1, \\Couchbase\\PhraseSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PhraseSearchQuery_field, 0, 1, Couchbase\\PhraseSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, field, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PhraseSearchQuery_boost, 0, 1, \\Couchbase\\PhraseSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_PhraseSearchQuery_boost, 0, 1, Couchbase\\PhraseSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, boost, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 

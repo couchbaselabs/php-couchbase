@@ -100,11 +100,11 @@ ZEND_BEGIN_ARG_INFO_EX(ai_BooleanFieldSearchQuery_construct, 0, 0, 1)
 ZEND_ARG_TYPE_INFO(0, arg, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BooleanFieldSearchQuery_boost, 0, 1, \\Couchbase\\BooleanFieldSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BooleanFieldSearchQuery_boost, 0, 1, Couchbase\\BooleanFieldSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BooleanFieldSearchQuery_field, 0, 1, \\Couchbase\\BooleanFieldSearchQuery, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BooleanFieldSearchQuery_field, 0, 1, Couchbase\\BooleanFieldSearchQuery, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
