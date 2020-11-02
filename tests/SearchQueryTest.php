@@ -25,10 +25,9 @@ class SearchQueryTest extends CouchbaseTestCase {
                     \Couchbase\SearchQuery::geoBoundingBox(1.0, 3.0, 4.0, 5.0),
                     \Couchbase\SearchQuery::numericRange()->min(3)->max(42.5))->either(
                         \Couchbase\SearchQuery::wildcard('user*')->field('type')))
-                ->mustNot(
-                    \Couchbase\SearchQuery::phrase('foo', 'bar', 'baz')->field('description'),
-                    \Couchbase\SearchQuery::regexp('user.*')->field('_class_name')
-                )
+                ->mustNot(\Couchbase\SearchQuery::disjuncts(
+                        \Couchbase\SearchQuery::phrase('foo', 'bar', 'baz')->field('description'),
+                        \Couchbase\SearchQuery::regexp('user.*')->field('_class_name')))
         );
         $query
             ->fields("foo", "bar", "baz")

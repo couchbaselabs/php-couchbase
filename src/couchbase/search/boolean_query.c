@@ -43,6 +43,8 @@ static inline pcbc_boolean_search_query_t *pcbc_boolean_search_query_fetch_objec
 #define LOGARGS(lvl) LCB_LOG_##lvl, NULL, "pcbc/boolean_search_query", __FILE__, __LINE__
 
 zend_class_entry *pcbc_boolean_search_query_ce;
+extern zend_class_entry *pcbc_disjunction_search_query_ce;
+extern zend_class_entry *pcbc_conjunction_search_query_ce;
 
 /* {{{ proto void BooleanSearchQuery::__construct() */
 PHP_METHOD(BooleanSearchQuery, __construct)
@@ -75,46 +77,21 @@ PHP_METHOD(BooleanSearchQuery, boost)
 PHP_METHOD(BooleanSearchQuery, must)
 {
     pcbc_boolean_search_query_t *obj;
-#if PHP_VERSION_ID >= 70000
-    zval *args = NULL;
-#else
-    zval ***args = NULL;
-#endif
-    int num_args = 0;
+    zval *conjunct = NULL;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "+", &args, &num_args);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "O", &conjunct, pcbc_conjunction_search_query_ce);
     if (rv == FAILURE) {
         return;
     }
 
     obj = Z_BOOLEAN_SEARCH_QUERY_OBJ_P(getThis());
 
-    PCBC_ZVAL_ALLOC(obj->must);
-    array_init(PCBC_P(obj->must));
-
-    if (num_args && args) {
-        int i;
-        for (i = 0; i < num_args; ++i) {
-            PCBC_ZVAL *query;
 #if PHP_VERSION_ID >= 70000
-            query = &args[i];
+    ZVAL_ZVAL(&obj->must, conjunct, 1, 0);
 #else
-            query = args[i];
-#endif
-            if (Z_TYPE_P(PCBC_P(*query)) != IS_OBJECT ||
-                !instanceof_function(Z_OBJCE_P(PCBC_P(*query)), pcbc_search_query_part_ce TSRMLS_CC)) {
-                pcbc_log(LOGARGS(WARN), "query has to implement SearchQueryPart interface (skipping argument #%d)", i);
-                continue;
-            }
-            add_next_index_zval(PCBC_P(obj->must), PCBC_P(*query));
-            PCBC_ADDREF_P(PCBC_P(*query));
-        }
-    }
-#if PHP_VERSION_ID < 70000
-    if (args) {
-        efree(args);
-    }
+    PCBC_ADDREF_P(disjunct);
+    obj->must = conjunct;
 #endif
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -125,46 +102,21 @@ PHP_METHOD(BooleanSearchQuery, must)
 PHP_METHOD(BooleanSearchQuery, mustNot)
 {
     pcbc_boolean_search_query_t *obj;
-#if PHP_VERSION_ID >= 70000
-    zval *args = NULL;
-#else
-    zval ***args = NULL;
-#endif
-    int num_args = 0;
+    zval *disjunct = NULL;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "+", &args, &num_args);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "O", &disjunct, pcbc_disjunction_search_query_ce);
     if (rv == FAILURE) {
         return;
     }
 
     obj = Z_BOOLEAN_SEARCH_QUERY_OBJ_P(getThis());
 
-    PCBC_ZVAL_ALLOC(obj->must_not);
-    array_init(PCBC_P(obj->must_not));
-
-    if (num_args && args) {
-        int i;
-        for (i = 0; i < num_args; ++i) {
-            PCBC_ZVAL *query;
 #if PHP_VERSION_ID >= 70000
-            query = &args[i];
+    ZVAL_ZVAL(&obj->must_not, disjunct, 1, 0);
 #else
-            query = args[i];
-#endif
-            if (Z_TYPE_P(PCBC_P(*query)) != IS_OBJECT ||
-                !instanceof_function(Z_OBJCE_P(PCBC_P(*query)), pcbc_search_query_part_ce TSRMLS_CC)) {
-                pcbc_log(LOGARGS(WARN), "query has to implement SearchQueryPart interface (skipping argument #%d)", i);
-                continue;
-            }
-            add_next_index_zval(PCBC_P(obj->must_not), PCBC_P(*query));
-            PCBC_ADDREF_P(PCBC_P(*query));
-        }
-    }
-#if PHP_VERSION_ID < 70000
-    if (args) {
-        efree(args);
-    }
+    PCBC_ADDREF_P(disjunct);
+    obj->must_not = disjunct;
 #endif
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -175,48 +127,22 @@ PHP_METHOD(BooleanSearchQuery, mustNot)
 PHP_METHOD(BooleanSearchQuery, should)
 {
     pcbc_boolean_search_query_t *obj;
-#if PHP_VERSION_ID >= 70000
-    zval *args = NULL;
-#else
-    zval ***args = NULL;
-#endif
-    int num_args = 0;
+    zval *disjunct = NULL;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "+", &args, &num_args);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "O", &disjunct, pcbc_disjunction_search_query_ce);
     if (rv == FAILURE) {
         return;
     }
 
     obj = Z_BOOLEAN_SEARCH_QUERY_OBJ_P(getThis());
 
-    PCBC_ZVAL_ALLOC(obj->should);
-    array_init(PCBC_P(obj->should));
-
-    if (num_args && args) {
-        int i;
-        for (i = 0; i < num_args; ++i) {
-            PCBC_ZVAL *query;
 #if PHP_VERSION_ID >= 70000
-            query = &args[i];
+    ZVAL_ZVAL(&obj->should, disjunct, 1, 0);
 #else
-            query = args[i];
+    PCBC_ADDREF_P(disjunct);
+    obj->should = disjunct;
 #endif
-            if (Z_TYPE_P(PCBC_P(*query)) != IS_OBJECT ||
-                !instanceof_function(Z_OBJCE_P(PCBC_P(*query)), pcbc_search_query_part_ce TSRMLS_CC)) {
-                pcbc_log(LOGARGS(WARN), "query has to implement SearchQueryPart interface (skipping argument #%d)", i);
-                continue;
-            }
-            add_next_index_zval(PCBC_P(obj->should), PCBC_P(*query));
-            PCBC_ADDREF_P(PCBC_P(*query));
-        }
-    }
-#if PHP_VERSION_ID < 70000
-    if (args) {
-        efree(args);
-    }
-#endif
-
     RETURN_ZVAL(getThis(), 1, 0);
 } /* }}} */
 
@@ -258,8 +184,8 @@ ZEND_BEGIN_ARG_INFO_EX(ai_BooleanSearchQuery_boost, 0, 0, 1)
 ZEND_ARG_INFO(0, boost)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(ai_BooleanSearchQuery_queries, 0, 0, 1)
-PCBC_ARG_VARIADIC_INFO(0, queries)
+ZEND_BEGIN_ARG_INFO_EX(ai_BooleanSearchQuery_query, 0, 0, 1)
+ZEND_ARG_INFO(0, query)
 ZEND_END_ARG_INFO()
 
 // clang-format off
@@ -267,9 +193,9 @@ zend_function_entry boolean_search_query_methods[] = {
     PHP_ME(BooleanSearchQuery, __construct, ai_BooleanSearchQuery_none, ZEND_ACC_PRIVATE | ZEND_ACC_FINAL | ZEND_ACC_CTOR)
     PHP_ME(BooleanSearchQuery, jsonSerialize, ai_BooleanSearchQuery_none, ZEND_ACC_PUBLIC)
     PHP_ME(BooleanSearchQuery, boost, ai_BooleanSearchQuery_boost, ZEND_ACC_PUBLIC)
-    PHP_ME(BooleanSearchQuery, must, ai_BooleanSearchQuery_queries, ZEND_ACC_PUBLIC)
-    PHP_ME(BooleanSearchQuery, mustNot, ai_BooleanSearchQuery_queries, ZEND_ACC_PUBLIC)
-    PHP_ME(BooleanSearchQuery, should, ai_BooleanSearchQuery_queries, ZEND_ACC_PUBLIC)
+    PHP_ME(BooleanSearchQuery, must, ai_BooleanSearchQuery_query, ZEND_ACC_PUBLIC)
+    PHP_ME(BooleanSearchQuery, mustNot, ai_BooleanSearchQuery_query, ZEND_ACC_PUBLIC)
+    PHP_ME(BooleanSearchQuery, should, ai_BooleanSearchQuery_query, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 // clang-format on
