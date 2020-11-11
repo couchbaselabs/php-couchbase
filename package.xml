@@ -18,9 +18,9 @@
         <active>yes</active>
     </lead>
 
-    <date>2020-02-04</date>
+    <date>2020-11-11</date>
     <version>
-        <release>2.6.2</release>
+        <release>2.6.3</release>
         <api>2.3.0</api>
     </version>
     <stability>
@@ -30,9 +30,7 @@
     <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2
     </license>
     <notes>
-        * fixed possible segfault in N1QL request
-        * fixed windows build for PHP 7.4
-        * PCBC-646: Fixed issue with blank string decoding.
+        * PCBC-722: Fixed encoding of a boolean search query
     </notes>
     <contents>
         <dir name="/">
@@ -186,6 +184,24 @@
     <providesextension>couchbase</providesextension>
     <extsrcrelease/>
     <changelog>
+        <release>
+            <date>2020-02-04</date>
+            <version>
+                <release>2.6.2</release>
+                <api>2.3.0</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2
+            </license>
+            <notes>
+                * fixed possible segfault in N1QL request
+                * fixed windows build for PHP 7.4
+                * PCBC-646: Fixed issue with blank string decoding.
+            </notes>
+        </release>
         <release>
             <date>2019-06-03</date>
             <version>
