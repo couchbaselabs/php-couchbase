@@ -283,8 +283,8 @@ ZEND_END_ARG_INFO()
 // clang-format off
 zend_function_entry bucket_methods[] = {
     PHP_ME(Bucket, __construct, ai_Bucket_none, ZEND_ACC_PRIVATE | ZEND_ACC_FINAL | ZEND_ACC_CTOR)
-    PHP_ME(Bucket, __get, ai_Bucket___get, ZEND_ACC_PRIVATE)
-    PHP_ME(Bucket, __set, ai_Bucket___set, ZEND_ACC_PRIVATE)
+    PHP_ME(Bucket, __get, ai_Bucket___get, ZEND_ACC_PUBLIC)
+    PHP_ME(Bucket, __set, ai_Bucket___set, ZEND_ACC_PUBLIC)
     PHP_ME(Bucket, setTranscoder, ai_Bucket_setTranscoder, ZEND_ACC_PUBLIC)
     PHP_ME(Bucket, name, ai_Bucket_name, ZEND_ACC_PUBLIC)
     PHP_ME(Bucket, viewQuery, ai_Bucket_viewQuery, ZEND_ACC_PUBLIC)
