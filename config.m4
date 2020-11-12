@@ -5,10 +5,28 @@ PHP_ARG_WITH(system-fastlz, wheter to use system FastLZ library,
     [  --with-system-fastlz   Use system FastLZ library], no, no)
 
 if test "$PHP_COUCHBASE" != "no"; then
-  AC_MSG_CHECKING(for libcouchbase in default path and $PHP_COUCHBASE)
+  AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+
+  AC_MSG_CHECKING(for libcouchbase)
+
+  dnl try given directory
   if test -r $PHP_COUCHBASE/include/libcouchbase/couchbase.h; then
     LIBCOUCHBASE_DIR=$PHP_COUCHBASE
     AC_MSG_RESULT(found in $PHP_COUCHBASE)
+
+  dnl try pkg-config
+  elif test -x "$PKG_CONFIG" && $PKG_CONFIG --exists libcouchbase; then
+    LIBCOUCHBASE_VERSION=`$PKG_CONFIG libcouchbase --modversion`
+
+    if $PKG_CONFIG libcouchbase --atleast-version 3.0.0; then
+      LIBCOUCHBASE_CFLAGS=`$PKG_CONFIG libcouchbase --cflags`
+      LIBCOUCHBASE_LIBS=`$PKG_CONFIG libcouchbase --libs`
+      AC_MSG_RESULT(from pkgconfig: version $LIBCOUCHBASE_VERSION found)
+    else
+      AC_MSG_ERROR([libcouchbase version $LIBCOUCHBASE_VERSION found, must be upgraded to version >= 3.0.0])
+    fi
+
+  dnl fallback on standard directory
   else
     for i in /usr/local /usr; do
       if test -r $i/include/libcouchbase/couchbase.h; then
@@ -18,27 +36,35 @@ if test "$PHP_COUCHBASE" != "no"; then
     done
   fi
 
-  if test -z "$LIBCOUCHBASE_DIR"; then
+  dnl from pkg-config
+  if test -n "$LIBCOUCHBASE_LIBS"; then
+    PHP_EVAL_LIBLINE($LIBCOUCHBASE_LIBS, COUCHBASE_SHARED_LIBADD)
+    PHP_EVAL_INCLINE($LIBCOUCHBASE_CFLAGS)
+
+  dnl not found in directories
+  elif test -z "$LIBCOUCHBASE_DIR"; then
     AC_MSG_RESULT(not found)
     AC_MSG_ERROR(Please reinstall the libcouchbase distribution -
                  libcouchbase.h should be <libcouchbase-dir>/include and
                  libcouchbase.a should be in <libcouchbase-dir>/lib)
-  fi
 
-  AC_MSG_CHECKING([for libcouchbase version >= 2.9.5])
-  LCB_VERSION=$($EGREP "define LCB_VERSION " $LIBCOUCHBASE_DIR/include/libcouchbase/configuration.h | $SED -e 's/[[^0-9x]]//g')
-  AC_MSG_RESULT([$LCB_VERSION])
-  if test "x$LCB_VERSION" = "x0x000000"; then
-    AC_MSG_ERROR([seems like libcouchbase is not installed from official tarball or git clone. Do not use github tags to download releases.])
-  fi
-  if test $(printf %d $LCB_VERSION) -lt $(printf %d 0x020905); then
-    AC_MSG_ERROR([libcouchbase greater or equal to 2.9.5 required])
-  fi
+  dnl found in directory
+  else
+    AC_MSG_CHECKING([for libcouchbase version >= 3.0.0])
+    LCB_VERSION=$($EGREP "define LCB_VERSION " $LIBCOUCHBASE_DIR/include/libcouchbase/configuration.h | $SED -e 's/[[^0-9x]]//g')
+    AC_MSG_RESULT([$LCB_VERSION])
+    if test "x$LCB_VERSION" = "x0x000000"; then
+      AC_MSG_ERROR([seems like libcouchbase is not installed from official tarball or git clone. Do not use github tags to download releases.])
+    fi
+    if test $(printf %d $LCB_VERSION) -lt $(printf %d 0x030000); then
+      AC_MSG_ERROR([libcouchbase greater or equal to 3.0.0 required])
+    fi
 
-  PHP_ADD_INCLUDE($LIBCOUCHBASE_DIR/include)
+    PHP_ADD_INCLUDE($LIBCOUCHBASE_DIR/include)
+    PHP_ADD_LIBRARY_WITH_PATH(couchbase, $LIBCOUCHBASE_DIR/$PHP_LIBDIR, COUCHBASE_SHARED_LIBADD)
+  fi
 
   PHP_SUBST(COUCHBASE_SHARED_LIBADD)
-  PHP_ADD_LIBRARY_WITH_PATH(couchbase, $LIBCOUCHBASE_DIR/$PHP_LIBDIR, COUCHBASE_SHARED_LIBADD)
 
   AC_DEFINE(HAVE_COUCHBASE, 1, [Whether you have Couchbase])
 
