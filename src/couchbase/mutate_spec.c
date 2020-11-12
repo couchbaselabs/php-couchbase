@@ -268,10 +268,10 @@ PHP_METHOD(MutateInsertSpec, __construct)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("path"), path);
-    zend_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
-    zend_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("create_path"), create_path);
-    zend_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("expand_macros"),
+    pcbc_update_property_str(pcbc_mutate_insert_spec_ce, getThis(), ("path"), path);
+    pcbc_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ("is_xattr"), is_xattr);
+    pcbc_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ("create_path"), create_path);
+    pcbc_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ("expand_macros"),
                               expand_macros);
     {
         smart_str buf = {0};
@@ -283,7 +283,7 @@ PHP_METHOD(MutateInsertSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_str(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("value"), buf.s);
+        pcbc_update_property_str(pcbc_mutate_insert_spec_ce, getThis(), ("value"), buf.s);
         smart_str_free(&buf);
     }
 }
@@ -299,10 +299,10 @@ PHP_METHOD(MutateUpsertSpec, __construct)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("path"), path);
-    zend_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
-    zend_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("create_path"), create_path);
-    zend_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("expand_macros"),
+    pcbc_update_property_str(pcbc_mutate_upsert_spec_ce, getThis(), ("path"), path);
+    pcbc_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ("is_xattr"), is_xattr);
+    pcbc_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ("create_path"), create_path);
+    pcbc_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ("expand_macros"),
                               expand_macros);
     {
         smart_str buf = {0};
@@ -314,7 +314,7 @@ PHP_METHOD(MutateUpsertSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_str(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("value"), buf.s);
+        pcbc_update_property_str(pcbc_mutate_upsert_spec_ce, getThis(), ("value"), buf.s);
         smart_str_free(&buf);
     }
 }
@@ -329,9 +329,9 @@ PHP_METHOD(MutateReplaceSpec, __construct)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("path"), path);
-    zend_update_property_bool(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
-    zend_update_property_bool(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("expand_macros"), is_xattr);
+    pcbc_update_property_str(pcbc_mutate_replace_spec_ce, getThis(), ("path"), path);
+    pcbc_update_property_bool(pcbc_mutate_replace_spec_ce, getThis(), ("is_xattr"), is_xattr);
+    pcbc_update_property_bool(pcbc_mutate_replace_spec_ce, getThis(), ("expand_macros"), is_xattr);
     {
         smart_str buf = {0};
         int last_error;
@@ -342,7 +342,7 @@ PHP_METHOD(MutateReplaceSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_str(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("value"), buf.s);
+        pcbc_update_property_str(pcbc_mutate_replace_spec_ce, getThis(), ("value"), buf.s);
         smart_str_free(&buf);
     }
 }
@@ -356,8 +356,8 @@ PHP_METHOD(MutateRemoveSpec, __construct)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_remove_spec_ce, getThis(), ZEND_STRL("path"), path);
-    zend_update_property_bool(pcbc_mutate_remove_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
+    pcbc_update_property_str(pcbc_mutate_remove_spec_ce, getThis(), ("path"), path);
+    pcbc_update_property_bool(pcbc_mutate_remove_spec_ce, getThis(), ("is_xattr"), is_xattr);
 }
 
 PHP_METHOD(MutateArrayAppendSpec, __construct)
@@ -371,11 +371,11 @@ PHP_METHOD(MutateArrayAppendSpec, __construct)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("path"), path);
-    zend_update_property_bool(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
-    zend_update_property_bool(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("create_path"),
+    pcbc_update_property_str(pcbc_mutate_array_append_spec_ce, getThis(), ("path"), path);
+    pcbc_update_property_bool(pcbc_mutate_array_append_spec_ce, getThis(), ("is_xattr"), is_xattr);
+    pcbc_update_property_bool(pcbc_mutate_array_append_spec_ce, getThis(), ("create_path"),
                               create_path);
-    zend_update_property_bool(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("expand_macros"),
+    pcbc_update_property_bool(pcbc_mutate_array_append_spec_ce, getThis(), ("expand_macros"),
                               expand_macros);
     {
         smart_str buf = {0};
@@ -387,7 +387,7 @@ PHP_METHOD(MutateArrayAppendSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_stringl(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("value"),
+        pcbc_update_property_stringl(pcbc_mutate_array_append_spec_ce, getThis(), ("value"),
                                      ZSTR_VAL(buf.s) + 1, ZSTR_LEN(buf.s) - 2);
         smart_str_free(&buf);
     }
@@ -404,11 +404,11 @@ PHP_METHOD(MutateArrayPrependSpec, __construct)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("path"), path);
-    zend_update_property_bool(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
-    zend_update_property_bool(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("create_path"),
+    pcbc_update_property_str(pcbc_mutate_array_prepend_spec_ce, getThis(), ("path"), path);
+    pcbc_update_property_bool(pcbc_mutate_array_prepend_spec_ce, getThis(), ("is_xattr"), is_xattr);
+    pcbc_update_property_bool(pcbc_mutate_array_prepend_spec_ce, getThis(), ("create_path"),
                               create_path);
-    zend_update_property_bool(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("expand_macros"),
+    pcbc_update_property_bool(pcbc_mutate_array_prepend_spec_ce, getThis(), ("expand_macros"),
                               expand_macros);
     {
         smart_str buf = {0};
@@ -420,7 +420,7 @@ PHP_METHOD(MutateArrayPrependSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_stringl(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("value"),
+        pcbc_update_property_stringl(pcbc_mutate_array_prepend_spec_ce, getThis(), ("value"),
                                      ZSTR_VAL(buf.s) + 1, ZSTR_LEN(buf.s) - 2);
         smart_str_free(&buf);
     }
@@ -437,11 +437,11 @@ PHP_METHOD(MutateArrayInsertSpec, __construct)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("path"), path);
-    zend_update_property_bool(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
-    zend_update_property_bool(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("create_path"),
+    pcbc_update_property_str(pcbc_mutate_array_insert_spec_ce, getThis(), ("path"), path);
+    pcbc_update_property_bool(pcbc_mutate_array_insert_spec_ce, getThis(), ("is_xattr"), is_xattr);
+    pcbc_update_property_bool(pcbc_mutate_array_insert_spec_ce, getThis(), ("create_path"),
                               create_path);
-    zend_update_property_bool(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("expand_macros"),
+    pcbc_update_property_bool(pcbc_mutate_array_insert_spec_ce, getThis(), ("expand_macros"),
                               expand_macros);
     {
         smart_str buf = {0};
@@ -453,7 +453,7 @@ PHP_METHOD(MutateArrayInsertSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_stringl(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("value"),
+        pcbc_update_property_stringl(pcbc_mutate_array_insert_spec_ce, getThis(), ("value"),
                                      ZSTR_VAL(buf.s) + 1, ZSTR_LEN(buf.s) - 2);
         smart_str_free(&buf);
     }
@@ -470,12 +470,12 @@ PHP_METHOD(MutateArrayAddUniqueSpec, __construct)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("path"), path);
-    zend_update_property_bool(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("is_xattr"),
+    pcbc_update_property_str(pcbc_mutate_array_add_unique_spec_ce, getThis(), ("path"), path);
+    pcbc_update_property_bool(pcbc_mutate_array_add_unique_spec_ce, getThis(), ("is_xattr"),
                               is_xattr);
-    zend_update_property_bool(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("create_path"),
+    pcbc_update_property_bool(pcbc_mutate_array_add_unique_spec_ce, getThis(), ("create_path"),
                               create_path);
-    zend_update_property_bool(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("expand_macros"),
+    pcbc_update_property_bool(pcbc_mutate_array_add_unique_spec_ce, getThis(), ("expand_macros"),
                               expand_macros);
     {
         smart_str buf = {0};
@@ -487,7 +487,7 @@ PHP_METHOD(MutateArrayAddUniqueSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_str(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("value"), buf.s);
+        pcbc_update_property_str(pcbc_mutate_array_add_unique_spec_ce, getThis(), ("value"), buf.s);
         smart_str_free(&buf);
     }
 }
@@ -502,10 +502,10 @@ PHP_METHOD(MutateCounterSpec, __construct)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("path"), path);
-    zend_update_property_long(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("delta"), delta);
-    zend_update_property_bool(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
-    zend_update_property_bool(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("create_path"), create_path);
+    pcbc_update_property_str(pcbc_mutate_counter_spec_ce, getThis(), ("path"), path);
+    pcbc_update_property_long(pcbc_mutate_counter_spec_ce, getThis(), ("delta"), delta);
+    pcbc_update_property_bool(pcbc_mutate_counter_spec_ce, getThis(), ("is_xattr"), is_xattr);
+    pcbc_update_property_bool(pcbc_mutate_counter_spec_ce, getThis(), ("create_path"), create_path);
 }
 
 /*

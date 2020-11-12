@@ -107,13 +107,13 @@ PHP_METHOD(Cluster, __construct)
         RETURN_NULL();
     }
     zval *prop, ret;
-    prop = zend_read_property(pcbc_cluster_options_ce, options, ZEND_STRL("username"), 0, &ret);
+    prop = pcbc_read_property(pcbc_cluster_options_ce, options, ("username"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_STRING) {
         zend_type_error("Username option must be specified");
         RETURN_NULL();
     }
     obj->username = estrndup(Z_STRVAL_P(prop), Z_STRLEN_P(prop));
-    prop = zend_read_property(pcbc_cluster_options_ce, options, ZEND_STRL("password"), 0, &ret);
+    prop = pcbc_read_property(pcbc_cluster_options_ce, options, ("password"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_STRING) {
         zend_type_error("Password option must be specified");
         RETURN_NULL();
@@ -151,7 +151,7 @@ PHP_METHOD(Cluster, buckets)
     }
 
     object_init_ex(return_value, pcbc_bucket_manager_ce);
-    zend_update_property(pcbc_bucket_manager_ce, return_value, ZEND_STRL("cluster"), getThis());
+    pcbc_update_property(pcbc_bucket_manager_ce, return_value, ("cluster"), getThis());
 }
 
 PHP_METHOD(Cluster, queryIndexes)
@@ -161,7 +161,7 @@ PHP_METHOD(Cluster, queryIndexes)
     }
 
     object_init_ex(return_value, pcbc_query_index_manager_ce);
-    zend_update_property(pcbc_query_index_manager_ce, return_value, ZEND_STRL("cluster"), getThis());
+    pcbc_update_property(pcbc_query_index_manager_ce, return_value, ("cluster"), getThis());
 }
 
 PHP_METHOD(Cluster, searchIndexes)
@@ -170,7 +170,7 @@ PHP_METHOD(Cluster, searchIndexes)
         RETURN_NULL();
     }
     object_init_ex(return_value, pcbc_search_index_manager_ce);
-    zend_update_property(pcbc_search_index_manager_ce, return_value, ZEND_STRL("cluster"), getThis());
+    pcbc_update_property(pcbc_search_index_manager_ce, return_value, ("cluster"), getThis());
 }
 
 PHP_METHOD(Cluster, users)
@@ -179,7 +179,7 @@ PHP_METHOD(Cluster, users)
         RETURN_NULL();
     }
     object_init_ex(return_value, pcbc_user_manager_ce);
-    zend_update_property(pcbc_user_manager_ce, return_value, ZEND_STRL("cluster"), getThis());
+    pcbc_update_property(pcbc_user_manager_ce, return_value, ("cluster"), getThis());
 }
 
 ZEND_BEGIN_ARG_INFO_EX(ai_Cluster_constructor, 0, 0, 2)
@@ -266,13 +266,18 @@ static zend_object *pcbc_cluster_create_object(zend_class_entry *class_type)
     return &obj->std;
 }
 
+#if PHP_VERSION_ID < 80000
 static HashTable *pcbc_cluster_get_debug_info(zval *object, int *is_temp)
 {
-    pcbc_cluster_t *obj = NULL;
+    pcbc_cluster_t *obj = Z_CLUSTER_OBJ_P(object);
+#else
+static HashTable *pcbc_cluster_get_debug_info(zend_object *object, int *is_temp)
+{
+    pcbc_cluster_t *obj = pcbc_cluster_fetch_object(object);
+#endif
     zval retval;
 
     *is_temp = 1;
-    obj = Z_CLUSTER_OBJ_P(object);
 
     array_init(&retval);
     add_assoc_string(&retval, "connstr", obj->connstr);

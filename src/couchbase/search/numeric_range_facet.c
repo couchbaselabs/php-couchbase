@@ -34,10 +34,10 @@ PHP_METHOD(NumericRangeSearchFacet, __construct)
 
     zval ranges;
     array_init(&ranges);
-    zend_update_property(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("ranges"), &ranges);
+    pcbc_update_property(pcbc_numeric_range_search_facet_ce, getThis(), ("ranges"), &ranges);
     Z_DELREF(ranges);
-    zend_update_property_str(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("field"), field);
-    zend_update_property_long(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("limit"), limit);
+    pcbc_update_property_str(pcbc_numeric_range_search_facet_ce, getThis(), ("field"), field);
+    pcbc_update_property_long(pcbc_numeric_range_search_facet_ce, getThis(), ("limit"), limit);
 }
 
 PHP_METHOD(NumericRangeSearchFacet, addRange)
@@ -53,7 +53,7 @@ PHP_METHOD(NumericRangeSearchFacet, addRange)
     }
 
     zval *ranges, ret;
-    ranges = zend_read_property(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("ranges"), 0, &ret);
+    ranges = pcbc_read_property(pcbc_numeric_range_search_facet_ce, getThis(), ("ranges"), 0, &ret);
 
     zval range;
     array_init(&range);
@@ -82,19 +82,19 @@ PHP_METHOD(NumericRangeSearchFacet, jsonSerialize)
     array_init(return_value);
     zval *prop, ret;
 
-    prop = zend_read_property(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_numeric_range_search_facet_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("limit"), 0, &ret);
+    prop = pcbc_read_property(pcbc_numeric_range_search_facet_ce, getThis(), ("limit"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "size", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("ranges"), 0, &ret);
+    prop = pcbc_read_property(pcbc_numeric_range_search_facet_ce, getThis(), ("ranges"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "numeric_ranges", prop);
         Z_TRY_ADDREF_P(prop);

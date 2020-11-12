@@ -32,8 +32,8 @@ PHP_METHOD(TermSearchFacet, __construct)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_term_search_facet_ce, getThis(), ZEND_STRL("field"), field);
-    zend_update_property_long(pcbc_term_search_facet_ce, getThis(), ZEND_STRL("limit"), limit);
+    pcbc_update_property_str(pcbc_term_search_facet_ce, getThis(), ("field"), field);
+    pcbc_update_property_long(pcbc_term_search_facet_ce, getThis(), ("limit"), limit);
 }
 
 PHP_METHOD(TermSearchFacet, jsonSerialize)
@@ -47,12 +47,12 @@ PHP_METHOD(TermSearchFacet, jsonSerialize)
 
     array_init(return_value);
     zval *prop, ret;
-    prop = zend_read_property(pcbc_term_search_facet_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_search_facet_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
     }
-    prop = zend_read_property(pcbc_term_search_facet_ce, getThis(), ZEND_STRL("limit"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_search_facet_ce, getThis(), ("limit"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "size", prop);
         Z_TRY_ADDREF_P(prop);

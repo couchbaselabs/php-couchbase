@@ -27,7 +27,7 @@ static void httpcb_getDesignDocument(void *ctx, zval *return_value, zval *respon
     zval view_prop;
     object_init_ex(return_value, pcbc_design_document_ce);
     array_init(&view_prop);
-    zend_update_property(pcbc_design_document_ce, return_value, ZEND_STRL("views"), &view_prop);
+    pcbc_update_property(pcbc_design_document_ce, return_value, ("views"), &view_prop);
     zval_delref_p(&view_prop);
 
     zval *views = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("views"));
@@ -38,14 +38,14 @@ static void httpcb_getDesignDocument(void *ctx, zval *return_value, zval *respon
         {
             zval view, *val;
             object_init_ex(&view, pcbc_view_ce);
-            zend_update_property_str(pcbc_view_ce, &view, ZEND_STRL("name"), string_key);
+            pcbc_update_property_str(pcbc_view_ce, &view, ("name"), string_key);
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("map"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_view_ce, &view, ZEND_STRL("map"), val);
+                pcbc_update_property(pcbc_view_ce, &view, ("map"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("reduce"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_view_ce, &view, ZEND_STRL("reduce"), val);
+                pcbc_update_property(pcbc_view_ce, &view, ("reduce"), val);
             }
             add_assoc_zval_ex(&view_prop, ZSTR_VAL(string_key), ZSTR_LEN(string_key), &view);
         }
@@ -66,7 +66,7 @@ PHP_METHOD(ViewIndexManager, getDesignDocument)
         return;
     }
 
-    prop = zend_read_property(pcbc_view_index_manager_ce, getThis(), ZEND_STRL("bucket"), 0, &val);
+    prop = pcbc_read_property(pcbc_view_index_manager_ce, getThis(), ("bucket"), 0, &val);
     bucket = Z_BUCKET_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -77,7 +77,7 @@ PHP_METHOD(ViewIndexManager, getDesignDocument)
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_FORM, strlen(PCBC_CONTENT_TYPE_FORM));
     pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getDesignDocument, NULL);
     efree(path);
-    zend_update_property_str(pcbc_design_document_ce, return_value, ZEND_STRL("name"), name);
+    pcbc_update_property_str(pcbc_design_document_ce, return_value, ("name"), name);
 }
 
 static void parse_ddoc_entry(zval *return_value, zval *response)
@@ -85,7 +85,7 @@ static void parse_ddoc_entry(zval *return_value, zval *response)
     zval view_prop;
     object_init_ex(return_value, pcbc_design_document_ce);
     array_init(&view_prop);
-    zend_update_property(pcbc_design_document_ce, return_value, ZEND_STRL("views"), &view_prop);
+    pcbc_update_property(pcbc_design_document_ce, return_value, ("views"), &view_prop);
     zval_delref_p(&view_prop);
     zval *doc = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("doc"));
     if (doc && Z_TYPE_P(doc) == IS_ARRAY) {
@@ -95,7 +95,7 @@ static void parse_ddoc_entry(zval *return_value, zval *response)
                 zval *val;
                 val = zend_symtable_str_find(Z_ARRVAL_P(meta), ZEND_STRL("id"));
                 if (val && Z_TYPE_P(val) == IS_STRING) {
-                    zend_update_property(pcbc_design_document_ce, return_value, ZEND_STRL("name"), val);
+                    pcbc_update_property(pcbc_design_document_ce, return_value, ("name"), val);
                 }
             }
         }
@@ -110,14 +110,14 @@ static void parse_ddoc_entry(zval *return_value, zval *response)
                     {
                         zval view, *val;
                         object_init_ex(&view, pcbc_view_ce);
-                        zend_update_property_str(pcbc_view_ce, &view, ZEND_STRL("name"), string_key);
+                        pcbc_update_property_str(pcbc_view_ce, &view, ("name"), string_key);
                         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("map"));
                         if (val && Z_TYPE_P(val) == IS_STRING) {
-                            zend_update_property(pcbc_view_ce, &view, ZEND_STRL("map"), val);
+                            pcbc_update_property(pcbc_view_ce, &view, ("map"), val);
                         }
                         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("reduce"));
                         if (val && Z_TYPE_P(val) == IS_STRING) {
-                            zend_update_property(pcbc_view_ce, &view, ZEND_STRL("reduce"), val);
+                            pcbc_update_property(pcbc_view_ce, &view, ("reduce"), val);
                         }
                         add_assoc_zval_ex(&view_prop, ZSTR_VAL(string_key), ZSTR_LEN(string_key), &view);
                     }
@@ -156,7 +156,7 @@ PHP_METHOD(ViewIndexManager, getAllDesignDocuments)
         RETURN_NULL();
     }
 
-    prop = zend_read_property(pcbc_view_index_manager_ce, getThis(), ZEND_STRL("bucket"), 0, &val);
+    prop = pcbc_read_property(pcbc_view_index_manager_ce, getThis(), ("bucket"), 0, &val);
     bucket = Z_BUCKET_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -183,13 +183,13 @@ PHP_METHOD(ViewIndexManager, upsertDesignDocument)
         return;
     }
 
-    prop = zend_read_property(pcbc_view_index_manager_ce, getThis(), ZEND_STRL("bucket"), 0, &val);
+    prop = pcbc_read_property(pcbc_view_index_manager_ce, getThis(), ("bucket"), 0, &val);
     bucket = Z_BUCKET_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
     lcb_cmdhttp_create(&cmd, LCB_HTTP_TYPE_VIEW);
     lcb_cmdhttp_method(cmd, LCB_HTTP_METHOD_PUT);
-    prop = zend_read_property(pcbc_design_document_ce, document, ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_design_document_ce, document, ("name"), 0, &rv);
     path_len = spprintf(&path, 0, "/%.*s", (int)Z_STRLEN_P(prop), Z_STRVAL_P(prop));
     lcb_cmdhttp_path(cmd, path, path_len);
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_JSON, strlen(PCBC_CONTENT_TYPE_JSON));
@@ -222,7 +222,7 @@ PHP_METHOD(ViewIndexManager, dropDesignDocument)
         return;
     }
 
-    prop = zend_read_property(pcbc_view_index_manager_ce, getThis(), ZEND_STRL("bucket"), 0, &val);
+    prop = pcbc_read_property(pcbc_view_index_manager_ce, getThis(), ("bucket"), 0, &val);
     bucket = Z_BUCKET_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -277,7 +277,7 @@ PHP_METHOD(DesignDocument, jsonSerialize)
     zval_delref_p(&views);
 
     zval *prop, ret;
-    prop = zend_read_property(pcbc_design_document_ce, getThis(), ZEND_STRL("views"), 0, &ret);
+    prop = pcbc_read_property(pcbc_design_document_ce, getThis(), ("views"), 0, &ret);
     if (prop && Z_TYPE_P(prop) == IS_ARRAY) {
         zend_string *string_key = NULL;
         zval *entry;
@@ -285,11 +285,11 @@ PHP_METHOD(DesignDocument, jsonSerialize)
         {
             zval view, *val, ret;
             array_init(&view);
-            val = zend_read_property(pcbc_view_ce, entry, ZEND_STRL("map"), 0, &ret);
+            val = pcbc_read_property(pcbc_view_ce, entry, ("map"), 0, &ret);
             if (val && Z_TYPE_P(val)) {
                 add_assoc_zval(&view, "map", val);
             }
-            val = zend_read_property(pcbc_view_ce, entry, ZEND_STRL("reduce"), 0, &ret);
+            val = pcbc_read_property(pcbc_view_ce, entry, ("reduce"), 0, &ret);
             if (val && Z_TYPE_P(val)) {
                 add_assoc_zval(&view, "reduce", val);
             }
@@ -324,7 +324,7 @@ PHP_METHOD(DesignDocument, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_design_document_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_design_document_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -335,7 +335,7 @@ PHP_METHOD(DesignDocument, views)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_design_document_ce, getThis(), ZEND_STRL("views"), 0, &rv);
+    prop = pcbc_read_property(pcbc_design_document_ce, getThis(), ("views"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -346,7 +346,7 @@ PHP_METHOD(DesignDocument, setName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_design_document_ce, getThis(), ZEND_STRL("name"), val);
+    pcbc_update_property_str(pcbc_design_document_ce, getThis(), ("name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -357,7 +357,7 @@ PHP_METHOD(DesignDocument, setViews)
         RETURN_NULL();
     }
 
-    zend_update_property(pcbc_design_document_ce, getThis(), ZEND_STRL("views"), val);
+    pcbc_update_property(pcbc_design_document_ce, getThis(), ("views"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -400,7 +400,7 @@ PHP_METHOD(View, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_view_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_view_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -411,7 +411,7 @@ PHP_METHOD(View, map)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_view_ce, getThis(), ZEND_STRL("map"), 0, &rv);
+    prop = pcbc_read_property(pcbc_view_ce, getThis(), ("map"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -422,7 +422,7 @@ PHP_METHOD(View, reduce)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_view_ce, getThis(), ZEND_STRL("reduce"), 0, &rv);
+    prop = pcbc_read_property(pcbc_view_ce, getThis(), ("reduce"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -433,7 +433,7 @@ PHP_METHOD(View, setName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_view_ce, getThis(), ZEND_STRL("name"), val);
+    pcbc_update_property_str(pcbc_view_ce, getThis(), ("name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -444,7 +444,7 @@ PHP_METHOD(View, setMap)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_view_ce, getThis(), ZEND_STRL("map"), val);
+    pcbc_update_property_str(pcbc_view_ce, getThis(), ("map"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -455,7 +455,7 @@ PHP_METHOD(View, setReduce)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_view_ce, getThis(), ZEND_STRL("reduce"), val);
+    pcbc_update_property_str(pcbc_view_ce, getThis(), ("reduce"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 

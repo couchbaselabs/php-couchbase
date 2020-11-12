@@ -44,6 +44,66 @@
 #define PCBC_ARG_VARIADIC_INFO(__pcbc_pass_by_ref, __pcbc_name)                                                        \
     ZEND_ARG_VARIADIC_INFO((__pcbc_pass_by_ref), (__pcbc_name))
 
+#if PHP_VERSION_ID < 80000
+
+#define pcbc_read_property(scope, object, name, silent, rv) \
+        zend_read_property((scope), (object), ZEND_STRL(name), (silent), (rv))
+
+#define pcbc_update_property(scope, object, name, value) \
+        zend_update_property((scope), (object), ZEND_STRL(name), (value))
+
+#define pcbc_update_property_null(scope, object, name) \
+        zend_update_property_null((scope), (object), ZEND_STRL(name))
+
+#define pcbc_update_property_bool(scope, object, name, value) \
+        zend_update_property_bool((scope), (object), ZEND_STRL(name), (value))
+
+#define pcbc_update_property_long(scope, object, name, value) \
+        zend_update_property_long((scope), (object), ZEND_STRL(name), (value))
+
+#define pcbc_update_property_double(scope, object, name, value) \
+        zend_update_property_double((scope), (object), ZEND_STRL(name), (value))
+
+#define pcbc_update_property_stringl(scope, object, name, value, value_len) \
+        zend_update_property_stringl((scope), (object), ZEND_STRL(name), (value), (value_len))
+
+#define pcbc_update_property_string(scope, object, name, value) \
+        zend_update_property_string((scope), (object), ZEND_STRL(name), (value))
+
+#define pcbc_update_property_str(scope, object, name, value) \
+        zend_update_property_str((scope), (object), ZEND_STRL(name), (value))
+
+#else
+
+#define pcbc_read_property(scope, object, name, silent, rv) \
+        zend_read_property((scope), Z_OBJ_P(object), ZEND_STRL(name), (silent), (rv))
+
+#define pcbc_update_property(scope, object, name, value) \
+        zend_update_property((scope), Z_OBJ_P(object), ZEND_STRL(name), (value))
+
+#define pcbc_update_property_null(scope, object, name) \
+        zend_update_property_null((scope), Z_OBJ_P(object), ZEND_STRL(name))
+
+#define pcbc_update_property_bool(scope, object, name, value) \
+        zend_update_property_bool((scope), Z_OBJ_P(object), ZEND_STRL(name), (value))
+
+#define pcbc_update_property_long(scope, object, name, value) \
+        zend_update_property_long((scope), Z_OBJ_P(object), ZEND_STRL(name), (value))
+
+#define pcbc_update_property_double(scope, object, name, value) \
+        zend_update_property_double((scope), Z_OBJ_P(object), ZEND_STRL(name), (value))
+
+#define pcbc_update_property_stringl(scope, object, name, value, value_len) \
+        zend_update_property_stringl((scope), Z_OBJ_P(object), ZEND_STRL(name), (value), (value_len))
+
+#define pcbc_update_property_string(scope, object, name, value) \
+        zend_update_property_string((scope), Z_OBJ_P(object), ZEND_STRL(name), (value))
+
+#define pcbc_update_property_str(scope, object, name, value) \
+        zend_update_property_str((scope), Z_OBJ_P(object), ZEND_STRL(name), (value))
+
+#endif
+
 enum pcbc_constants {
     PERSISTTO_ONE = 1,
     PERSISTTO_TWO = 2,
@@ -114,14 +174,14 @@ extern zend_class_entry *pcbc_binary_collection_ce;
     {                                                                                                                  \
         zval *prop, rv__;                                                                                              \
         zval *self = getThis();                                                                                        \
-        prop = zend_read_property((class_entry), self, ZEND_STRL("bucket"), 0, &rv__);                                 \
+        prop = pcbc_read_property((class_entry), self, ("bucket"), 0, &rv__);                                 \
         bucket = Z_BUCKET_OBJ_P(prop);                                                                                 \
-        prop = zend_read_property((class_entry), self, ZEND_STRL("scope"), 0, &rv__);                                  \
+        prop = pcbc_read_property((class_entry), self, ("scope"), 0, &rv__);                                  \
         if (Z_TYPE_P(prop) == IS_STRING) {                                                                             \
             scope_str = Z_STRVAL_P(prop);                                                                              \
             scope_len = Z_STRLEN_P(prop);                                                                              \
         }                                                                                                              \
-        prop = zend_read_property((class_entry), self, ZEND_STRL("name"), 0, &rv__);                                   \
+        prop = pcbc_read_property((class_entry), self, ("name"), 0, &rv__);                                   \
         if (Z_TYPE_P(prop) == IS_STRING) {                                                                             \
             collection_str = Z_STRVAL_P(prop);                                                                         \
             collection_len = Z_STRLEN_P(prop);                                                                         \
@@ -153,11 +213,11 @@ void pcbc_exception_init(zval *return_value, long code, const char *message);
         zend_string *ctx = NULL, *ref = NULL;                                                                          \
         zval *zref, __rv1, *zctx, __rv2;                                                                               \
         if (result_ce) {                                                                                               \
-            zref = zend_read_property(result_ce, return_value, ZEND_STRL("err_ref"), 0, &__rv1);                       \
+            zref = pcbc_read_property(result_ce, return_value, ("err_ref"), 0, &__rv1);                       \
             if (Z_TYPE_P(zref) == IS_STRING) {                                                                         \
                 ref = Z_STR_P(zref);                                                                                   \
             }                                                                                                          \
-            zctx = zend_read_property(result_ce, return_value, ZEND_STRL("err_ctx"), 0, &__rv2);                       \
+            zctx = pcbc_read_property(result_ce, return_value, ("err_ctx"), 0, &__rv2);                       \
             if (Z_TYPE_P(zctx) == IS_STRING) {                                                                         \
                 ctx = Z_STR_P(zctx);                                                                                   \
             }                                                                                                          \
@@ -355,7 +415,7 @@ opcookie_res *opcookie_next_res(opcookie *cookie, opcookie_res *cur);
         size_t ndata = 0;                                                                                              \
         getter(target, &data, &ndata);                                                                                 \
         if (ndata && data) {                                                                                           \
-            zend_update_property_stringl(class_entry, return_value, ZEND_STRL(prop), data, ndata);           \
+            pcbc_update_property_stringl(class_entry, return_value, (prop), data, ndata);           \
         }                                                                                                              \
     } while (0);
 
@@ -363,7 +423,7 @@ opcookie_res *opcookie_next_res(opcookie *cookie, opcookie_res *cur);
     do {                                                                                                               \
         type data = 0;                                                                                                 \
         getter(resp, &data);                                                                                           \
-        zend_update_property_long(class_entry, return_value, ZEND_STRL(prop), data);                         \
+        pcbc_update_property_long(class_entry, return_value, (prop), data);                         \
     } while (0);
 
 #endif /* COUCHBASE_H_ */

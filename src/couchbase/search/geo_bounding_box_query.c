@@ -33,13 +33,13 @@ PHP_METHOD(GeoBoundingBoxSearchQuery, __construct)
     if (rv == FAILURE) {
         return;
     }
-    zend_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("top_left_longitude"),
+    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_longitude"),
                                 tl_lon);
-    zend_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("top_left_latitude"),
+    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_latitude"),
                                 tl_lat);
-    zend_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("bottom_right_longitude"),
+    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_longitude"),
                                 br_lon);
-    zend_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("bottom_right_latitude"),
+    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_latitude"),
                                 br_lat);
 }
 
@@ -53,7 +53,7 @@ PHP_METHOD(GeoBoundingBoxSearchQuery, field)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("field"), field);
+    pcbc_update_property_str(pcbc_geo_bounding_box_search_query_ce, getThis(), ("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -68,7 +68,7 @@ PHP_METHOD(GeoBoundingBoxSearchQuery, boost)
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
+    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -89,32 +89,32 @@ PHP_METHOD(GeoBoundingBoxSearchQuery, jsonSerialize)
     zval top_left;
     array_init(&top_left);
     prop =
-        zend_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("top_left_longitude"), 0, &ret);
+        pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_longitude"), 0, &ret);
     add_next_index_zval(&top_left, prop);
     prop =
-        zend_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("top_left_latitude"), 0, &ret);
+        pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_latitude"), 0, &ret);
     add_next_index_zval(&top_left, prop);
     add_assoc_zval(return_value, "top_left", &top_left);
     Z_TRY_ADDREF(top_left);
 
     zval bottom_right;
     array_init(&bottom_right);
-    prop = zend_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("bottom_right_longitude"), 0,
+    prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_longitude"), 0,
                               &ret);
     add_next_index_zval(&bottom_right, prop);
-    prop = zend_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("bottom_right_latitude"), 0,
+    prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_latitude"), 0,
                               &ret);
     add_next_index_zval(&bottom_right, prop);
     add_assoc_zval(return_value, "bottom_right", &bottom_right);
     Z_TRY_ADDREF(bottom_right);
 
-    prop = zend_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ZEND_STRL("boost"), 0, &ret);
+    prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("boost"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "boost", prop);
         Z_TRY_ADDREF_P(prop);

@@ -31,7 +31,7 @@ PHP_METHOD(TermSearchQuery, __construct)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_term_search_query_ce, getThis(), ZEND_STRL("term"), value);
+    pcbc_update_property_str(pcbc_term_search_query_ce, getThis(), ("term"), value);
 }
 
 PHP_METHOD(TermSearchQuery, field)
@@ -44,7 +44,7 @@ PHP_METHOD(TermSearchQuery, field)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_term_search_query_ce, getThis(), ZEND_STRL("field"), field);
+    pcbc_update_property_str(pcbc_term_search_query_ce, getThis(), ("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -59,7 +59,7 @@ PHP_METHOD(TermSearchQuery, prefixLength)
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_term_search_query_ce, getThis(), ZEND_STRL("prefix_length"),
+    pcbc_update_property_long(pcbc_term_search_query_ce, getThis(), ("prefix_length"),
                               prefix_length);
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -75,7 +75,7 @@ PHP_METHOD(TermSearchQuery, fuzziness)
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_term_search_query_ce, getThis(), ZEND_STRL("fuzziness"), fuzziness);
+    pcbc_update_property_long(pcbc_term_search_query_ce, getThis(), ("fuzziness"), fuzziness);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -90,7 +90,7 @@ PHP_METHOD(TermSearchQuery, boost)
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_term_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
+    pcbc_update_property_long(pcbc_term_search_query_ce, getThis(), ("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -106,27 +106,27 @@ PHP_METHOD(TermSearchQuery, jsonSerialize)
 
     array_init(return_value);
     zval *prop, ret;
-    prop = zend_read_property(pcbc_term_search_query_ce, getThis(), ZEND_STRL("term"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_search_query_ce, getThis(), ("term"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "term", prop);
         Z_TRY_ADDREF_P(prop);
     }
-    prop = zend_read_property(pcbc_term_search_query_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_search_query_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
     }
-    prop = zend_read_property(pcbc_term_search_query_ce, getThis(), ZEND_STRL("prefix_length"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_search_query_ce, getThis(), ("prefix_length"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "prefix_length", prop);
         Z_TRY_ADDREF_P(prop);
     }
-    prop = zend_read_property(pcbc_term_search_query_ce, getThis(), ZEND_STRL("fuzziness"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_search_query_ce, getThis(), ("fuzziness"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "fuzziness", prop);
         Z_TRY_ADDREF_P(prop);
     }
-    prop = zend_read_property(pcbc_term_search_query_ce, getThis(), ZEND_STRL("boost"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_search_query_ce, getThis(), ("boost"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "boost", prop);
         Z_TRY_ADDREF_P(prop);

@@ -33,7 +33,7 @@ void counter_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPCOUNTER 
     lcb_respcounter_cookie(resp, (void **)&cookie);
     zval *return_value = cookie->return_value;
     cookie->rc = lcb_respcounter_status(resp);
-    zend_update_property_long(pcbc_counter_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
+    pcbc_update_property_long(pcbc_counter_result_impl_ce, return_value, ("status"), cookie->rc);
     lcb_respcounter_error_context(resp, &ectx);
 
     set_property_str(ectx, lcb_errctx_kv_context, pcbc_counter_result_impl_ce, "err_ctx");
@@ -43,14 +43,14 @@ void counter_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPCOUNTER 
     if (cookie->rc == LCB_SUCCESS) {
         uint64_t value = 0;
         lcb_respcounter_value(resp, &value);
-        zend_update_property_long(pcbc_counter_result_impl_ce, return_value, ZEND_STRL("content"), value);
+        pcbc_update_property_long(pcbc_counter_result_impl_ce, return_value, ("content"), value);
 
         zend_string *b64;
         {
             uint64_t data;
             lcb_respcounter_cas(resp, &data);
             b64 = php_base64_encode((unsigned char *)&data, sizeof(data));
-            zend_update_property_str(pcbc_counter_result_impl_ce, return_value, ZEND_STRL("cas"), b64);
+            pcbc_update_property_str(pcbc_counter_result_impl_ce, return_value, ("cas"), b64);
             zend_string_release(b64);
         }
         {
@@ -60,22 +60,22 @@ void counter_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPCOUNTER 
                 zval val;
                 object_init_ex(&val, pcbc_mutation_token_impl_ce);
 
-                zend_update_property_long(pcbc_mutation_token_impl_ce, &val, ZEND_STRL("partition_id"),
+                pcbc_update_property_long(pcbc_mutation_token_impl_ce, &val, ("partition_id"),
                                           token.vbid_);
                 b64 = php_base64_encode((unsigned char *)&token.uuid_, sizeof(token.uuid_));
-                zend_update_property_str(pcbc_mutation_token_impl_ce, &val, ZEND_STRL("partition_uuid"), b64);
+                pcbc_update_property_str(pcbc_mutation_token_impl_ce, &val, ("partition_uuid"), b64);
                 zend_string_release(b64);
                 b64 = php_base64_encode((unsigned char *)&token.seqno_, sizeof(token.seqno_));
-                zend_update_property_str(pcbc_mutation_token_impl_ce, &val, ZEND_STRL("sequence_number"),
+                pcbc_update_property_str(pcbc_mutation_token_impl_ce, &val, ("sequence_number"),
                                          b64);
                 zend_string_release(b64);
 
                 const char *bucket;
                 lcb_cntl(instance, LCB_CNTL_GET, LCB_CNTL_BUCKETNAME, &bucket);
-                zend_update_property_string(pcbc_mutation_token_impl_ce, &val, ZEND_STRL("bucket_name"),
+                pcbc_update_property_string(pcbc_mutation_token_impl_ce, &val, ("bucket_name"),
                                             bucket);
 
-                zend_update_property(pcbc_counter_result_impl_ce, return_value, ZEND_STRL("mutation_token"),
+                pcbc_update_property(pcbc_counter_result_impl_ce, return_value, ("mutation_token"),
                                      &val);
                 zval_ptr_dtor(&val);
             }
@@ -92,7 +92,7 @@ PHP_METHOD(IncrementOptions, expiry)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_increment_options_ce, getThis(), ZEND_STRL("expiry"), arg);
+    pcbc_update_property_long(pcbc_increment_options_ce, getThis(), ("expiry"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -103,7 +103,7 @@ PHP_METHOD(IncrementOptions, timeout)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_increment_options_ce, getThis(), ZEND_STRL("timeout"), arg);
+    pcbc_update_property_long(pcbc_increment_options_ce, getThis(), ("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -114,7 +114,7 @@ PHP_METHOD(IncrementOptions, durabilityLevel)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_increment_options_ce, getThis(), ZEND_STRL("durability_level"), arg);
+    pcbc_update_property_long(pcbc_increment_options_ce, getThis(), ("durability_level"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -125,7 +125,7 @@ PHP_METHOD(IncrementOptions, delta)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_increment_options_ce, getThis(), ZEND_STRL("delta"), arg);
+    pcbc_update_property_long(pcbc_increment_options_ce, getThis(), ("delta"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -136,7 +136,7 @@ PHP_METHOD(IncrementOptions, initial)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_increment_options_ce, getThis(), ZEND_STRL("initial"), arg);
+    pcbc_update_property_long(pcbc_increment_options_ce, getThis(), ("initial"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -147,7 +147,7 @@ PHP_METHOD(IncrementOptions, cas)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_increment_options_ce, getThis(), ZEND_STRL("cas"), arg);
+    pcbc_update_property_str(pcbc_increment_options_ce, getThis(), ("cas"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -206,27 +206,27 @@ PHP_METHOD(BinaryCollection, increment)
     lcb_cmdcounter_delta(cmd, +1);
     if (options) {
         zval *prop, ret;
-        prop = zend_read_property(pcbc_increment_options_ce, options, ZEND_STRL("timeout"), 0, &ret);
+        prop = pcbc_read_property(pcbc_increment_options_ce, options, ("timeout"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdcounter_timeout(cmd, Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_increment_options_ce, options, ZEND_STRL("durability_level"), 0, &ret);
+        prop = pcbc_read_property(pcbc_increment_options_ce, options, ("durability_level"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdcounter_durability(cmd, Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_increment_options_ce, options, ZEND_STRL("expiry"), 0, &ret);
+        prop = pcbc_read_property(pcbc_increment_options_ce, options, ("expiry"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdcounter_expiry(cmd, Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_increment_options_ce, options, ZEND_STRL("delta"), 0, &ret);
+        prop = pcbc_read_property(pcbc_increment_options_ce, options, ("delta"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG && Z_LVAL_P(prop) > 0) {
             lcb_cmdcounter_delta(cmd, Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_increment_options_ce, options, ZEND_STRL("initial"), 0, &ret);
+        prop = pcbc_read_property(pcbc_increment_options_ce, options, ("initial"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdcounter_initial(cmd, Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_increment_options_ce, options, ZEND_STRL("cas"), 0, &ret);
+        prop = pcbc_read_property(pcbc_increment_options_ce, options, ("cas"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_STRING) {
             zend_string *decoded = php_base64_decode_str(Z_STR_P(prop));
             if (decoded) {
@@ -274,7 +274,7 @@ PHP_METHOD(DecrementOptions, expiry)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_decrement_options_ce, getThis(), ZEND_STRL("expiry"), arg);
+    pcbc_update_property_long(pcbc_decrement_options_ce, getThis(), ("expiry"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -285,7 +285,7 @@ PHP_METHOD(DecrementOptions, timeout)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_decrement_options_ce, getThis(), ZEND_STRL("timeout"), arg);
+    pcbc_update_property_long(pcbc_decrement_options_ce, getThis(), ("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -296,7 +296,7 @@ PHP_METHOD(DecrementOptions, durabilityLevel)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_decrement_options_ce, getThis(), ZEND_STRL("durability_level"), arg);
+    pcbc_update_property_long(pcbc_decrement_options_ce, getThis(), ("durability_level"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -307,7 +307,7 @@ PHP_METHOD(DecrementOptions, delta)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_decrement_options_ce, getThis(), ZEND_STRL("delta"), arg);
+    pcbc_update_property_long(pcbc_decrement_options_ce, getThis(), ("delta"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -318,7 +318,7 @@ PHP_METHOD(DecrementOptions, initial)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_decrement_options_ce, getThis(), ZEND_STRL("initial"), arg);
+    pcbc_update_property_long(pcbc_decrement_options_ce, getThis(), ("initial"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -329,7 +329,7 @@ PHP_METHOD(DecrementOptions, cas)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_decrement_options_ce, getThis(), ZEND_STRL("cas"), arg);
+    pcbc_update_property_str(pcbc_decrement_options_ce, getThis(), ("cas"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -388,27 +388,27 @@ PHP_METHOD(BinaryCollection, decrement)
     lcb_cmdcounter_delta(cmd, -1);
     if (options) {
         zval *prop, ret;
-        prop = zend_read_property(pcbc_decrement_options_ce, options, ZEND_STRL("timeout"), 0, &ret);
+        prop = pcbc_read_property(pcbc_decrement_options_ce, options, ("timeout"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdcounter_timeout(cmd, Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_decrement_options_ce, options, ZEND_STRL("durability_level"), 0, &ret);
+        prop = pcbc_read_property(pcbc_decrement_options_ce, options, ("durability_level"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdcounter_durability(cmd, Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_decrement_options_ce, options, ZEND_STRL("expiry"), 0, &ret);
+        prop = pcbc_read_property(pcbc_decrement_options_ce, options, ("expiry"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdcounter_expiry(cmd, Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_decrement_options_ce, options, ZEND_STRL("delta"), 0, &ret);
+        prop = pcbc_read_property(pcbc_decrement_options_ce, options, ("delta"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG && Z_LVAL_P(prop) > 0) {
             lcb_cmdcounter_delta(cmd, -1 * Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_decrement_options_ce, options, ZEND_STRL("initial"), 0, &ret);
+        prop = pcbc_read_property(pcbc_decrement_options_ce, options, ("initial"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdcounter_initial(cmd, Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_decrement_options_ce, options, ZEND_STRL("cas"), 0, &ret);
+        prop = pcbc_read_property(pcbc_decrement_options_ce, options, ("cas"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_STRING) {
             zend_string *decoded = php_base64_decode_str(Z_STR_P(prop));
             if (decoded) {

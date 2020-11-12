@@ -44,33 +44,33 @@ static void httpcb_getAllIndexes(void *ctx, zval *return_value, zval *response)
             object_init_ex(&index, pcbc_query_index_ce);
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("name"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("name"), val);
+                pcbc_update_property(pcbc_query_index_ce, &index, ("name"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("using"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("type"), val);
+                pcbc_update_property(pcbc_query_index_ce, &index, ("type"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("is_primary"));
             if (val && (Z_TYPE_P(val) == IS_FALSE || Z_TYPE_P(val) == IS_TRUE)) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("is_primary"), val);
+                pcbc_update_property(pcbc_query_index_ce, &index, ("is_primary"), val);
             } else {
-                zend_update_property_bool(pcbc_query_index_ce, &index, ZEND_STRL("is_primary"), 0);
+                pcbc_update_property_bool(pcbc_query_index_ce, &index, ("is_primary"), 0);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("state"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("state"), val);
+                pcbc_update_property(pcbc_query_index_ce, &index, ("state"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("keyspace_id"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("keyspace"), val);
+                pcbc_update_property(pcbc_query_index_ce, &index, ("keyspace"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("index_key"));
             if (val && Z_TYPE_P(val) == IS_ARRAY) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("index_key"), val);
+                pcbc_update_property(pcbc_query_index_ce, &index, ("index_key"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("condition"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("condition"), val);
+                pcbc_update_property(pcbc_query_index_ce, &index, ("condition"), val);
             }
             add_next_index_zval(return_value, &index);
         }
@@ -88,7 +88,7 @@ PHP_METHOD(QueryIndexManager, getAllIndexes)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_query_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_query_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -111,8 +111,8 @@ static int errcb_createIndex(void *ctx, zval *return_value)
     zend_bool *ignore_exists_error = (zend_bool *)ctx;
     if (*ignore_exists_error && return_value) {
         zval *code, *msg, rv1, rv2;
-        msg = zend_read_property(pcbc_default_exception_ce, return_value, ZEND_STRL("message"), 0, &rv1);
-        code = zend_read_property(pcbc_default_exception_ce, return_value, ZEND_STRL("code"), 0, &rv2);
+        msg = pcbc_read_property(pcbc_default_exception_ce, return_value, ("message"), 0, &rv1);
+        code = pcbc_read_property(pcbc_default_exception_ce, return_value, ("code"), 0, &rv2);
         if (code && Z_TYPE_P(code) == IS_LONG && msg && Z_TYPE_P(msg) == IS_STRING) {
             if ((Z_LVAL_P(code) == 5000 || Z_LVAL_P(code) == 4300) && strstr(Z_STRVAL_P(msg), " already exist")) {
                 return 0;
@@ -135,26 +135,26 @@ PHP_METHOD(QueryIndexManager, createIndex)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_query_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_query_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     smart_str with_options = {0};
     if (options) {
         zval *prop, ret;
-        prop = zend_read_property(pcbc_create_query_index_options_ce, options, ZEND_STRL("ignore_if_exists"), 0, &ret);
+        prop = pcbc_read_property(pcbc_create_query_index_options_ce, options, ("ignore_if_exists"), 0, &ret);
         if (prop && Z_TYPE_P(prop) == IS_TRUE) {
             ignore_exists_error = 1;
         }
-        prop = zend_read_property(pcbc_create_query_index_options_ce, options, ZEND_STRL("condition"), 0, &ret2);
+        prop = pcbc_read_property(pcbc_create_query_index_options_ce, options, ("condition"), 0, &ret2);
         if (prop && Z_TYPE_P(prop) == IS_STRING) {
             where = prop;
         }
         smart_str_appends(&with_options, "{");
-        prop = zend_read_property(pcbc_create_query_index_options_ce, options, ZEND_STRL("num_replicas"), 0, &ret);
+        prop = pcbc_read_property(pcbc_create_query_index_options_ce, options, ("num_replicas"), 0, &ret);
         if (prop && Z_TYPE_P(prop) == IS_LONG) {
             smart_str_append_printf(&with_options, "\\\"num_replicas\\\":%d", (int)Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_create_query_index_options_ce, options, ZEND_STRL("deferred"), 0, &ret);
+        prop = pcbc_read_property(pcbc_create_query_index_options_ce, options, ("deferred"), 0, &ret);
         if (prop && (Z_TYPE_P(prop) == IS_TRUE || Z_TYPE_P(prop) == IS_FALSE)) {
             if (ZSTR_LEN(with_options.s) > 2) {
                 smart_str_appendc(&with_options, ',');
@@ -216,29 +216,29 @@ PHP_METHOD(QueryIndexManager, createPrimaryIndex)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_query_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_query_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     smart_str with_options = {0};
     if (options) {
         zval *prop, ret;
-        prop = zend_read_property(pcbc_create_query_primary_index_options_ce, options, ZEND_STRL("ignore_if_exists"), 0,
+        prop = pcbc_read_property(pcbc_create_query_primary_index_options_ce, options, ("ignore_if_exists"), 0,
                                   &ret);
         if (prop && Z_TYPE_P(prop) == IS_TRUE) {
             ignore_exists_error = 1;
         }
         prop =
-            zend_read_property(pcbc_create_query_primary_index_options_ce, options, ZEND_STRL("index_name"), 0, &val2);
+            pcbc_read_property(pcbc_create_query_primary_index_options_ce, options, ("index_name"), 0, &val2);
         if (prop && Z_TYPE_P(prop) == IS_STRING) {
             index = prop;
         }
         smart_str_appends(&with_options, "{");
         prop =
-            zend_read_property(pcbc_create_query_primary_index_options_ce, options, ZEND_STRL("num_replicas"), 0, &ret);
+            pcbc_read_property(pcbc_create_query_primary_index_options_ce, options, ("num_replicas"), 0, &ret);
         if (prop && Z_TYPE_P(prop) == IS_LONG) {
             smart_str_append_printf(&with_options, "\\\"num_replicas\\\":%d", (int)Z_LVAL_P(prop));
         }
-        prop = zend_read_property(pcbc_create_query_primary_index_options_ce, options, ZEND_STRL("deferred"), 0, &ret);
+        prop = pcbc_read_property(pcbc_create_query_primary_index_options_ce, options, ("deferred"), 0, &ret);
         if (prop && (Z_TYPE_P(prop) == IS_TRUE || Z_TYPE_P(prop) == IS_FALSE)) {
             if (ZSTR_LEN(with_options.s) > 2) {
                 smart_str_appendc(&with_options, ',');
@@ -279,8 +279,8 @@ static int errcb_dropIndex(void *ctx, zval *return_value)
     zend_bool *ignore_exists_error = (zend_bool *)ctx;
     if (*ignore_exists_error && return_value) {
         zval *code, *msg, rv1, rv2;
-        msg = zend_read_property(pcbc_default_exception_ce, return_value, ZEND_STRL("message"), 0, &rv1);
-        code = zend_read_property(pcbc_default_exception_ce, return_value, ZEND_STRL("code"), 0, &rv2);
+        msg = pcbc_read_property(pcbc_default_exception_ce, return_value, ("message"), 0, &rv1);
+        code = pcbc_read_property(pcbc_default_exception_ce, return_value, ("code"), 0, &rv2);
         if (code && Z_TYPE_P(code) == IS_LONG && msg && Z_TYPE_P(msg) == IS_STRING) {
             switch (Z_LVAL_P(code)) {
             case 5000:
@@ -310,13 +310,13 @@ PHP_METHOD(QueryIndexManager, dropIndex)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_query_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_query_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     if (options) {
         zval *prop, ret;
         prop =
-            zend_read_property(pcbc_drop_query_index_options_ce, options, ZEND_STRL("ignore_if_not_exists"), 0, &ret);
+            pcbc_read_property(pcbc_drop_query_index_options_ce, options, ("ignore_if_not_exists"), 0, &ret);
         if (prop && Z_TYPE_P(prop) == IS_TRUE) {
             ignore_not_exists_error = 1;
         }
@@ -349,17 +349,17 @@ PHP_METHOD(QueryIndexManager, dropPrimaryIndex)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_query_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_query_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     if (options) {
         zval *prop, ret;
-        prop = zend_read_property(pcbc_drop_query_primary_index_options_ce, options, ZEND_STRL("ignore_if_not_exists"),
+        prop = pcbc_read_property(pcbc_drop_query_primary_index_options_ce, options, ("ignore_if_not_exists"),
                                   0, &ret);
         if (prop && Z_TYPE_P(prop) == IS_TRUE) {
             ignore_not_exists_error = 1;
         }
-        prop = zend_read_property(pcbc_drop_query_primary_index_options_ce, options, ZEND_STRL("index_name"), 0, &val2);
+        prop = pcbc_read_property(pcbc_drop_query_primary_index_options_ce, options, ("index_name"), 0, &val2);
         if (prop && Z_TYPE_P(prop) == IS_STRING) {
             index = prop;
         }
@@ -458,7 +458,7 @@ PHP_METHOD(QueryIndexManager, watchIndexes)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_query_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_query_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     struct watch_context ctx;
@@ -470,7 +470,7 @@ PHP_METHOD(QueryIndexManager, watchIndexes)
 
     if (options) {
         zval ret;
-        prop = zend_read_property(pcbc_watch_query_indexes_options_ce, options, ZEND_STRL("watch_primary"), 0, &ret);
+        prop = pcbc_read_property(pcbc_watch_query_indexes_options_ce, options, ("watch_primary"), 0, &ret);
         if (prop && Z_TYPE_P(prop) == IS_TRUE) {
             ctx.watch_primary = 1;
         }
@@ -504,7 +504,7 @@ PHP_METHOD(QueryIndexManager, buildDeferredIndexes)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_query_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_query_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -581,7 +581,7 @@ PHP_METHOD(QueryIndex, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_query_index_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_query_index_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -592,7 +592,7 @@ PHP_METHOD(QueryIndex, isPrimary)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_query_index_ce, getThis(), ZEND_STRL("is_primary"), 0, &rv);
+    prop = pcbc_read_property(pcbc_query_index_ce, getThis(), ("is_primary"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -603,7 +603,7 @@ PHP_METHOD(QueryIndex, type)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_query_index_ce, getThis(), ZEND_STRL("type"), 0, &rv);
+    prop = pcbc_read_property(pcbc_query_index_ce, getThis(), ("type"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -614,7 +614,7 @@ PHP_METHOD(QueryIndex, state)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_query_index_ce, getThis(), ZEND_STRL("state"), 0, &rv);
+    prop = pcbc_read_property(pcbc_query_index_ce, getThis(), ("state"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -625,7 +625,7 @@ PHP_METHOD(QueryIndex, keyspace)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_query_index_ce, getThis(), ZEND_STRL("keyspace"), 0, &rv);
+    prop = pcbc_read_property(pcbc_query_index_ce, getThis(), ("keyspace"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -636,7 +636,7 @@ PHP_METHOD(QueryIndex, indexKey)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_query_index_ce, getThis(), ZEND_STRL("index_key"), 0, &rv);
+    prop = pcbc_read_property(pcbc_query_index_ce, getThis(), ("index_key"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -647,7 +647,7 @@ PHP_METHOD(QueryIndex, condition)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_query_index_ce, getThis(), ZEND_STRL("condition"), 0, &rv);
+    prop = pcbc_read_property(pcbc_query_index_ce, getThis(), ("condition"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -692,7 +692,7 @@ PHP_METHOD(CreateQueryIndexOptions, condition)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("condition"), val);
+    pcbc_update_property_str(pcbc_create_query_index_options_ce, getThis(), ("condition"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -703,7 +703,7 @@ PHP_METHOD(CreateQueryIndexOptions, ignoreIfExists)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("ignore_if_exists"),
+    pcbc_update_property_bool(pcbc_create_query_index_options_ce, getThis(), ("ignore_if_exists"),
                               val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -715,7 +715,7 @@ PHP_METHOD(CreateQueryIndexOptions, deferred)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("deferred"), val);
+    pcbc_update_property_bool(pcbc_create_query_index_options_ce, getThis(), ("deferred"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -726,7 +726,7 @@ PHP_METHOD(CreateQueryIndexOptions, numReplicas)
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("num_replicas"), val);
+    pcbc_update_property_long(pcbc_create_query_index_options_ce, getThis(), ("num_replicas"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -767,7 +767,7 @@ PHP_METHOD(CreateQueryPrimaryIndexOptions, indexName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_create_query_primary_index_options_ce, getThis(), ZEND_STRL("index_name"),
+    pcbc_update_property_str(pcbc_create_query_primary_index_options_ce, getThis(), ("index_name"),
                              val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -779,7 +779,7 @@ PHP_METHOD(CreateQueryPrimaryIndexOptions, ignoreIfExists)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_create_query_primary_index_options_ce, getThis(), ZEND_STRL("ignore_if_exists"),
+    pcbc_update_property_bool(pcbc_create_query_primary_index_options_ce, getThis(), ("ignore_if_exists"),
                               val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -791,7 +791,7 @@ PHP_METHOD(CreateQueryPrimaryIndexOptions, deferred)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_create_query_primary_index_options_ce, getThis(), ZEND_STRL("deferred"),
+    pcbc_update_property_bool(pcbc_create_query_primary_index_options_ce, getThis(), ("deferred"),
                               val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -803,7 +803,7 @@ PHP_METHOD(CreateQueryPrimaryIndexOptions, numReplicas)
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_create_query_primary_index_options_ce, getThis(), ZEND_STRL("num_replicas"),
+    pcbc_update_property_long(pcbc_create_query_primary_index_options_ce, getThis(), ("num_replicas"),
                               val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -845,7 +845,7 @@ PHP_METHOD(DropQueryIndexOptions, ignoreIfNotExists)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_drop_query_index_options_ce, getThis(), ZEND_STRL("ignore_if_not_exists"),
+    pcbc_update_property_bool(pcbc_drop_query_index_options_ce, getThis(), ("ignore_if_not_exists"),
                               val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -869,7 +869,7 @@ PHP_METHOD(DropQueryPrimaryIndexOptions, indexName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_drop_query_primary_index_options_ce, getThis(), ZEND_STRL("index_name"),
+    pcbc_update_property_str(pcbc_drop_query_primary_index_options_ce, getThis(), ("index_name"),
                              val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -881,7 +881,7 @@ PHP_METHOD(DropQueryPrimaryIndexOptions, ignoreIfNotExists)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_drop_query_primary_index_options_ce, getThis(), ZEND_STRL("ignore_if_not_exists"),
+    pcbc_update_property_bool(pcbc_drop_query_primary_index_options_ce, getThis(), ("ignore_if_not_exists"),
                               val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -911,7 +911,7 @@ PHP_METHOD(WatchQueryIndexesOptions, watchPrimary)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_watch_query_indexes_options_ce, getThis(), ZEND_STRL("watch_primary"),
+    pcbc_update_property_bool(pcbc_watch_query_indexes_options_ce, getThis(), ("watch_primary"),
                               val);
     RETURN_ZVAL(getThis(), 1, 0);
 }

@@ -29,35 +29,35 @@ static void parse_index_entry(zval *return_value, zval *response)
     zval *val;
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("name"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_search_index_ce, return_value, ZEND_STRL("name"), val);
+        pcbc_update_property(pcbc_search_index_ce, return_value, ("name"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("uuid"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_search_index_ce, return_value, ZEND_STRL("uuid"), val);
+        pcbc_update_property(pcbc_search_index_ce, return_value, ("uuid"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("type"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_search_index_ce, return_value, ZEND_STRL("type"), val);
+        pcbc_update_property(pcbc_search_index_ce, return_value, ("type"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("params"));
     if (val) {
-        zend_update_property(pcbc_search_index_ce, return_value, ZEND_STRL("params"), val);
+        pcbc_update_property(pcbc_search_index_ce, return_value, ("params"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("sourceName"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_search_index_ce, return_value, ZEND_STRL("source_name"), val);
+        pcbc_update_property(pcbc_search_index_ce, return_value, ("source_name"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("sourceUUID"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_search_index_ce, return_value, ZEND_STRL("source_uuid"), val);
+        pcbc_update_property(pcbc_search_index_ce, return_value, ("source_uuid"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("sourceType"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_search_index_ce, return_value, ZEND_STRL("source_type"), val);
+        pcbc_update_property(pcbc_search_index_ce, return_value, ("source_type"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("sourceParams"));
     if (val) {
-        zend_update_property(pcbc_search_index_ce, return_value, ZEND_STRL("source_params"), val);
+        pcbc_update_property(pcbc_search_index_ce, return_value, ("source_params"), val);
     }
 }
 
@@ -92,7 +92,7 @@ PHP_METHOD(SearchIndexManager, getAllIndexes)
     if (zend_parse_parameters_none_throw() == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -123,7 +123,7 @@ PHP_METHOD(SearchIndexManager, getIndex)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/api/index/%.*s", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -149,7 +149,7 @@ PHP_METHOD(SearchIndexManager, dropIndex)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/api/index/%.*s", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -176,10 +176,10 @@ PHP_METHOD(SearchIndexManager, upsertIndex)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
-    name = zend_read_property(pcbc_search_index_ce, index, ZEND_STRL("name"), 0, &val2);
+    name = pcbc_read_property(pcbc_search_index_ce, index, ("name"), 0, &val2);
     if (!name || Z_TYPE_P(name) != IS_STRING) {
         RETURN_NULL();
     }
@@ -227,7 +227,7 @@ PHP_METHOD(SearchIndexManager, getIndexedDocumentsCount)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/api/index/%.*s/count", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -253,7 +253,7 @@ PHP_METHOD(SearchIndexManager, pauseIngest)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/api/index/%.*s/ingestControl/pause", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -279,7 +279,7 @@ PHP_METHOD(SearchIndexManager, resumeIngest)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/api/index/%.*s/ingestControl/resume", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -305,7 +305,7 @@ PHP_METHOD(SearchIndexManager, allowQuerying)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/api/index/%.*s/queryControl/allow", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -331,7 +331,7 @@ PHP_METHOD(SearchIndexManager, disallowQuerying)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/api/index/%.*s/queryControl/disallow", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -357,7 +357,7 @@ PHP_METHOD(SearchIndexManager, freezePlan)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/api/index/%.*s/planFreezeControl/freeze", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -383,7 +383,7 @@ PHP_METHOD(SearchIndexManager, unfreezePlan)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/api/index/%.*s/planFreezeControl/unfreeze", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -417,7 +417,7 @@ PHP_METHOD(SearchIndexManager, analyzeDocument)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_search_index_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_search_index_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/api/index/%.*s/analyzeDoc", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -515,7 +515,7 @@ PHP_METHOD(SearchIndex, type)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("type"), 0, &rv);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("type"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -526,7 +526,7 @@ PHP_METHOD(SearchIndex, uuid)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("uuid"), 0, &rv);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("uuid"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -537,7 +537,7 @@ PHP_METHOD(SearchIndex, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -548,7 +548,7 @@ PHP_METHOD(SearchIndex, params)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("params"), 0, &rv);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("params"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -559,7 +559,7 @@ PHP_METHOD(SearchIndex, sourceType)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("source_type"), 0, &rv);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("source_type"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -570,7 +570,7 @@ PHP_METHOD(SearchIndex, sourceUuid)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("source_uuid"), 0, &rv);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("source_uuid"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -581,7 +581,7 @@ PHP_METHOD(SearchIndex, sourceName)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("source_name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("source_name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -592,7 +592,7 @@ PHP_METHOD(SearchIndex, sourceParams)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("source_params"), 0, &rv);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("source_params"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -603,7 +603,7 @@ PHP_METHOD(SearchIndex, setType)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_index_ce, getThis(), ZEND_STRL("type"), val);
+    pcbc_update_property_str(pcbc_search_index_ce, getThis(), ("type"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -614,7 +614,7 @@ PHP_METHOD(SearchIndex, setUuid)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_index_ce, getThis(), ZEND_STRL("uuid"), val);
+    pcbc_update_property_str(pcbc_search_index_ce, getThis(), ("uuid"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -625,7 +625,7 @@ PHP_METHOD(SearchIndex, setName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_index_ce, getThis(), ZEND_STRL("name"), val);
+    pcbc_update_property_str(pcbc_search_index_ce, getThis(), ("name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -636,7 +636,7 @@ PHP_METHOD(SearchIndex, setParams)
         RETURN_NULL();
     }
 
-    zend_update_property(pcbc_search_index_ce, getThis(), ZEND_STRL("params"), val);
+    pcbc_update_property(pcbc_search_index_ce, getThis(), ("params"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -647,7 +647,7 @@ PHP_METHOD(SearchIndex, setSourceType)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_index_ce, getThis(), ZEND_STRL("source_type"), val);
+    pcbc_update_property_str(pcbc_search_index_ce, getThis(), ("source_type"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -658,7 +658,7 @@ PHP_METHOD(SearchIndex, setSourceUuid)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_index_ce, getThis(), ZEND_STRL("source_uuid"), val);
+    pcbc_update_property_str(pcbc_search_index_ce, getThis(), ("source_uuid"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -669,7 +669,7 @@ PHP_METHOD(SearchIndex, setSourceName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_index_ce, getThis(), ZEND_STRL("source_name"), val);
+    pcbc_update_property_str(pcbc_search_index_ce, getThis(), ("source_name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -680,7 +680,7 @@ PHP_METHOD(SearchIndex, setSourceParams)
         RETURN_NULL();
     }
 
-    zend_update_property(pcbc_search_index_ce, getThis(), ZEND_STRL("source_params"), val);
+    pcbc_update_property(pcbc_search_index_ce, getThis(), ("source_params"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -693,35 +693,35 @@ PHP_METHOD(SearchIndex, jsonSerialize)
     array_init(return_value);
 
     zval *prop, ret;
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("type"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("type"), 0, &ret);
     if (prop && Z_TYPE_P(prop) == IS_STRING) {
         add_assoc_zval(return_value, "type", prop);
     }
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("name"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("name"), 0, &ret);
     if (prop && Z_TYPE_P(prop) == IS_STRING) {
         add_assoc_zval(return_value, "name", prop);
     }
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("uuid"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("uuid"), 0, &ret);
     if (prop && Z_TYPE_P(prop) == IS_STRING) {
         add_assoc_zval(return_value, "uuid", prop);
     }
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("params"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("params"), 0, &ret);
     if (prop && Z_TYPE_P(prop) == IS_ARRAY) {
         add_assoc_zval(return_value, "params", prop);
     }
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("source_type"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("source_type"), 0, &ret);
     if (prop && Z_TYPE_P(prop) == IS_STRING) {
         add_assoc_zval(return_value, "sourceType", prop);
     }
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("source_name"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("source_name"), 0, &ret);
     if (prop && Z_TYPE_P(prop) == IS_STRING) {
         add_assoc_zval(return_value, "sourceName", prop);
     }
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("source_uuid"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("source_uuid"), 0, &ret);
     if (prop && Z_TYPE_P(prop) == IS_STRING) {
         add_assoc_zval(return_value, "sourceUUID", prop);
     }
-    prop = zend_read_property(pcbc_search_index_ce, getThis(), ZEND_STRL("source_params"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_index_ce, getThis(), ("source_params"), 0, &ret);
     if (prop && Z_TYPE_P(prop) == IS_ARRAY) {
         add_assoc_zval(return_value, "sourceParams", prop);
     }

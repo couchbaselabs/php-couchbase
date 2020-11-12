@@ -172,7 +172,7 @@ PHP_METHOD(Bucket, collections)
     }
 
     object_init_ex(return_value, pcbc_collection_manager_ce);
-    zend_update_property(pcbc_collection_manager_ce, return_value, ZEND_STRL("bucket"), getThis());
+    pcbc_update_property(pcbc_collection_manager_ce, return_value, ("bucket"), getThis());
 }
 
 PHP_METHOD(Bucket, viewIndexes)
@@ -182,7 +182,7 @@ PHP_METHOD(Bucket, viewIndexes)
     }
 
     object_init_ex(return_value, pcbc_view_index_manager_ce);
-    zend_update_property(pcbc_view_index_manager_ce, return_value, ZEND_STRL("bucket"), getThis());
+    pcbc_update_property(pcbc_view_index_manager_ce, return_value, ("bucket"), getThis());
 }
 
 PHP_METHOD(Bucket, defaultCollection)
@@ -195,7 +195,7 @@ PHP_METHOD(Bucket, defaultCollection)
     }
 
     object_init_ex(return_value, pcbc_collection_ce);
-    zend_update_property(pcbc_collection_ce, return_value, ZEND_STRL("bucket"), getThis());
+    pcbc_update_property(pcbc_collection_ce, return_value, ("bucket"), getThis());
 }
 
 PHP_METHOD(Bucket, defaultScope)
@@ -208,7 +208,7 @@ PHP_METHOD(Bucket, defaultScope)
     }
 
     object_init_ex(return_value, pcbc_scope_ce);
-    zend_update_property(pcbc_scope_ce, return_value, ZEND_STRL("bucket"), getThis());
+    pcbc_update_property(pcbc_scope_ce, return_value, ("bucket"), getThis());
 }
 
 PHP_METHOD(Bucket, scope)
@@ -222,8 +222,8 @@ PHP_METHOD(Bucket, scope)
     }
 
     object_init_ex(return_value, pcbc_scope_ce);
-    zend_update_property(pcbc_scope_ce, return_value, ZEND_STRL("bucket"), getThis());
-    zend_update_property_str(pcbc_scope_ce, return_value, ZEND_STRL("name"), name);
+    pcbc_update_property(pcbc_scope_ce, return_value, ("bucket"), getThis());
+    pcbc_update_property_str(pcbc_scope_ce, return_value, ("name"), name);
 }
 
 ZEND_BEGIN_ARG_INFO_EX(ai_Bucket_none, 0, 0, 0)
@@ -345,13 +345,18 @@ static zend_object *pcbc_bucket_create_object(zend_class_entry *class_type)
     return &obj->std;
 }
 
+#if PHP_VERSION_ID < 80000
 static HashTable *pcbc_bucket_get_debug_info(zval *object, int *is_temp)
 {
-    pcbc_bucket_t *obj = NULL;
+    pcbc_bucket_t *obj = Z_BUCKET_OBJ_P(object);;
+#else
+static HashTable *pcbc_bucket_get_debug_info(zend_object *object, int *is_temp)
+{
+    pcbc_bucket_t *obj = pcbc_bucket_fetch_object(object);;
+#endif
     zval retval;
 
     *is_temp = 1;
-    obj = Z_BUCKET_OBJ_P(object);
 
     array_init(&retval);
     switch (obj->type) {

@@ -35,7 +35,7 @@ PHP_METHOD(BooleanSearchQuery, boost)
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
+    pcbc_update_property_double(pcbc_boolean_search_query_ce, getThis(), ("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -49,7 +49,7 @@ PHP_METHOD(BooleanSearchQuery, must)
         return;
     }
 
-    zend_update_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("must"), conjunct);
+    pcbc_update_property(pcbc_boolean_search_query_ce, getThis(), ("must"), conjunct);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -63,7 +63,7 @@ PHP_METHOD(BooleanSearchQuery, mustNot)
         return;
     }
 
-    zend_update_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("mustNot"), disjunct);
+    pcbc_update_property(pcbc_boolean_search_query_ce, getThis(), ("mustNot"), disjunct);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -77,7 +77,7 @@ PHP_METHOD(BooleanSearchQuery, should)
         return;
     }
 
-    zend_update_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("should"), disjunct);
+    pcbc_update_property(pcbc_boolean_search_query_ce, getThis(), ("should"), disjunct);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -94,25 +94,25 @@ PHP_METHOD(BooleanSearchQuery, jsonSerialize)
     array_init(return_value);
     zval *prop, ret;
 
-    prop = zend_read_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("must"), 0, &ret);
+    prop = pcbc_read_property(pcbc_boolean_search_query_ce, getThis(), ("must"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "must", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("must_not"), 0, &ret);
+    prop = pcbc_read_property(pcbc_boolean_search_query_ce, getThis(), ("must_not"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "must_not", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("should"), 0, &ret);
+    prop = pcbc_read_property(pcbc_boolean_search_query_ce, getThis(), ("should"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "should", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("boost"), 0, &ret);
+    prop = pcbc_read_property(pcbc_boolean_search_query_ce, getThis(), ("boost"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "boost", prop);
         Z_TRY_ADDREF_P(prop);

@@ -168,13 +168,19 @@ static zend_object *authenticator_create_object(zend_class_entry *class_type)
     return &obj->std;
 }
 
+
+#if PHP_VERSION_ID < 80000
 static HashTable *pcbc_password_authenticator_get_debug_info(zval *object, int *is_temp)
 {
-    pcbc_password_authenticator_t *obj = NULL;
+    pcbc_password_authenticator_t *obj = Z_PASSWORD_AUTHENTICATOR_OBJ_P(object);
+#else
+static HashTable *pcbc_password_authenticator_get_debug_info(zend_object *object, int *is_temp)
+{
+    pcbc_password_authenticator_t *obj = pcbc_password_authenticator_fetch_object(object);
+#endif
     zval retval;
 
     *is_temp = 1;
-    obj = Z_PASSWORD_AUTHENTICATOR_OBJ_P(object);
 
     array_init(&retval);
     if (obj->username) {

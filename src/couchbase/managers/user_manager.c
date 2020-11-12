@@ -39,15 +39,15 @@ static void httpcb_getUser(void *ctx, zval *return_value, zval *response)
     object_init_ex(return_value, pcbc_user_and_metadata_ce);
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("domain"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_user_and_metadata_ce, return_value, ZEND_STRL("domain"), val);
+        pcbc_update_property(pcbc_user_and_metadata_ce, return_value, ("domain"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("password_change_date"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_user_and_metadata_ce, return_value, ZEND_STRL("password_changed"), val);
+        pcbc_update_property(pcbc_user_and_metadata_ce, return_value, ("password_changed"), val);
     }
     zval external_groups;
     array_init(&external_groups);
-    zend_update_property(pcbc_user_and_metadata_ce, return_value, ZEND_STRL("external_groups"),
+    pcbc_update_property(pcbc_user_and_metadata_ce, return_value, ("external_groups"),
                          &external_groups);
     zval_ptr_dtor(&external_groups);
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("external_groups"));
@@ -62,19 +62,19 @@ static void httpcb_getUser(void *ctx, zval *return_value, zval *response)
 
     zval user;
     object_init_ex(&user, pcbc_user_ce);
-    zend_update_property(pcbc_user_and_metadata_ce, return_value, ZEND_STRL("user"), &user);
+    pcbc_update_property(pcbc_user_and_metadata_ce, return_value, ("user"), &user);
     zval_ptr_dtor(&user);
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("id"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_user_ce, &user, ZEND_STRL("username"), val);
+        pcbc_update_property(pcbc_user_ce, &user, ("username"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("name"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_user_ce, &user, ZEND_STRL("display_name"), val);
+        pcbc_update_property(pcbc_user_ce, &user, ("display_name"), val);
     }
     zval groups;
     array_init(&groups);
-    zend_update_property(pcbc_user_ce, &user, ZEND_STRL("groups"), &groups);
+    pcbc_update_property(pcbc_user_ce, &user, ("groups"), &groups);
     zval_ptr_dtor(&groups);
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("groups"));
     if (val && Z_TYPE_P(val) == IS_ARRAY) {
@@ -87,12 +87,12 @@ static void httpcb_getUser(void *ctx, zval *return_value, zval *response)
     }
     zval user_roles;
     array_init(&user_roles);
-    zend_update_property(pcbc_user_ce, &user, ZEND_STRL("roles"), &user_roles);
+    pcbc_update_property(pcbc_user_ce, &user, ("roles"), &user_roles);
     zval_ptr_dtor(&user_roles);
 
     zval roles;
     array_init(&roles);
-    zend_update_property(pcbc_user_and_metadata_ce, return_value, ZEND_STRL("effective_roles"), &roles);
+    pcbc_update_property(pcbc_user_and_metadata_ce, return_value, ("effective_roles"), &roles);
     zval_ptr_dtor(&roles);
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("roles"));
     if (val && Z_TYPE_P(val) == IS_ARRAY) {
@@ -103,19 +103,19 @@ static void httpcb_getUser(void *ctx, zval *return_value, zval *response)
             object_init_ex(&role, pcbc_role_ce);
             val = zend_symtable_str_find(Z_ARRVAL_P(ent), ZEND_STRL("role"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_role_ce, &role, ZEND_STRL("name"), val);
+                pcbc_update_property(pcbc_role_ce, &role, ("name"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(ent), ZEND_STRL("bucket_name"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_role_ce, &role, ZEND_STRL("bucket"), val);
+                pcbc_update_property(pcbc_role_ce, &role, ("bucket"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(ent), ZEND_STRL("scope_name"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_role_ce, &role, ZEND_STRL("scope"), val);
+                pcbc_update_property(pcbc_role_ce, &role, ("scope"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(ent), ZEND_STRL("collection_name"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_role_ce, &role, ZEND_STRL("collection"), val);
+                pcbc_update_property(pcbc_role_ce, &role, ("collection"), val);
             }
             int is_user_role = 0;
             zval origins;
@@ -129,11 +129,11 @@ static void httpcb_getUser(void *ctx, zval *return_value, zval *response)
                     object_init_ex(&origin, pcbc_origin_ce);
                     val = zend_symtable_str_find(Z_ARRVAL_P(e), ZEND_STRL("name"));
                     if (val && Z_TYPE_P(val) == IS_STRING) {
-                        zend_update_property(pcbc_origin_ce, &origin, ZEND_STRL("name"), val);
+                        pcbc_update_property(pcbc_origin_ce, &origin, ("name"), val);
                     }
                     val = zend_symtable_str_find(Z_ARRVAL_P(e), ZEND_STRL("type"));
                     if (val && Z_TYPE_P(val) == IS_STRING) {
-                        zend_update_property(pcbc_origin_ce, &origin, ZEND_STRL("type"), val);
+                        pcbc_update_property(pcbc_origin_ce, &origin, ("type"), val);
                         if (zend_binary_strcmp("user", 4, Z_STRVAL_P(val), Z_STRLEN_P(val)) == 0) {
                             is_user_role = 1;
                         }
@@ -149,9 +149,9 @@ static void httpcb_getUser(void *ctx, zval *return_value, zval *response)
             }
             zval role_and_origins;
             object_init_ex(&role_and_origins, pcbc_role_and_origins_ce);
-            zend_update_property(pcbc_role_and_origins_ce, &role_and_origins, ZEND_STRL("role"), &role);
+            pcbc_update_property(pcbc_role_and_origins_ce, &role_and_origins, ("role"), &role);
             zval_ptr_dtor(&role);
-            zend_update_property(pcbc_role_and_origins_ce, &role_and_origins, ZEND_STRL("origins"), &origins);
+            pcbc_update_property(pcbc_role_and_origins_ce, &role_and_origins, ("origins"), &origins);
             zval_ptr_dtor(&origins);
             add_next_index_zval(&roles, &role_and_origins);
         }
@@ -171,13 +171,13 @@ PHP_METHOD(UserManager, getUser)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_user_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     smart_str path = {0};
     if (options) {
         zval dval, *domain;
-        domain = zend_read_property(pcbc_get_user_options_ce, options, ZEND_STRL("domain_name"), 0, &dval);
+        domain = pcbc_read_property(pcbc_get_user_options_ce, options, ("domain_name"), 0, &dval);
         if (domain && Z_TYPE_P(domain) == IS_STRING) {
             smart_str_append_printf(&path, "/settings/rbac/users/%.*s", (int)Z_STRLEN_P(domain), Z_STRVAL_P(domain));
         }
@@ -226,11 +226,11 @@ PHP_METHOD(UserManager, getAllUsers)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_user_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
     if (options) {
         zval dval, *domain;
-        domain = zend_read_property(pcbc_get_all_users_options_ce, options, ZEND_STRL("domain_name"), 0, &dval);
+        domain = pcbc_read_property(pcbc_get_all_users_options_ce, options, ("domain_name"), 0, &dval);
         if (domain && Z_TYPE_P(domain) == IS_STRING) {
             path_len = spprintf(&path, 0, "/settings/rbac/users/%.*s", (int)Z_STRLEN_P(domain), Z_STRVAL_P(domain));
             need_to_free_path = 1;
@@ -259,9 +259,9 @@ PHP_METHOD(UserManager, upsertUser)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_user_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
-    username = zend_read_property(pcbc_user_ce, user, ZEND_STRL("username"), 0, &val);
+    username = pcbc_read_property(pcbc_user_ce, user, ("username"), 0, &val);
     if (!username || Z_TYPE_P(username) != IS_STRING) {
         RETURN_NULL();
     }
@@ -269,7 +269,7 @@ PHP_METHOD(UserManager, upsertUser)
     smart_str path = {0};
     if (options) {
         zval dval, *domain;
-        domain = zend_read_property(pcbc_upsert_user_options_ce, options, ZEND_STRL("domain_name"), 0, &dval);
+        domain = pcbc_read_property(pcbc_upsert_user_options_ce, options, ("domain_name"), 0, &dval);
         if (domain && Z_TYPE_P(domain) == IS_STRING) {
             smart_str_append_printf(&path, "/settings/rbac/users/%.*s", (int)Z_STRLEN_P(domain), Z_STRVAL_P(domain));
         }
@@ -288,16 +288,16 @@ PHP_METHOD(UserManager, upsertUser)
 
     zval payload;
     array_init(&payload);
-    prop = zend_read_property(pcbc_user_ce, user, ZEND_STRL("display_name"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_ce, user, ("display_name"), 0, &val);
     if (prop && Z_TYPE_P(prop) == IS_STRING) {
         add_assoc_zval(&payload, "name", prop);
     }
-    prop = zend_read_property(pcbc_user_ce, user, ZEND_STRL("password"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_ce, user, ("password"), 0, &val);
     if (prop && Z_TYPE_P(prop) == IS_STRING) {
         add_assoc_zval(&payload, "password", prop);
     }
     smart_str buf = {0};
-    prop = zend_read_property(pcbc_user_ce, user, ZEND_STRL("groups"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_ce, user, ("groups"), 0, &val);
     if (prop && Z_TYPE_P(prop) == IS_ARRAY && zend_array_count(Z_ARRVAL_P(prop)) > 0) {
         add_assoc_zval(&payload, "groups", prop);
         zval *entry;
@@ -313,24 +313,24 @@ PHP_METHOD(UserManager, upsertUser)
         add_assoc_stringl(&payload, "groups", ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
         smart_str_free(&buf);
     }
-    prop = zend_read_property(pcbc_user_ce, user, ZEND_STRL("roles"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_ce, user, ("roles"), 0, &val);
     if (prop && Z_TYPE_P(prop) == IS_ARRAY && zend_array_count(Z_ARRVAL_P(prop)) > 0) {
         zval *entry;
         ZEND_HASH_FOREACH_VAL(HASH_OF(prop), entry)
         {
             zval zv;
-            prop = zend_read_property(pcbc_role_ce, entry, ZEND_STRL("name"), 0, &zv);
+            prop = pcbc_read_property(pcbc_role_ce, entry, ("name"), 0, &zv);
             if (!prop || Z_TYPE_P(prop) != IS_STRING) {
                 continue;
             }
             smart_str_append_printf(&buf, "%.*s", (int)Z_STRLEN_P(prop), Z_STRVAL_P(prop));
-            prop = zend_read_property(pcbc_role_ce, entry, ZEND_STRL("bucket"), 0, &zv);
+            prop = pcbc_read_property(pcbc_role_ce, entry, ("bucket"), 0, &zv);
             if (prop && Z_TYPE_P(prop) == IS_STRING) {
                 smart_str_append_printf(&buf, "[%.*s", (int)Z_STRLEN_P(prop), Z_STRVAL_P(prop));
-                prop = zend_read_property(pcbc_role_ce, entry, ZEND_STRL("scope"), 0, &zv);
+                prop = pcbc_read_property(pcbc_role_ce, entry, ("scope"), 0, &zv);
                 if (prop && Z_TYPE_P(prop) == IS_STRING) {
                     smart_str_append_printf(&buf, ":%.*s", (int)Z_STRLEN_P(prop), Z_STRVAL_P(prop));
-                    prop = zend_read_property(pcbc_role_ce, entry, ZEND_STRL("collection"), 0, &zv);
+                    prop = pcbc_read_property(pcbc_role_ce, entry, ("collection"), 0, &zv);
                     if (prop && Z_TYPE_P(prop) == IS_STRING) {
                         smart_str_append_printf(&buf, ":%.*s", (int)Z_STRLEN_P(prop), Z_STRVAL_P(prop));
                     }
@@ -371,13 +371,13 @@ PHP_METHOD(UserManager, dropUser)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_user_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     smart_str path = {0};
     if (options) {
         zval dval, *domain;
-        domain = zend_read_property(pcbc_drop_user_options_ce, options, ZEND_STRL("domain_name"), 0, &dval);
+        domain = pcbc_read_property(pcbc_drop_user_options_ce, options, ("domain_name"), 0, &dval);
         if (domain && Z_TYPE_P(domain) == IS_STRING) {
             smart_str_append_printf(&path, "/settings/rbac/users/%.*s", (int)Z_STRLEN_P(domain), Z_STRVAL_P(domain));
         }
@@ -411,33 +411,33 @@ static void httpcb_getRoles(void *ctx, zval *return_value, zval *response)
         zval *val;
         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("role"));
         if (val && Z_TYPE_P(val) == IS_STRING) {
-            zend_update_property(pcbc_role_ce, &role, ZEND_STRL("name"), val);
+            pcbc_update_property(pcbc_role_ce, &role, ("name"), val);
         }
         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("bucket_name"));
         if (val && Z_TYPE_P(val) == IS_STRING) {
-            zend_update_property(pcbc_role_ce, &role, ZEND_STRL("bucket"), val);
+            pcbc_update_property(pcbc_role_ce, &role, ("bucket"), val);
         }
         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("scope_name"));
         if (val && Z_TYPE_P(val) == IS_STRING) {
-            zend_update_property(pcbc_role_ce, &role, ZEND_STRL("scope"), val);
+            pcbc_update_property(pcbc_role_ce, &role, ("scope"), val);
         }
         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("collection_name"));
         if (val && Z_TYPE_P(val) == IS_STRING) {
-            zend_update_property(pcbc_role_ce, &role, ZEND_STRL("collection"), val);
+            pcbc_update_property(pcbc_role_ce, &role, ("collection"), val);
         }
 
         zval role_and_desc;
         object_init_ex(&role_and_desc, pcbc_role_and_description_ce);
-        zend_update_property(pcbc_role_and_description_ce, &role_and_desc, ZEND_STRL("role"), &role);
+        pcbc_update_property(pcbc_role_and_description_ce, &role_and_desc, ("role"), &role);
         zval_ptr_dtor(&role);
         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("name"));
         if (val && Z_TYPE_P(val) == IS_STRING) {
-            zend_update_property(pcbc_role_and_description_ce, &role_and_desc, ZEND_STRL("display_name"),
+            pcbc_update_property(pcbc_role_and_description_ce, &role_and_desc, ("display_name"),
                                  val);
         }
         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("desc"));
         if (val && Z_TYPE_P(val) == IS_STRING) {
-            zend_update_property(pcbc_role_and_description_ce, &role_and_desc, ZEND_STRL("description"), val);
+            pcbc_update_property(pcbc_role_and_description_ce, &role_and_desc, ("description"), val);
         }
 
         add_next_index_zval(return_value, &role_and_desc);
@@ -454,7 +454,7 @@ PHP_METHOD(UserManager, getRoles)
     if (zend_parse_parameters_none_throw() == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_user_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -474,20 +474,20 @@ static void httpcb_getGroup(void *ctx, zval *return_value, zval *response)
     zval *val;
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("id"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_group_ce, return_value, ZEND_STRL("name"), val);
+        pcbc_update_property(pcbc_group_ce, return_value, ("name"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("ldap_group_ref"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_group_ce, return_value, ZEND_STRL("ldap_group_reference"), val);
+        pcbc_update_property(pcbc_group_ce, return_value, ("ldap_group_reference"), val);
     }
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("description"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
-        zend_update_property(pcbc_group_ce, return_value, ZEND_STRL("description"), val);
+        pcbc_update_property(pcbc_group_ce, return_value, ("description"), val);
     }
 
     zval roles;
     array_init(&roles);
-    zend_update_property(pcbc_group_ce, return_value, ZEND_STRL("roles"), &roles);
+    pcbc_update_property(pcbc_group_ce, return_value, ("roles"), &roles);
     zval_ptr_dtor(&roles);
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("roles"));
     if (val && Z_TYPE_P(val) == IS_ARRAY) {
@@ -498,19 +498,19 @@ static void httpcb_getGroup(void *ctx, zval *return_value, zval *response)
             object_init_ex(&role, pcbc_role_ce);
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("role"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_role_ce, &role, ZEND_STRL("name"), val);
+                pcbc_update_property(pcbc_role_ce, &role, ("name"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("bucket_name"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_role_ce, &role, ZEND_STRL("bucket"), val);
+                pcbc_update_property(pcbc_role_ce, &role, ("bucket"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("scope_name"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_role_ce, &role, ZEND_STRL("scope"), val);
+                pcbc_update_property(pcbc_role_ce, &role, ("scope"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("collection_name"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_role_ce, &role, ZEND_STRL("collection"), val);
+                pcbc_update_property(pcbc_role_ce, &role, ("collection"), val);
             }
 
             add_next_index_zval(&roles, &role);
@@ -531,7 +531,7 @@ PHP_METHOD(UserManager, getGroup)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_user_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -569,7 +569,7 @@ PHP_METHOD(UserManager, getAllGroups)
     if (zend_parse_parameters_none_throw() == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_user_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -590,14 +590,14 @@ PHP_METHOD(UserManager, upsertGroup)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_user_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
-    roles = zend_read_property(pcbc_group_ce, group, ZEND_STRL("roles"), 0, &val1);
+    roles = pcbc_read_property(pcbc_group_ce, group, ("roles"), 0, &val1);
     if (!roles || Z_TYPE_P(roles) != IS_ARRAY) {
         RETURN_NULL();
     }
-    name = zend_read_property(pcbc_group_ce, group, ZEND_STRL("name"), 0, &val2);
+    name = pcbc_read_property(pcbc_group_ce, group, ("name"), 0, &val2);
     if (!name || Z_TYPE_P(name) != IS_STRING) {
         RETURN_NULL();
     }
@@ -611,7 +611,7 @@ PHP_METHOD(UserManager, upsertGroup)
 
     zval *entry;
     smart_str buf = {0};
-    prop = zend_read_property(pcbc_group_ce, group, ZEND_STRL("description"), 0, &val2);
+    prop = pcbc_read_property(pcbc_group_ce, group, ("description"), 0, &val2);
     if (prop && Z_TYPE_P(prop) == IS_STRING) {
         smart_str_appends(&buf, "description=");
         zend_string *str = php_url_encode(Z_STRVAL_P(prop), Z_STRLEN_P(prop));
@@ -623,12 +623,12 @@ PHP_METHOD(UserManager, upsertGroup)
     ZEND_HASH_FOREACH_VAL(HASH_OF(roles), entry)
     {
         zval zv;
-        prop = zend_read_property(pcbc_role_ce, entry, ZEND_STRL("name"), 0, &zv);
+        prop = pcbc_read_property(pcbc_role_ce, entry, ("name"), 0, &zv);
         if (!prop || Z_TYPE_P(prop) != IS_STRING) {
             continue;
         }
         smart_str_append_printf(&buf, "%.*s", (int)Z_STRLEN_P(prop), Z_STRVAL_P(prop));
-        prop = zend_read_property(pcbc_role_ce, entry, ZEND_STRL("bucket"), 0, &zv);
+        prop = pcbc_read_property(pcbc_role_ce, entry, ("bucket"), 0, &zv);
         if (prop && Z_TYPE_P(prop) == IS_STRING) {
             smart_str_append_printf(&buf, "[%.*s]", (int)Z_STRLEN_P(prop), Z_STRVAL_P(prop));
         }
@@ -655,7 +655,7 @@ PHP_METHOD(UserManager, dropGroup)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    prop = zend_read_property(pcbc_user_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_user_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     path_len = spprintf(&path, 0, "/settings/rbac/groups/%.*s", (int)ZSTR_LEN(name), ZSTR_VAL(name));
@@ -728,7 +728,7 @@ PHP_METHOD(Role, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_role_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_role_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -739,7 +739,7 @@ PHP_METHOD(Role, bucket)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_role_ce, getThis(), ZEND_STRL("bucket"), 0, &rv);
+    prop = pcbc_read_property(pcbc_role_ce, getThis(), ("bucket"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -750,7 +750,7 @@ PHP_METHOD(Role, scope)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_role_ce, getThis(), ZEND_STRL("scope"), 0, &rv);
+    prop = pcbc_read_property(pcbc_role_ce, getThis(), ("scope"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -761,7 +761,7 @@ PHP_METHOD(Role, collection)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_role_ce, getThis(), ZEND_STRL("collection"), 0, &rv);
+    prop = pcbc_read_property(pcbc_role_ce, getThis(), ("collection"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -772,7 +772,7 @@ PHP_METHOD(Role, setName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_role_ce, getThis(), ZEND_STRL("name"), val);
+    pcbc_update_property_str(pcbc_role_ce, getThis(), ("name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -783,7 +783,7 @@ PHP_METHOD(Role, setBucket)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_role_ce, getThis(), ZEND_STRL("bucket"), val);
+    pcbc_update_property_str(pcbc_role_ce, getThis(), ("bucket"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -794,7 +794,7 @@ PHP_METHOD(Role, setScope)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_role_ce, getThis(), ZEND_STRL("scope"), val);
+    pcbc_update_property_str(pcbc_role_ce, getThis(), ("scope"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -805,7 +805,7 @@ PHP_METHOD(Role, setCollection)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_role_ce, getThis(), ZEND_STRL("collection"), val);
+    pcbc_update_property_str(pcbc_role_ce, getThis(), ("collection"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -858,7 +858,7 @@ PHP_METHOD(RoleAndDescription, role)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_role_and_description_ce, getThis(), ZEND_STRL("role"), 0, &rv);
+    prop = pcbc_read_property(pcbc_role_and_description_ce, getThis(), ("role"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -869,7 +869,7 @@ PHP_METHOD(RoleAndDescription, displayName)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_role_and_description_ce, getThis(), ZEND_STRL("display_name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_role_and_description_ce, getThis(), ("display_name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -880,7 +880,7 @@ PHP_METHOD(RoleAndDescription, description)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_role_and_description_ce, getThis(), ZEND_STRL("description"), 0, &rv);
+    prop = pcbc_read_property(pcbc_role_and_description_ce, getThis(), ("description"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -909,7 +909,7 @@ PHP_METHOD(Origin, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_origin_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_origin_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -920,7 +920,7 @@ PHP_METHOD(Origin, type)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_origin_ce, getThis(), ZEND_STRL("type"), 0, &rv);
+    prop = pcbc_read_property(pcbc_origin_ce, getThis(), ("type"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -945,7 +945,7 @@ PHP_METHOD(RoleAndOrigins, role)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_role_and_origins_ce, getThis(), ZEND_STRL("role"), 0, &rv);
+    prop = pcbc_read_property(pcbc_role_and_origins_ce, getThis(), ("role"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -956,7 +956,7 @@ PHP_METHOD(RoleAndOrigins, origins)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_role_and_origins_ce, getThis(), ZEND_STRL("origins"), 0, &rv);
+    prop = pcbc_read_property(pcbc_role_and_origins_ce, getThis(), ("origins"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -981,7 +981,7 @@ PHP_METHOD(User, username)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_user_ce, getThis(), ZEND_STRL("username"), 0, &rv);
+    prop = pcbc_read_property(pcbc_user_ce, getThis(), ("username"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -992,7 +992,7 @@ PHP_METHOD(User, displayName)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_user_ce, getThis(), ZEND_STRL("display_name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_user_ce, getThis(), ("display_name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1003,7 +1003,7 @@ PHP_METHOD(User, groups)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_user_ce, getThis(), ZEND_STRL("groups"), 0, &rv);
+    prop = pcbc_read_property(pcbc_user_ce, getThis(), ("groups"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1014,7 +1014,7 @@ PHP_METHOD(User, roles)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_user_ce, getThis(), ZEND_STRL("roles"), 0, &rv);
+    prop = pcbc_read_property(pcbc_user_ce, getThis(), ("roles"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1025,7 +1025,7 @@ PHP_METHOD(User, setUsername)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_user_ce, getThis(), ZEND_STRL("username"), val);
+    pcbc_update_property_str(pcbc_user_ce, getThis(), ("username"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1036,7 +1036,7 @@ PHP_METHOD(User, setPassword)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_user_ce, getThis(), ZEND_STRL("password"), val);
+    pcbc_update_property_str(pcbc_user_ce, getThis(), ("password"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1047,7 +1047,7 @@ PHP_METHOD(User, setDisplayName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_user_ce, getThis(), ZEND_STRL("display_name"), val);
+    pcbc_update_property_str(pcbc_user_ce, getThis(), ("display_name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1058,7 +1058,7 @@ PHP_METHOD(User, setGroups)
         RETURN_NULL();
     }
 
-    zend_update_property(pcbc_user_ce, getThis(), ZEND_STRL("groups"), val);
+    pcbc_update_property(pcbc_user_ce, getThis(), ("groups"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1069,7 +1069,7 @@ PHP_METHOD(User, setRoles)
         RETURN_NULL();
     }
 
-    zend_update_property(pcbc_user_ce, getThis(), ZEND_STRL("roles"), val);
+    pcbc_update_property(pcbc_user_ce, getThis(), ("roles"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1127,7 +1127,7 @@ PHP_METHOD(UserAndMetadata, domain)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_user_and_metadata_ce, getThis(), ZEND_STRL("domain"), 0, &rv);
+    prop = pcbc_read_property(pcbc_user_and_metadata_ce, getThis(), ("domain"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1138,7 +1138,7 @@ PHP_METHOD(UserAndMetadata, passwordChanged)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_user_and_metadata_ce, getThis(), ZEND_STRL("password_changed"), 0, &rv);
+    prop = pcbc_read_property(pcbc_user_and_metadata_ce, getThis(), ("password_changed"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1149,7 +1149,7 @@ PHP_METHOD(UserAndMetadata, externalGroups)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_user_and_metadata_ce, getThis(), ZEND_STRL("external_groups"), 0, &rv);
+    prop = pcbc_read_property(pcbc_user_and_metadata_ce, getThis(), ("external_groups"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1160,7 +1160,7 @@ PHP_METHOD(UserAndMetadata, effectiveRoles)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_user_and_metadata_ce, getThis(), ZEND_STRL("effective_roles"), 0, &rv);
+    prop = pcbc_read_property(pcbc_user_and_metadata_ce, getThis(), ("effective_roles"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1171,7 +1171,7 @@ PHP_METHOD(UserAndMetadata, user)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_user_and_metadata_ce, getThis(), ZEND_STRL("user"), 0, &rv);
+    prop = pcbc_read_property(pcbc_user_and_metadata_ce, getThis(), ("user"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1208,7 +1208,7 @@ PHP_METHOD(Group, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_group_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_group_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1219,7 +1219,7 @@ PHP_METHOD(Group, description)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_group_ce, getThis(), ZEND_STRL("description"), 0, &rv);
+    prop = pcbc_read_property(pcbc_group_ce, getThis(), ("description"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1230,7 +1230,7 @@ PHP_METHOD(Group, ldapGroupReference)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_group_ce, getThis(), ZEND_STRL("ldap_group_reference"), 0, &rv);
+    prop = pcbc_read_property(pcbc_group_ce, getThis(), ("ldap_group_reference"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1241,7 +1241,7 @@ PHP_METHOD(Group, roles)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_group_ce, getThis(), ZEND_STRL("roles"), 0, &rv);
+    prop = pcbc_read_property(pcbc_group_ce, getThis(), ("roles"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -1252,7 +1252,7 @@ PHP_METHOD(Group, setName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_group_ce, getThis(), ZEND_STRL("name"), val);
+    pcbc_update_property_str(pcbc_group_ce, getThis(), ("name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1263,7 +1263,7 @@ PHP_METHOD(Group, setDescription)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_group_ce, getThis(), ZEND_STRL("description"), val);
+    pcbc_update_property_str(pcbc_group_ce, getThis(), ("description"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1274,7 +1274,7 @@ PHP_METHOD(Group, setRoles)
         RETURN_NULL();
     }
 
-    zend_update_property(pcbc_group_ce, getThis(), ZEND_STRL("roles"), val);
+    pcbc_update_property(pcbc_group_ce, getThis(), ("roles"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1322,7 +1322,7 @@ PHP_METHOD(GetUserOptions, domainName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_get_user_options_ce, getThis(), ZEND_STRL("domain_name"), val);
+    pcbc_update_property_str(pcbc_get_user_options_ce, getThis(), ("domain_name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1344,7 +1344,7 @@ PHP_METHOD(UpsertUserOptions, domainName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_upsert_user_options_ce, getThis(), ZEND_STRL("domain_name"), val);
+    pcbc_update_property_str(pcbc_upsert_user_options_ce, getThis(), ("domain_name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1366,7 +1366,7 @@ PHP_METHOD(DropUserOptions, domainName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_drop_user_options_ce, getThis(), ZEND_STRL("domain_name"), val);
+    pcbc_update_property_str(pcbc_drop_user_options_ce, getThis(), ("domain_name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -1388,7 +1388,7 @@ PHP_METHOD(GetAllUsersOptions, domainName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_get_all_users_options_ce, getThis(), ZEND_STRL("domain_name"), val);
+    pcbc_update_property_str(pcbc_get_all_users_options_ce, getThis(), ("domain_name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 

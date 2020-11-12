@@ -38,7 +38,7 @@ PHP_METHOD(PhraseSearchQuery, __construct)
 
     zval container;
     array_init(&container);
-    zend_update_property(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("terms"), &container);
+    pcbc_update_property(pcbc_phrase_search_query_ce, getThis(), ("terms"), &container);
     Z_DELREF(container);
 
     if (num_args && args) {
@@ -66,7 +66,7 @@ PHP_METHOD(PhraseSearchQuery, field)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("field"), field);
+    pcbc_update_property_str(pcbc_phrase_search_query_ce, getThis(), ("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -81,7 +81,7 @@ PHP_METHOD(PhraseSearchQuery, boost)
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
+    pcbc_update_property_long(pcbc_phrase_search_query_ce, getThis(), ("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -97,19 +97,19 @@ PHP_METHOD(PhraseSearchQuery, jsonSerialize)
 
     array_init(return_value);
     zval *prop, ret;
-    prop = zend_read_property(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("terms"), 0, &ret);
+    prop = pcbc_read_property(pcbc_phrase_search_query_ce, getThis(), ("terms"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "terms", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_phrase_search_query_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("boost"), 0, &ret);
+    prop = pcbc_read_property(pcbc_phrase_search_query_ce, getThis(), ("boost"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "boost", prop);
         Z_TRY_ADDREF_P(prop);

@@ -31,7 +31,7 @@ PHP_METHOD(MatchAllSearchQuery, boost)
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_match_all_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
+    pcbc_update_property_double(pcbc_match_all_search_query_ce, getThis(), ("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -41,7 +41,7 @@ PHP_METHOD(MatchAllSearchQuery, jsonSerialize)
     array_init(return_value);
     zval *prop, ret;
     add_assoc_null(return_value, "match_all");
-    prop = zend_read_property(pcbc_match_all_search_query_ce, getThis(), ZEND_STRL("boost"), 0, &ret);
+    prop = pcbc_read_property(pcbc_match_all_search_query_ce, getThis(), ("boost"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "boost", prop);
         Z_TRY_ADDREF_P(prop);

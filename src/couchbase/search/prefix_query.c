@@ -31,7 +31,7 @@ PHP_METHOD(PrefixSearchQuery, __construct)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_prefix_search_query_ce, getThis(), ZEND_STRL("value"), prefix);
+    pcbc_update_property_str(pcbc_prefix_search_query_ce, getThis(), ("value"), prefix);
 }
 
 PHP_METHOD(PrefixSearchQuery, field)
@@ -44,7 +44,7 @@ PHP_METHOD(PrefixSearchQuery, field)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_prefix_search_query_ce, getThis(), ZEND_STRL("field"), field);
+    pcbc_update_property_str(pcbc_prefix_search_query_ce, getThis(), ("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -59,7 +59,7 @@ PHP_METHOD(PrefixSearchQuery, boost)
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_prefix_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
+    pcbc_update_property_long(pcbc_prefix_search_query_ce, getThis(), ("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -75,19 +75,19 @@ PHP_METHOD(PrefixSearchQuery, jsonSerialize)
 
     array_init(return_value);
     zval *prop, ret;
-    prop = zend_read_property(pcbc_prefix_search_query_ce, getThis(), ZEND_STRL("value"), 0, &ret);
+    prop = pcbc_read_property(pcbc_prefix_search_query_ce, getThis(), ("value"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "prefix", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_prefix_search_query_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_prefix_search_query_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_prefix_search_query_ce, getThis(), ZEND_STRL("boost"), 0, &ret);
+    prop = pcbc_read_property(pcbc_prefix_search_query_ce, getThis(), ("boost"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "boost", prop);
         Z_TRY_ADDREF_P(prop);

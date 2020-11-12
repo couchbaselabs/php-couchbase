@@ -35,7 +35,7 @@ PHP_METHOD(ConjunctionSearchQuery, __construct)
 
     zval container;
     array_init(&container);
-    zend_update_property(pcbc_conjunction_search_query_ce, getThis(), ZEND_STRL("queries"), &container);
+    pcbc_update_property(pcbc_conjunction_search_query_ce, getThis(), ("queries"), &container);
     Z_DELREF(container);
 
     if (queries && Z_TYPE_P(queries) != IS_NULL) {
@@ -64,7 +64,7 @@ PHP_METHOD(ConjunctionSearchQuery, boost)
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_conjunction_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
+    pcbc_update_property_double(pcbc_conjunction_search_query_ce, getThis(), ("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -83,7 +83,7 @@ PHP_METHOD(ConjunctionSearchQuery, every)
     if (num_args && args) {
         zval *container, ret;
         int i;
-        container = zend_read_property(pcbc_conjunction_search_query_ce, getThis(), ZEND_STRL("queries"), 0, &ret);
+        container = pcbc_read_property(pcbc_conjunction_search_query_ce, getThis(), ("queries"), 0, &ret);
         for (i = 0; i < num_args; ++i) {
             zval *entry;
             entry = &args[i];
@@ -111,13 +111,13 @@ PHP_METHOD(ConjunctionSearchQuery, jsonSerialize)
     array_init(return_value);
     zval *prop, ret;
 
-    prop = zend_read_property(pcbc_conjunction_search_query_ce, getThis(), ZEND_STRL("queries"), 0, &ret);
+    prop = pcbc_read_property(pcbc_conjunction_search_query_ce, getThis(), ("queries"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "conjuncts", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_conjunction_search_query_ce, getThis(), ZEND_STRL("boost"), 0, &ret);
+    prop = pcbc_read_property(pcbc_conjunction_search_query_ce, getThis(), ("boost"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "boost", prop);
         Z_TRY_ADDREF_P(prop);

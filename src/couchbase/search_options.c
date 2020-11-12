@@ -28,7 +28,7 @@ PHP_METHOD(SearchOptions, timeout)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_search_options_ce, getThis(), ZEND_STRL("timeout"), arg);
+    pcbc_update_property_long(pcbc_search_options_ce, getThis(), ("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -39,7 +39,7 @@ PHP_METHOD(SearchOptions, limit)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_search_options_ce, getThis(), ZEND_STRL("limit"), arg);
+    pcbc_update_property_long(pcbc_search_options_ce, getThis(), ("limit"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -50,7 +50,7 @@ PHP_METHOD(SearchOptions, skip)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_search_options_ce, getThis(), ZEND_STRL("skip"), arg);
+    pcbc_update_property_long(pcbc_search_options_ce, getThis(), ("skip"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -61,7 +61,7 @@ PHP_METHOD(SearchOptions, explain)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_bool(pcbc_search_options_ce, getThis(), ZEND_STRL("explain"), arg);
+    pcbc_update_property_bool(pcbc_search_options_ce, getThis(), ("explain"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -75,11 +75,11 @@ PHP_METHOD(SearchOptions, consistentWith)
     }
 
     zval *prop, ret;
-    prop = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("consistent_with"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("consistent_with"), 0, &ret);
     if (Z_TYPE_P(prop) == IS_NULL) {
         array_init(&ret);
         prop = &ret;
-        zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("consistent_with"), &ret);
+        pcbc_update_property(pcbc_search_options_ce, getThis(), ("consistent_with"), &ret);
         Z_DELREF_P(prop);
     }
 
@@ -118,7 +118,7 @@ PHP_METHOD(SearchOptions, facets)
         }
     }
     ZEND_HASH_FOREACH_END();
-    zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("facets"), facets);
+    pcbc_update_property(pcbc_search_options_ce, getThis(), ("facets"), facets);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -142,7 +142,7 @@ PHP_METHOD(SearchOptions, fields)
         }
     }
     ZEND_HASH_FOREACH_END();
-    zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("fields"), fields);
+    pcbc_update_property(pcbc_search_options_ce, getThis(), ("fields"), fields);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -167,7 +167,7 @@ PHP_METHOD(SearchOptions, sort)
         }
     }
     ZEND_HASH_FOREACH_END();
-    zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("sort"), args);
+    pcbc_update_property(pcbc_search_options_ce, getThis(), ("sort"), args);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -186,9 +186,9 @@ PHP_METHOD(SearchOptions, highlight)
         return;
     }
 
-    zend_update_property_str(pcbc_search_options_ce, getThis(), ZEND_STRL("highlight_style"), style);
+    pcbc_update_property_str(pcbc_search_options_ce, getThis(), ("highlight_style"), style);
     if (fields) {
-        zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("highlight_fields"), fields);
+        pcbc_update_property(pcbc_search_options_ce, getThis(), ("highlight_fields"), fields);
     }
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -207,43 +207,43 @@ PHP_METHOD(SearchOptions, jsonSerialize)
 
     zval *prop, ret;
 
-    prop = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("explain"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("explain"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "explain", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("limit"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("limit"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "size", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("skip"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("skip"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "from", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("fields"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("fields"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "fields", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("sort"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("sort"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "sort", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("facets"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("facets"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "facets", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("highlight_style"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("highlight_style"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         zval highlight;
         array_init(&highlight);
@@ -251,7 +251,7 @@ PHP_METHOD(SearchOptions, jsonSerialize)
         Z_TRY_ADDREF_P(prop);
 
         zval ret2;
-        zval *fields = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("highlight_style"), 0, &ret2);
+        zval *fields = pcbc_read_property(pcbc_search_options_ce, getThis(), ("highlight_style"), 0, &ret2);
         if (Z_TYPE_P(fields) == IS_ARRAY) {
             add_assoc_zval(&highlight, "fields", fields);
         }
@@ -260,14 +260,14 @@ PHP_METHOD(SearchOptions, jsonSerialize)
 
     zval control;
     array_init(&control);
-    prop = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("timeout"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("timeout"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(&control, "timeout", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
     zval consistency, vectors;
-    prop = zend_read_property(pcbc_search_options_ce, getThis(), ZEND_STRL("consistent_with"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("consistent_with"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         array_init(&consistency);
         add_assoc_string(&consistency, "level", "at_plus");

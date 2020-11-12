@@ -32,9 +32,9 @@ PHP_METHOD(SearchSortGeoDistance, __construct)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_sort_geo_distance_ce, getThis(), ZEND_STRL("field"), field);
-    zend_update_property_double(pcbc_search_sort_geo_distance_ce, getThis(), ZEND_STRL("longitude"), lon);
-    zend_update_property_double(pcbc_search_sort_geo_distance_ce, getThis(), ZEND_STRL("latitude"), lat);
+    pcbc_update_property_str(pcbc_search_sort_geo_distance_ce, getThis(), ("field"), field);
+    pcbc_update_property_double(pcbc_search_sort_geo_distance_ce, getThis(), ("longitude"), lon);
+    pcbc_update_property_double(pcbc_search_sort_geo_distance_ce, getThis(), ("latitude"), lat);
 }
 
 PHP_METHOD(SearchSortGeoDistance, descending)
@@ -47,7 +47,7 @@ PHP_METHOD(SearchSortGeoDistance, descending)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_search_sort_geo_distance_ce, getThis(), ZEND_STRL("desc"), descending);
+    pcbc_update_property_bool(pcbc_search_sort_geo_distance_ce, getThis(), ("desc"), descending);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -62,7 +62,7 @@ PHP_METHOD(SearchSortGeoDistance, unit)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_sort_geo_distance_ce, getThis(), ZEND_STRL("unit"), unit);
+    pcbc_update_property_str(pcbc_search_sort_geo_distance_ce, getThis(), ("unit"), unit);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -79,12 +79,12 @@ PHP_METHOD(SearchSortGeoDistance, jsonSerialize)
     array_init(return_value);
     add_assoc_string(return_value, "by", "geo_distance");
     zval *prop, ret;
-    prop = zend_read_property(pcbc_search_sort_geo_distance_ce, getThis(), ZEND_STRL("desc"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_geo_distance_ce, getThis(), ("desc"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "desc", prop);
         Z_TRY_ADDREF_P(prop);
     }
-    prop = zend_read_property(pcbc_search_sort_geo_distance_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_geo_distance_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
@@ -92,13 +92,13 @@ PHP_METHOD(SearchSortGeoDistance, jsonSerialize)
 
     zval location;
     array_init(&location);
-    prop = zend_read_property(pcbc_search_sort_geo_distance_ce, getThis(), ZEND_STRL("longitude"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_geo_distance_ce, getThis(), ("longitude"), 0, &ret);
     add_next_index_zval(&location, prop);
-    prop = zend_read_property(pcbc_search_sort_geo_distance_ce, getThis(), ZEND_STRL("latitude"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_geo_distance_ce, getThis(), ("latitude"), 0, &ret);
     add_next_index_zval(&location, prop);
     add_assoc_zval(return_value, "location", &location);
 
-    prop = zend_read_property(pcbc_search_sort_geo_distance_ce, getThis(), ZEND_STRL("unit"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_geo_distance_ce, getThis(), ("unit"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "unit", prop);
         Z_TRY_ADDREF_P(prop);

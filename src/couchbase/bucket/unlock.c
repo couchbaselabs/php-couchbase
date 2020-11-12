@@ -32,7 +32,7 @@ void unlock_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPUNLOCK *r
     lcb_respunlock_cookie(resp, (void **)&cookie);
     zval *return_value = cookie->return_value;
     cookie->rc = lcb_respunlock_status(resp);
-    zend_update_property_long(pcbc_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
+    pcbc_update_property_long(pcbc_result_impl_ce, return_value, ("status"), cookie->rc);
 
     lcb_respunlock_error_context(resp, &ectx);
 
@@ -46,7 +46,7 @@ void unlock_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPUNLOCK *r
             uint64_t data;
             lcb_respunlock_cas(resp, &data);
             b64 = php_base64_encode((unsigned char *)&data, sizeof(data));
-            zend_update_property_str(pcbc_result_impl_ce, return_value, ZEND_STRL("cas"), b64);
+            pcbc_update_property_str(pcbc_result_impl_ce, return_value, ("cas"), b64);
             zend_string_release(b64);
         }
     }
@@ -61,7 +61,7 @@ PHP_METHOD(UnlockOptions, timeout)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_unlock_options_ce, getThis(), ZEND_STRL("timeout"), arg);
+    pcbc_update_property_long(pcbc_unlock_options_ce, getThis(), ("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -102,7 +102,7 @@ PHP_METHOD(Collection, unlock)
     }
     if (options) {
         zval *prop, ret;
-        prop = zend_read_property(pcbc_unlock_options_ce, options, ZEND_STRL("timeout"), 0, &ret);
+        prop = pcbc_read_property(pcbc_unlock_options_ce, options, ("timeout"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdunlock_timeout(cmd, Z_LVAL_P(prop));
         }

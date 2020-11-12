@@ -117,10 +117,10 @@ static lcb_STATUS proc_http_results(zval *return_value, opcookie *cookie, void *
                             ZSTR_VAL(buf.s)[ZSTR_LEN(buf.s)] = '\0';
                         }
                         object_init_ex(return_value, pcbc_http_exception_ce);
-                        zend_update_property_str(pcbc_default_exception_ce, return_value, ZEND_STRL("message"),
+                        pcbc_update_property_str(pcbc_default_exception_ce, return_value, ("message"),
                                                  buf.s);
                         if (first_query_code) {
-                            zend_update_property_long(pcbc_default_exception_ce, return_value, ZEND_STRL("code"),
+                            pcbc_update_property_long(pcbc_default_exception_ce, return_value, ("code"),
                                                       first_query_code);
                         }
                         smart_str_free(&buf);
@@ -132,7 +132,7 @@ static lcb_STATUS proc_http_results(zval *return_value, opcookie *cookie, void *
                                 object_init_ex(return_value, pcbc_http_exception_ce);
                                 mval = zend_symtable_str_find(marr, ZEND_STRL("error"));
                                 if (mval && Z_TYPE_P(mval) == IS_STRING) {
-                                    zend_update_property(pcbc_default_exception_ce, return_value, ZEND_STRL("message"),
+                                    pcbc_update_property(pcbc_default_exception_ce, return_value, ("message"),
                                                          mval);
                                 }
                                 err = LCB_ERR_HTTP;

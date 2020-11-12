@@ -41,14 +41,14 @@ void getreplica_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPGETRE
     }
 
     cookie->rc = lcb_respgetreplica_status(resp);
-    zend_update_property_long(pcbc_get_replica_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
+    pcbc_update_property_long(pcbc_get_replica_result_impl_ce, return_value, ("status"), cookie->rc);
     lcb_respgetreplica_error_context(resp, &ectx);
 
     set_property_str(ectx, lcb_errctx_kv_context, pcbc_get_replica_result_impl_ce, "err_ctx");
     set_property_str(ectx, lcb_errctx_kv_ref, pcbc_get_replica_result_impl_ce, "err_ref");
     set_property_str(ectx, lcb_errctx_kv_key, pcbc_get_replica_result_impl_ce, "key");
     /* TODO: shall libcouchbase query master for replica? */
-    zend_update_property_bool(pcbc_get_replica_result_impl_ce, return_value, ZEND_STRL("is_replica"), 1);
+    pcbc_update_property_bool(pcbc_get_replica_result_impl_ce, return_value, ("is_replica"), 1);
     if (cookie->rc == LCB_SUCCESS) {
         set_property_num(uint32_t, lcb_respgetreplica_flags, pcbc_get_replica_result_impl_ce, "flags");
         set_property_num(uint8_t, lcb_respgetreplica_datatype, pcbc_get_replica_result_impl_ce, "datatype");
@@ -58,7 +58,7 @@ void getreplica_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPGETRE
             lcb_respgetreplica_cas(resp, &data);
             zend_string *b64;
             b64 = php_base64_encode((unsigned char *)&data, sizeof(data));
-            zend_update_property_str(pcbc_get_replica_result_impl_ce, return_value, ZEND_STRL("cas"), b64);
+            pcbc_update_property_str(pcbc_get_replica_result_impl_ce, return_value, ("cas"), b64);
             zend_string_release(b64);
         }
     }
@@ -73,7 +73,7 @@ PHP_METHOD(GetAnyReplicaOptions, timeout)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_get_any_replica_options_ce, getThis(), ZEND_STRL("timeout"), arg);
+    pcbc_update_property_long(pcbc_get_any_replica_options_ce, getThis(), ("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -107,7 +107,7 @@ PHP_METHOD(Collection, getAnyReplica)
     lcb_cmdgetreplica_key(cmd, ZSTR_VAL(id), ZSTR_LEN(id));
     if (options) {
         zval *prop, ret;
-        prop = zend_read_property(pcbc_get_any_replica_options_ce, options, ZEND_STRL("timeout"), 0, &ret);
+        prop = pcbc_read_property(pcbc_get_any_replica_options_ce, options, ("timeout"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdgetreplica_timeout(cmd, Z_LVAL_P(prop));
         }
@@ -146,7 +146,7 @@ PHP_METHOD(GetAllReplicasOptions, timeout)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_get_all_replicas_options_ce, getThis(), ZEND_STRL("timeout"), arg);
+    pcbc_update_property_long(pcbc_get_all_replicas_options_ce, getThis(), ("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -180,7 +180,7 @@ PHP_METHOD(Collection, getAllReplicas)
     lcb_cmdgetreplica_key(cmd, ZSTR_VAL(id), ZSTR_LEN(id));
     if (options) {
         zval *prop, ret;
-        prop = zend_read_property(pcbc_get_all_replicas_options_ce, options, ZEND_STRL("timeout"), 0, &ret);
+        prop = pcbc_read_property(pcbc_get_all_replicas_options_ce, options, ("timeout"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdgetreplica_timeout(cmd, Z_LVAL_P(prop));
         }

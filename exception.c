@@ -26,10 +26,10 @@ static void pcbc_exception_make(zval *return_value, zend_class_entry *exception_
     object_init_ex(return_value, pcbc_base_exception_ce);
 
     if (message) {
-        zend_update_property_string(pcbc_base_exception_ce, return_value, ZEND_STRL("message"), message);
+        pcbc_update_property_string(pcbc_base_exception_ce, return_value, ("message"), message);
     }
     if (code) {
-        zend_update_property_long(pcbc_base_exception_ce, return_value, ZEND_STRL("code"), code);
+        pcbc_update_property_long(pcbc_base_exception_ce, return_value, ("code"), code);
     }
 }
 
@@ -373,16 +373,16 @@ void pcbc_create_lcb_exception(zval *return_value, long code, zend_string *conte
         break;
     }
     object_init_ex(return_value, exc_ce);
-    zend_update_property_long(pcbc_default_exception_ce, return_value, ZEND_STRL("code"),
+    pcbc_update_property_long(pcbc_default_exception_ce, return_value, ("code"),
                               http_code ? http_code : code);
-    zend_update_property_string(pcbc_default_exception_ce, return_value, ZEND_STRL("message"),
+    pcbc_update_property_string(pcbc_default_exception_ce, return_value, ("message"),
                                 http_msg ? http_msg : lcb_strerror_short(code));
 
     if (ref) {
-        zend_update_property_str(pcbc_base_exception_ce, return_value, ZEND_STRL("ref"), ref);
+        pcbc_update_property_str(pcbc_base_exception_ce, return_value, ("ref"), ref);
     }
     if (context) {
-        zend_update_property_str(pcbc_base_exception_ce, return_value, ZEND_STRL("context"), context);
+        pcbc_update_property_str(pcbc_base_exception_ce, return_value, ("context"), context);
     }
 }
 
@@ -393,7 +393,7 @@ PHP_METHOD(BaseException, context)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_base_exception_ce, getThis(), ZEND_STRL("context"), 0, &rv);
+    prop = pcbc_read_property(pcbc_base_exception_ce, getThis(), ("context"), 0, &rv);
     ZVAL_DEREF(prop);
     ZVAL_COPY(return_value, prop);
 }
@@ -405,7 +405,7 @@ PHP_METHOD(BaseException, code)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_base_exception_ce, getThis(), ZEND_STRL("code"), 0, &rv);
+    prop = pcbc_read_property(pcbc_base_exception_ce, getThis(), ("code"), 0, &rv);
     ZVAL_DEREF(prop);
     ZVAL_COPY(return_value, prop);
 }
@@ -417,7 +417,7 @@ PHP_METHOD(BaseException, message)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_base_exception_ce, getThis(), ZEND_STRL("message"), 0, &rv);
+    prop = pcbc_read_property(pcbc_base_exception_ce, getThis(), ("message"), 0, &rv);
     ZVAL_DEREF(prop);
     ZVAL_COPY(return_value, prop);
 }
@@ -429,7 +429,7 @@ PHP_METHOD(BaseException, ref)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_base_exception_ce, getThis(), ZEND_STRL("ref"), 0, &rv);
+    prop = pcbc_read_property(pcbc_base_exception_ce, getThis(), ("ref"), 0, &rv);
     ZVAL_DEREF(prop);
     ZVAL_COPY(return_value, prop);
 }

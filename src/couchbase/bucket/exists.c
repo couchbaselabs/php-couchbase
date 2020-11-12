@@ -32,20 +32,20 @@ void exists_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPEXISTS *r
     lcb_respexists_cookie(resp, (void **)&cookie);
     zval *return_value = cookie->return_value;
     cookie->rc = lcb_respexists_status(resp);
-    zend_update_property_long(pcbc_exists_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
+    pcbc_update_property_long(pcbc_exists_result_impl_ce, return_value, ("status"), cookie->rc);
     lcb_respexists_error_context(resp, &ectx);
 
     set_property_str(ectx, lcb_errctx_kv_context, pcbc_exists_result_impl_ce, "err_ctx");
     set_property_str(ectx, lcb_errctx_kv_ref, pcbc_exists_result_impl_ce, "err_ref");
     set_property_str(ectx, lcb_errctx_kv_key, pcbc_exists_result_impl_ce, "key");
-    zend_update_property_bool(pcbc_exists_result_impl_ce, return_value, ZEND_STRL("is_found"),
+    pcbc_update_property_bool(pcbc_exists_result_impl_ce, return_value, ("is_found"),
                               lcb_respexists_is_found(resp));
     if (cookie->rc == LCB_SUCCESS) {
         uint64_t data;
         lcb_respexists_cas(resp, &data);
         zend_string *b64;
         b64 = php_base64_encode((unsigned char *)&data, sizeof(data));
-        zend_update_property_str(pcbc_exists_result_impl_ce, return_value, ZEND_STRL("cas"), b64);
+        pcbc_update_property_str(pcbc_exists_result_impl_ce, return_value, ("cas"), b64);
         zend_string_release(b64);
     }
 }
@@ -59,7 +59,7 @@ PHP_METHOD(ExistsOptions, timeout)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_exists_options_ce, getThis(), ZEND_STRL("timeout"), arg);
+    pcbc_update_property_long(pcbc_exists_options_ce, getThis(), ("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -92,7 +92,7 @@ PHP_METHOD(Collection, exists)
     lcb_cmdexists_key(cmd, ZSTR_VAL(id), ZSTR_LEN(id));
     if (options) {
         zval *prop, ret;
-        prop = zend_read_property(pcbc_exists_options_ce, options, ZEND_STRL("timeout"), 0, &ret);
+        prop = pcbc_read_property(pcbc_exists_options_ce, options, ("timeout"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdexists_timeout(cmd, Z_LVAL_P(prop));
         }

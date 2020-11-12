@@ -42,11 +42,11 @@ PHP_METHOD(MutationState, add)
     }
 
     zval *tokens, rv1;
-    tokens = zend_read_property(pcbc_mutation_state_ce, getThis(), ZEND_STRL("tokens"), 0, &rv1);
+    tokens = pcbc_read_property(pcbc_mutation_state_ce, getThis(), ("tokens"), 0, &rv1);
     if (Z_TYPE_P(tokens) == IS_NULL) {
         array_init(&rv1);
         tokens = &rv1;
-        zend_update_property(pcbc_mutation_state_ce, getThis(), ZEND_STRL("tokens"), tokens);
+        pcbc_update_property(pcbc_mutation_state_ce, getThis(), ("tokens"), tokens);
         Z_DELREF_P(tokens);
     }
     add_next_index_zval(tokens, &retval);
@@ -60,7 +60,7 @@ void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vector
 
     zval *tokens, rv1;
     zval fname;
-    tokens = zend_read_property(pcbc_mutation_state_ce, mutation_state, ZEND_STRL("tokens"), 0, &rv1);
+    tokens = pcbc_read_property(pcbc_mutation_state_ce, mutation_state, ("tokens"), 0, &rv1);
     if (Z_TYPE_P(tokens) == IS_ARRAY) {
         HashTable *ht = HASH_OF(tokens);
         zval *token;
@@ -129,7 +129,7 @@ void pcbc_mutation_state_export_for_search(zval *mutation_state, zval *scan_vect
 
     zval *tokens, rv1;
     zval fname;
-    tokens = zend_read_property(pcbc_mutation_state_ce, mutation_state, ZEND_STRL("tokens"), 0, &rv1);
+    tokens = pcbc_read_property(pcbc_mutation_state_ce, mutation_state, ("tokens"), 0, &rv1);
     if (Z_TYPE_P(tokens) == IS_ARRAY) {
         HashTable *ht = HASH_OF(tokens);
         zval *token;

@@ -26,8 +26,8 @@ PHP_METHOD(ClusterOptions, credentials)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_cluster_options_ce, getThis(), ZEND_STRL("username"), username);
-    zend_update_property_str(pcbc_cluster_options_ce, getThis(), ZEND_STRL("password"), password);
+    pcbc_update_property_str(pcbc_cluster_options_ce, getThis(), ("username"), username);
+    pcbc_update_property_str(pcbc_cluster_options_ce, getThis(), ("password"), password);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 

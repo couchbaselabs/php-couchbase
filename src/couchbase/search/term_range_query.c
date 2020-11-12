@@ -31,7 +31,7 @@ PHP_METHOD(TermRangeSearchQuery, field)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("field"), field);
+    pcbc_update_property_str(pcbc_term_range_search_query_ce, getThis(), ("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -46,7 +46,7 @@ PHP_METHOD(TermRangeSearchQuery, boost)
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
+    pcbc_update_property_double(pcbc_term_range_search_query_ce, getThis(), ("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -62,9 +62,9 @@ PHP_METHOD(TermRangeSearchQuery, min)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("min"), min);
+    pcbc_update_property_str(pcbc_term_range_search_query_ce, getThis(), ("min"), min);
     if (!inclusive_null) {
-        zend_update_property_bool(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("inclusive_min"),
+        pcbc_update_property_bool(pcbc_term_range_search_query_ce, getThis(), ("inclusive_min"),
                                   inclusive);
     }
 
@@ -82,9 +82,9 @@ PHP_METHOD(TermRangeSearchQuery, max)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("max"), max);
+    pcbc_update_property_str(pcbc_term_range_search_query_ce, getThis(), ("max"), max);
     if (!inclusive_null) {
-        zend_update_property_bool(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("inclusive_max"),
+        pcbc_update_property_bool(pcbc_term_range_search_query_ce, getThis(), ("inclusive_max"),
                                   inclusive);
     }
 
@@ -103,35 +103,35 @@ PHP_METHOD(TermRangeSearchQuery, jsonSerialize)
     array_init(return_value);
     zval *prop, ret;
 
-    prop = zend_read_property(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("min"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_range_search_query_ce, getThis(), ("min"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "min", prop);
         Z_TRY_ADDREF_P(prop);
-        prop = zend_read_property(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("inclusive_min"), 0, &ret);
+        prop = pcbc_read_property(pcbc_term_range_search_query_ce, getThis(), ("inclusive_min"), 0, &ret);
         if (Z_TYPE_P(prop) != IS_NULL) {
             add_assoc_zval(return_value, "inclusive_min", prop);
             Z_TRY_ADDREF_P(prop);
         }
     }
 
-    prop = zend_read_property(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("max"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_range_search_query_ce, getThis(), ("max"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "max", prop);
         Z_TRY_ADDREF_P(prop);
-        prop = zend_read_property(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("inclusive_max"), 0, &ret);
+        prop = pcbc_read_property(pcbc_term_range_search_query_ce, getThis(), ("inclusive_max"), 0, &ret);
         if (Z_TYPE_P(prop) != IS_NULL) {
             add_assoc_zval(return_value, "inclusive_max", prop);
             Z_TRY_ADDREF_P(prop);
         }
     }
 
-    prop = zend_read_property(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_range_search_query_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_term_range_search_query_ce, getThis(), ZEND_STRL("boost"), 0, &ret);
+    prop = pcbc_read_property(pcbc_term_range_search_query_ce, getThis(), ("boost"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "boost", prop);
         Z_TRY_ADDREF_P(prop);

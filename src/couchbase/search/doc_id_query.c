@@ -32,7 +32,7 @@ PHP_METHOD(DocIdSearchQuery, field)
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_doc_id_search_query_ce, getThis(), ZEND_STRL("field"), field);
+    pcbc_update_property_str(pcbc_doc_id_search_query_ce, getThis(), ("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -47,7 +47,7 @@ PHP_METHOD(DocIdSearchQuery, boost)
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_doc_id_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
+    pcbc_update_property_double(pcbc_doc_id_search_query_ce, getThis(), ("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -65,11 +65,11 @@ PHP_METHOD(DocIdSearchQuery, docIds)
 
     if (num_args && args) {
         zval *container, rv1;
-        container = zend_read_property(pcbc_doc_id_search_query_ce, getThis(), ZEND_STRL("ids"), 0, &rv1);
+        container = pcbc_read_property(pcbc_doc_id_search_query_ce, getThis(), ("ids"), 0, &rv1);
         if (Z_TYPE_P(container) == IS_NULL) {
             array_init(&rv1);
             container = &rv1;
-            zend_update_property(pcbc_doc_id_search_query_ce, getThis(), ZEND_STRL("ids"), container);
+            pcbc_update_property(pcbc_doc_id_search_query_ce, getThis(), ("ids"), container);
             Z_DELREF_P(container);
         }
         int i;
@@ -100,19 +100,19 @@ PHP_METHOD(DocIdSearchQuery, jsonSerialize)
     array_init(return_value);
     zval *prop, ret;
 
-    prop = zend_read_property(pcbc_doc_id_search_query_ce, getThis(), ZEND_STRL("ids"), 0, &ret);
+    prop = pcbc_read_property(pcbc_doc_id_search_query_ce, getThis(), ("ids"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "ids", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_doc_id_search_query_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_doc_id_search_query_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_doc_id_search_query_ce, getThis(), ZEND_STRL("boost"), 0, &ret);
+    prop = pcbc_read_property(pcbc_doc_id_search_query_ce, getThis(), ("boost"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "boost", prop);
         Z_TRY_ADDREF_P(prop);

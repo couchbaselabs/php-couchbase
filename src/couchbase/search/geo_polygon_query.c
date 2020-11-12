@@ -30,7 +30,7 @@ PHP_METHOD(GeoPolygonSearchQuery, __construct)
     if (rv == FAILURE) {
         return;
     }
-    zend_update_property(pcbc_geo_polygon_search_query_ce, getThis(), ZEND_STRL("coordinates"), coordinates);
+    pcbc_update_property(pcbc_geo_polygon_search_query_ce, getThis(), ("coordinates"), coordinates);
 }
 
 PHP_METHOD(GeoPolygonSearchQuery, field)
@@ -43,7 +43,7 @@ PHP_METHOD(GeoPolygonSearchQuery, field)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_geo_polygon_search_query_ce, getThis(), ZEND_STRL("field"), field);
+    pcbc_update_property_str(pcbc_geo_polygon_search_query_ce, getThis(), ("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -58,7 +58,7 @@ PHP_METHOD(GeoPolygonSearchQuery, boost)
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_geo_polygon_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
+    pcbc_update_property_double(pcbc_geo_polygon_search_query_ce, getThis(), ("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -76,17 +76,17 @@ PHP_METHOD(GeoPolygonSearchQuery, jsonSerialize)
 
     zval *prop, ret;
 
-    prop = zend_read_property(pcbc_geo_polygon_search_query_ce, getThis(), ZEND_STRL("coordinates"), 0, &ret);
+    prop = pcbc_read_property(pcbc_geo_polygon_search_query_ce, getThis(), ("coordinates"), 0, &ret);
     add_assoc_zval(return_value, "polygon_points", prop);
     Z_TRY_ADDREF_P(prop);
 
-    prop = zend_read_property(pcbc_geo_polygon_search_query_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_geo_polygon_search_query_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
     }
 
-    prop = zend_read_property(pcbc_geo_polygon_search_query_ce, getThis(), ZEND_STRL("boost"), 0, &ret);
+    prop = pcbc_read_property(pcbc_geo_polygon_search_query_ce, getThis(), ("boost"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "boost", prop);
         Z_TRY_ADDREF_P(prop);
@@ -128,8 +128,8 @@ PHP_METHOD(Coordinate, __construct)
     if (rv == FAILURE) {
         return;
     }
-    zend_update_property_double(pcbc_coordinate_ce, getThis(), ZEND_STRL("longitude"), longitude);
-    zend_update_property_double(pcbc_coordinate_ce, getThis(), ZEND_STRL("latitude"), latitude);
+    pcbc_update_property_double(pcbc_coordinate_ce, getThis(), ("longitude"), longitude);
+    pcbc_update_property_double(pcbc_coordinate_ce, getThis(), ("latitude"), latitude);
 }
 
 PHP_METHOD(Coordinate, jsonSerialize)
@@ -145,11 +145,11 @@ PHP_METHOD(Coordinate, jsonSerialize)
 
     zval *prop, ret;
 
-    prop = zend_read_property(pcbc_coordinate_ce, getThis(), ZEND_STRL("longitude"), 0, &ret);
+    prop = pcbc_read_property(pcbc_coordinate_ce, getThis(), ("longitude"), 0, &ret);
     add_next_index_zval(return_value, prop);
     Z_TRY_ADDREF_P(prop);
 
-    prop = zend_read_property(pcbc_coordinate_ce, getThis(), ZEND_STRL("latitude"), 0, &ret);
+    prop = pcbc_read_property(pcbc_coordinate_ce, getThis(), ("latitude"), 0, &ret);
     add_next_index_zval(return_value, prop);
     Z_TRY_ADDREF_P(prop);
 }

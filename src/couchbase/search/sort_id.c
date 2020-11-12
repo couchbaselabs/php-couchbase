@@ -31,7 +31,7 @@ PHP_METHOD(SearchSortId, descending)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_search_sort_id_ce, getThis(), ZEND_STRL("desc"), descending);
+    pcbc_update_property_bool(pcbc_search_sort_id_ce, getThis(), ("desc"), descending);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -48,7 +48,7 @@ PHP_METHOD(SearchSortId, jsonSerialize)
     array_init(return_value);
     add_assoc_string(return_value, "by", "id");
     zval *prop, ret;
-    prop = zend_read_property(pcbc_search_sort_id_ce, getThis(), ZEND_STRL("desc"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_id_ce, getThis(), ("desc"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "desc", prop);
         Z_TRY_ADDREF_P(prop);

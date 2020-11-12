@@ -32,9 +32,9 @@ PHP_METHOD(Scope, __construct)
         RETURN_NULL();
     }
 
-    zend_update_property(pcbc_collection_ce, getThis(), ZEND_STRL("bucket"), bucket);
+    pcbc_update_property(pcbc_collection_ce, getThis(), ("bucket"), bucket);
     if (name) {
-        zend_update_property_str(pcbc_collection_ce, getThis(), ZEND_STRL("name"), name);
+        pcbc_update_property_str(pcbc_collection_ce, getThis(), ("name"), name);
     }
 }
 
@@ -45,7 +45,7 @@ PHP_METHOD(Scope, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_scope_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_scope_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -60,13 +60,13 @@ PHP_METHOD(Scope, collection)
     }
 
     object_init_ex(return_value, pcbc_collection_ce);
-    zend_update_property_str(pcbc_collection_ce, return_value, ZEND_STRL("name"), name);
+    pcbc_update_property_str(pcbc_collection_ce, return_value, ("name"), name);
 
     zval *bucket, *scope, rv1, rv2;
-    scope = zend_read_property(pcbc_scope_ce, getThis(), ZEND_STRL("name"), 0, &rv1);
-    zend_update_property(pcbc_collection_ce, return_value, ZEND_STRL("scope"), scope);
-    bucket = zend_read_property(pcbc_scope_ce, getThis(), ZEND_STRL("bucket"), 0, &rv2);
-    zend_update_property(pcbc_collection_ce, return_value, ZEND_STRL("bucket"), bucket);
+    scope = pcbc_read_property(pcbc_scope_ce, getThis(), ("name"), 0, &rv1);
+    pcbc_update_property(pcbc_collection_ce, return_value, ("scope"), scope);
+    bucket = pcbc_read_property(pcbc_scope_ce, getThis(), ("bucket"), 0, &rv2);
+    pcbc_update_property(pcbc_collection_ce, return_value, ("bucket"), bucket);
 }
 
 ZEND_BEGIN_ARG_INFO_EX(ai_Scope___construct, 0, 0, 1)
@@ -100,12 +100,12 @@ PHP_METHOD(Collection, __construct)
         RETURN_NULL();
     }
 
-    zend_update_property(pcbc_collection_ce, getThis(), ZEND_STRL("bucket"), bucket);
+    pcbc_update_property(pcbc_collection_ce, getThis(), ("bucket"), bucket);
     if (scope) {
-        zend_update_property_str(pcbc_collection_ce, getThis(), ZEND_STRL("scope"), scope);
+        pcbc_update_property_str(pcbc_collection_ce, getThis(), ("scope"), scope);
     }
     if (name) {
-        zend_update_property_str(pcbc_collection_ce, getThis(), ZEND_STRL("name"), name);
+        pcbc_update_property_str(pcbc_collection_ce, getThis(), ("name"), name);
     }
 }
 
@@ -116,12 +116,12 @@ PHP_METHOD(Collection, binary)
     }
     object_init_ex(return_value, pcbc_binary_collection_ce);
     zval *bucket, *scope, *collection, rv1, rv2, rv3;
-    bucket = zend_read_property(pcbc_collection_ce, getThis(), ZEND_STRL("bucket"), 0, &rv2);
-    zend_update_property(pcbc_binary_collection_ce, return_value, ZEND_STRL("bucket"), bucket);
-    collection = zend_read_property(pcbc_collection_ce, getThis(), ZEND_STRL("name"), 0, &rv3);
-    zend_update_property(pcbc_binary_collection_ce, return_value, ZEND_STRL("name"), collection);
-    scope = zend_read_property(pcbc_collection_ce, getThis(), ZEND_STRL("scope"), 0, &rv1);
-    zend_update_property(pcbc_binary_collection_ce, return_value, ZEND_STRL("scope"), scope);
+    bucket = pcbc_read_property(pcbc_collection_ce, getThis(), ("bucket"), 0, &rv2);
+    pcbc_update_property(pcbc_binary_collection_ce, return_value, ("bucket"), bucket);
+    collection = pcbc_read_property(pcbc_collection_ce, getThis(), ("name"), 0, &rv3);
+    pcbc_update_property(pcbc_binary_collection_ce, return_value, ("name"), collection);
+    scope = pcbc_read_property(pcbc_collection_ce, getThis(), ("scope"), 0, &rv1);
+    pcbc_update_property(pcbc_binary_collection_ce, return_value, ("scope"), scope);
 }
 
 PHP_METHOD(Collection, name)
@@ -131,7 +131,7 @@ PHP_METHOD(Collection, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_collection_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_collection_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -142,7 +142,7 @@ PHP_METHOD(BinaryCollection, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_binary_collection_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_binary_collection_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 

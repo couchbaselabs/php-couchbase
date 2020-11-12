@@ -31,7 +31,7 @@ PHP_METHOD(SearchSortField, __construct)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_sort_field_ce, getThis(), ZEND_STRL("field"), field);
+    pcbc_update_property_str(pcbc_search_sort_field_ce, getThis(), ("field"), field);
 }
 
 PHP_METHOD(SearchSortField, descending)
@@ -44,7 +44,7 @@ PHP_METHOD(SearchSortField, descending)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_search_sort_field_ce, getThis(), ZEND_STRL("desc"), descending);
+    pcbc_update_property_bool(pcbc_search_sort_field_ce, getThis(), ("desc"), descending);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -59,7 +59,7 @@ PHP_METHOD(SearchSortField, type)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_sort_field_ce, getThis(), ZEND_STRL("type"), type);
+    pcbc_update_property_str(pcbc_search_sort_field_ce, getThis(), ("type"), type);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -74,7 +74,7 @@ PHP_METHOD(SearchSortField, mode)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_sort_field_ce, getThis(), ZEND_STRL("mode"), mode);
+    pcbc_update_property_str(pcbc_search_sort_field_ce, getThis(), ("mode"), mode);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -89,7 +89,7 @@ PHP_METHOD(SearchSortField, missing)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_search_sort_field_ce, getThis(), ZEND_STRL("missing"), missing);
+    pcbc_update_property_str(pcbc_search_sort_field_ce, getThis(), ("missing"), missing);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -106,27 +106,27 @@ PHP_METHOD(SearchSortField, jsonSerialize)
     array_init(return_value);
     add_assoc_string(return_value, "by", "field");
     zval *prop, ret;
-    prop = zend_read_property(pcbc_search_sort_field_ce, getThis(), ZEND_STRL("desc"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_field_ce, getThis(), ("desc"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "desc", prop);
         Z_TRY_ADDREF_P(prop);
     }
-    prop = zend_read_property(pcbc_search_sort_field_ce, getThis(), ZEND_STRL("field"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_field_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "field", prop);
         Z_TRY_ADDREF_P(prop);
     }
-    prop = zend_read_property(pcbc_search_sort_field_ce, getThis(), ZEND_STRL("type"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_field_ce, getThis(), ("type"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "type", prop);
         Z_TRY_ADDREF_P(prop);
     }
-    prop = zend_read_property(pcbc_search_sort_field_ce, getThis(), ZEND_STRL("mode"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_field_ce, getThis(), ("mode"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "mode", prop);
         Z_TRY_ADDREF_P(prop);
     }
-    prop = zend_read_property(pcbc_search_sort_field_ce, getThis(), ZEND_STRL("missing"), 0, &ret);
+    prop = pcbc_read_property(pcbc_search_sort_field_ce, getThis(), ("missing"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
         add_assoc_zval(return_value, "missing", prop);
         Z_TRY_ADDREF_P(prop);

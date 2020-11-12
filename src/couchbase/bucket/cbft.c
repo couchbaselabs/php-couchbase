@@ -33,7 +33,7 @@ static void ftsrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RESP
     cookie->rc = lcb_respsearch_status(resp);
     zval *return_value = cookie->return_value;
 
-    zend_update_property_long(pcbc_search_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
+    pcbc_update_property_long(pcbc_search_result_impl_ce, return_value, ("status"), cookie->rc);
 
     const char *row = NULL;
     size_t nrow = 0;
@@ -55,19 +55,19 @@ static void ftsrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RESP
 
             mval = zend_symtable_str_find(marr, ZEND_STRL("took"));
             if (mval) {
-                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("took"), mval);
+                pcbc_update_property(pcbc_search_meta_data_impl_ce, &meta, ("took"), mval);
             }
             mval = zend_symtable_str_find(marr, ZEND_STRL("total_hits"));
             if (mval) {
-                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("total_hits"), mval);
+                pcbc_update_property(pcbc_search_meta_data_impl_ce, &meta, ("total_hits"), mval);
             }
             mval = zend_symtable_str_find(marr, ZEND_STRL("max_score"));
             if (mval) {
-                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("max_score"), mval);
+                pcbc_update_property(pcbc_search_meta_data_impl_ce, &meta, ("max_score"), mval);
             }
             mval = zend_symtable_str_find(marr, ZEND_STRL("metrics"));
             if (mval) {
-                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("metrics"), mval);
+                pcbc_update_property(pcbc_search_meta_data_impl_ce, &meta, ("metrics"), mval);
             }
 
             mstatus = zend_symtable_str_find(marr, ZEND_STRL("status"));
@@ -75,35 +75,35 @@ static void ftsrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RESP
                 switch (Z_TYPE_P(mstatus)) {
                 case IS_STRING:
                     // TODO: read and expose value in "error" key
-                    zend_update_property_stringl(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("status"),
+                    pcbc_update_property_stringl(pcbc_search_meta_data_impl_ce, &meta, ("status"),
                                                  Z_STRVAL_P(mstatus), Z_STRLEN_P(mstatus));
                     break;
                 case IS_ARRAY:
-                    zend_update_property_string(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("status"),
+                    pcbc_update_property_string(pcbc_search_meta_data_impl_ce, &meta, ("status"),
                                                 "success");
                     mval = zend_symtable_str_find(Z_ARRVAL_P(mstatus), ZEND_STRL("successful"));
                     if (mval) {
-                        zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("success_count"),
+                        pcbc_update_property(pcbc_search_meta_data_impl_ce, &meta, ("success_count"),
                                              mval);
                     }
                     mval = zend_symtable_str_find(Z_ARRVAL_P(mstatus), ZEND_STRL("failed"));
                     if (mval) {
-                        zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("error_count"),
+                        pcbc_update_property(pcbc_search_meta_data_impl_ce, &meta, ("error_count"),
                                              mval);
                     }
                     break;
                 }
             }
-            zend_update_property(pcbc_search_result_impl_ce, return_value, ZEND_STRL("meta"), &meta);
+            pcbc_update_property(pcbc_search_result_impl_ce, return_value, ("meta"), &meta);
             mval = zend_symtable_str_find(marr, ZEND_STRL("facets"));
             if (mval) {
-                zend_update_property(pcbc_search_result_impl_ce, return_value, ZEND_STRL("facets"), mval);
+                pcbc_update_property(pcbc_search_result_impl_ce, return_value, ("facets"), mval);
             }
             zval_ptr_dtor(&meta);
             zval_dtor(&value);
         } else {
             zval *hits, rv;
-            hits = zend_read_property(pcbc_search_result_impl_ce, return_value, ZEND_STRL("rows"), 0, &rv);
+            hits = pcbc_read_property(pcbc_search_result_impl_ce, return_value, ("rows"), 0, &rv);
             add_next_index_zval(hits, &value);
         }
     }
@@ -161,7 +161,7 @@ PHP_METHOD(Cluster, searchQuery)
     object_init_ex(return_value, pcbc_search_result_impl_ce);
     zval hits;
     array_init(&hits);
-    zend_update_property(pcbc_search_result_impl_ce, return_value, ZEND_STRL("rows"), &hits);
+    pcbc_update_property(pcbc_search_result_impl_ce, return_value, ("rows"), &hits);
     Z_DELREF(hits);
     struct search_cookie cookie = {LCB_SUCCESS, return_value};
 

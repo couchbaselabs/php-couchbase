@@ -33,30 +33,30 @@ static void httpcb_getBucket(void *ctx, zval *return_value, zval *response)
 
     mval = zend_symtable_str_find(marr, ZEND_STRL("name"));
     if (mval && Z_TYPE_P(mval) == IS_STRING) {
-        zend_update_property(pcbc_bucket_settings_ce, return_value, ZEND_STRL("name"), mval);
+        pcbc_update_property(pcbc_bucket_settings_ce, return_value, ("name"), mval);
     }
     mval = zend_symtable_str_find(marr, ZEND_STRL("replicaNumber"));
     if (mval && Z_TYPE_P(mval) == IS_LONG) {
-        zend_update_property(pcbc_bucket_settings_ce, return_value, ZEND_STRL("num_replicas"), mval);
+        pcbc_update_property(pcbc_bucket_settings_ce, return_value, ("num_replicas"), mval);
     }
     mval = zend_symtable_str_find(marr, ZEND_STRL("replicaIndex"));
-    zend_update_property_bool(pcbc_bucket_settings_ce, return_value, ZEND_STRL("replica_indexes"),
+    pcbc_update_property_bool(pcbc_bucket_settings_ce, return_value, ("replica_indexes"),
                               mval != NULL);
     mval = zend_symtable_str_find(marr, ZEND_STRL("bucketType"));
     if (mval && Z_TYPE_P(mval) == IS_STRING) {
-        zend_update_property(pcbc_bucket_settings_ce, return_value, ZEND_STRL("bucket_type"), mval);
+        pcbc_update_property(pcbc_bucket_settings_ce, return_value, ("bucket_type"), mval);
     }
     mval = zend_symtable_str_find(marr, ZEND_STRL("evictionPolicy"));
     if (mval && Z_TYPE_P(mval) == IS_STRING) {
-        zend_update_property(pcbc_bucket_settings_ce, return_value, ZEND_STRL("eviction_policy"), mval);
+        pcbc_update_property(pcbc_bucket_settings_ce, return_value, ("eviction_policy"), mval);
     }
     mval = zend_symtable_str_find(marr, ZEND_STRL("maxTTL"));
     if (mval && Z_TYPE_P(mval) == IS_LONG) {
-        zend_update_property(pcbc_bucket_settings_ce, return_value, ZEND_STRL("max_ttl"), mval);
+        pcbc_update_property(pcbc_bucket_settings_ce, return_value, ("max_ttl"), mval);
     }
     mval = zend_symtable_str_find(marr, ZEND_STRL("compressionMode"));
     if (mval && Z_TYPE_P(mval) == IS_STRING) {
-        zend_update_property(pcbc_bucket_settings_ce, return_value, ZEND_STRL("compression_mode"), mval);
+        pcbc_update_property(pcbc_bucket_settings_ce, return_value, ("compression_mode"), mval);
     }
 
     {
@@ -64,7 +64,7 @@ static void httpcb_getBucket(void *ctx, zval *return_value, zval *response)
         if (quota && Z_TYPE_P(quota) == IS_ARRAY) {
             mval = zend_symtable_str_find(Z_ARRVAL_P(quota), ZEND_STRL("ram"));
             if (mval && Z_TYPE_P(mval) == IS_LONG) {
-                zend_update_property_long(pcbc_bucket_settings_ce, return_value, ZEND_STRL("ram_quota_mb"),
+                pcbc_update_property_long(pcbc_bucket_settings_ce, return_value, ("ram_quota_mb"),
                                           Z_LVAL_P(mval) / (1024 * 1024));
             }
         }
@@ -73,7 +73,7 @@ static void httpcb_getBucket(void *ctx, zval *return_value, zval *response)
         zval *controllers = zend_symtable_str_find(marr, ZEND_STRL("controllers"));
         if (controllers && Z_TYPE_P(controllers) == IS_ARRAY) {
             mval = zend_symtable_str_find(Z_ARRVAL_P(controllers), ZEND_STRL("flush"));
-            zend_update_property_bool(pcbc_bucket_settings_ce, return_value, ZEND_STRL("flush_enabled"),
+            pcbc_update_property_bool(pcbc_bucket_settings_ce, return_value, ("flush_enabled"),
                                       mval && Z_TYPE_P(mval) == IS_STRING);
         }
     }
@@ -92,7 +92,7 @@ PHP_METHOD(BucketManager, getBucket)
         return;
     }
 
-    prop = zend_read_property(pcbc_bucket_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_bucket_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -131,7 +131,7 @@ PHP_METHOD(BucketManager, getAllBuckets)
         RETURN_NULL();
     }
 
-    prop = zend_read_property(pcbc_bucket_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_bucket_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -158,7 +158,7 @@ PHP_METHOD(BucketManager, createBucket)
         RETURN_NULL();
     }
 
-    prop = zend_read_property(pcbc_bucket_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_bucket_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     {
@@ -167,37 +167,37 @@ PHP_METHOD(BucketManager, createBucket)
         array_init(&payload);
 
         add_assoc_string(&payload, "authType", "sasl");
-        prop = zend_read_property(pcbc_bucket_settings_ce, settings, ZEND_STRL("name"), 0, &ret);
+        prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("name"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_STRING) {
             add_assoc_zval(&payload, "name", prop);
         }
-        prop = zend_read_property(pcbc_bucket_settings_ce, settings, ZEND_STRL("bucket_type"), 0, &ret);
+        prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("bucket_type"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_STRING) {
             add_assoc_zval(&payload, "bucketType", prop);
         }
-        prop = zend_read_property(pcbc_bucket_settings_ce, settings, ZEND_STRL("ram_quota_mb"), 0, &ret);
+        prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("ram_quota_mb"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             add_assoc_zval(&payload, "ramQuotaMB", prop);
         }
-        prop = zend_read_property(pcbc_bucket_settings_ce, settings, ZEND_STRL("num_replicas"), 0, &ret);
+        prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("num_replicas"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             add_assoc_zval(&payload, "replicaNumber", prop);
         }
-        prop = zend_read_property(pcbc_bucket_settings_ce, settings, ZEND_STRL("eviction_policy"), 0, &ret);
+        prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("eviction_policy"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_STRING) {
             add_assoc_zval(&payload, "evictionPolicy", prop);
         }
-        prop = zend_read_property(pcbc_bucket_settings_ce, settings, ZEND_STRL("compression_mode"), 0, &ret);
+        prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("compression_mode"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_STRING) {
             add_assoc_zval(&payload, "compressionMode", prop);
         }
-        prop = zend_read_property(pcbc_bucket_settings_ce, settings, ZEND_STRL("max_ttl"), 0, &ret);
+        prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("max_ttl"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             add_assoc_zval(&payload, "maxTTL", prop);
         }
-        prop = zend_read_property(pcbc_bucket_settings_ce, settings, ZEND_STRL("flush_enabled"), 0, &ret);
+        prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("flush_enabled"), 0, &ret);
         add_assoc_bool(&payload, "flushEnabled", Z_TYPE_P(prop) == IS_TRUE);
-        prop = zend_read_property(pcbc_bucket_settings_ce, settings, ZEND_STRL("replica_indexes"), 0, &ret);
+        prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("replica_indexes"), 0, &ret);
         add_assoc_bool(&payload, "replicaIndex", Z_TYPE_P(prop) == IS_TRUE);
 
         php_url_encode_hash_ex(HASH_OF(&payload), &buf, NULL, 0, NULL, 0, NULL, 0, NULL, NULL,
@@ -234,7 +234,7 @@ PHP_METHOD(BucketManager, removeBucket)
         RETURN_NULL();
     }
 
-    prop = zend_read_property(pcbc_bucket_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_bucket_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -260,7 +260,7 @@ PHP_METHOD(BucketManager, flush)
         return;
     }
 
-    prop = zend_read_property(pcbc_bucket_manager_ce, getThis(), ZEND_STRL("cluster"), 0, &val);
+    prop = pcbc_read_property(pcbc_bucket_manager_ce, getThis(), ("cluster"), 0, &val);
     cluster = Z_CLUSTER_OBJ_P(prop);
 
     lcb_CMDHTTP *cmd;
@@ -451,7 +451,7 @@ PHP_METHOD(BucketSettings, name)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("name"), 0, &rv);
+    prop = pcbc_read_property(pcbc_bucket_settings_ce, getThis(), ("name"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -462,7 +462,7 @@ PHP_METHOD(BucketSettings, setName)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("name"), val);
+    pcbc_update_property_str(pcbc_bucket_settings_ce, getThis(), ("name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -473,7 +473,7 @@ PHP_METHOD(BucketSettings, flushEnabled)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("flush_enabled"), 0, &rv);
+    prop = pcbc_read_property(pcbc_bucket_settings_ce, getThis(), ("flush_enabled"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -484,7 +484,7 @@ PHP_METHOD(BucketSettings, enableFlush)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("flush_enabled"), val);
+    pcbc_update_property_bool(pcbc_bucket_settings_ce, getThis(), ("flush_enabled"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -495,7 +495,7 @@ PHP_METHOD(BucketSettings, ramQuotaMb)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("ram_quota_mb"), 0, &rv);
+    prop = pcbc_read_property(pcbc_bucket_settings_ce, getThis(), ("ram_quota_mb"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -506,7 +506,7 @@ PHP_METHOD(BucketSettings, setRamQuotaMb)
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("ram_quota_mb"), val);
+    pcbc_update_property_long(pcbc_bucket_settings_ce, getThis(), ("ram_quota_mb"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -517,7 +517,7 @@ PHP_METHOD(BucketSettings, numReplicas)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("num_replicas"), 0, &rv);
+    prop = pcbc_read_property(pcbc_bucket_settings_ce, getThis(), ("num_replicas"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -528,7 +528,7 @@ PHP_METHOD(BucketSettings, setNumReplicas)
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("num_replicas"), val);
+    pcbc_update_property_long(pcbc_bucket_settings_ce, getThis(), ("num_replicas"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -539,7 +539,7 @@ PHP_METHOD(BucketSettings, replicaIndexes)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("replica_indexes"), 0, &rv);
+    prop = pcbc_read_property(pcbc_bucket_settings_ce, getThis(), ("replica_indexes"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -550,7 +550,7 @@ PHP_METHOD(BucketSettings, enableReplicaIndexes)
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("replica_indexes"), val);
+    pcbc_update_property_bool(pcbc_bucket_settings_ce, getThis(), ("replica_indexes"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -561,7 +561,7 @@ PHP_METHOD(BucketSettings, bucketType)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("bucket_type"), 0, &rv);
+    prop = pcbc_read_property(pcbc_bucket_settings_ce, getThis(), ("bucket_type"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -572,7 +572,7 @@ PHP_METHOD(BucketSettings, setBucketType)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("bucket_type"), val);
+    pcbc_update_property_str(pcbc_bucket_settings_ce, getThis(), ("bucket_type"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -583,7 +583,7 @@ PHP_METHOD(BucketSettings, evictionPolicy)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("eviction_policy"), 0, &rv);
+    prop = pcbc_read_property(pcbc_bucket_settings_ce, getThis(), ("eviction_policy"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -594,7 +594,7 @@ PHP_METHOD(BucketSettings, setEvictionPolicy)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("eviction_policy"), val);
+    pcbc_update_property_str(pcbc_bucket_settings_ce, getThis(), ("eviction_policy"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -605,7 +605,7 @@ PHP_METHOD(BucketSettings, maxTtl)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("max_ttl"), 0, &rv);
+    prop = pcbc_read_property(pcbc_bucket_settings_ce, getThis(), ("max_ttl"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -616,7 +616,7 @@ PHP_METHOD(BucketSettings, setMaxTtl)
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("max_ttl"), val);
+    pcbc_update_property_long(pcbc_bucket_settings_ce, getThis(), ("max_ttl"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -627,7 +627,7 @@ PHP_METHOD(BucketSettings, compressionMode)
     }
 
     zval *prop, rv;
-    prop = zend_read_property(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("compression_mode"), 0, &rv);
+    prop = pcbc_read_property(pcbc_bucket_settings_ce, getThis(), ("compression_mode"), 0, &rv);
     ZVAL_COPY(return_value, prop);
 }
 
@@ -638,7 +638,7 @@ PHP_METHOD(BucketSettings, setCompressionMode)
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_bucket_settings_ce, getThis(), ZEND_STRL("compression_mode"), val);
+    pcbc_update_property_str(pcbc_bucket_settings_ce, getThis(), ("compression_mode"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
