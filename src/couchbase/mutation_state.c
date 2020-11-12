@@ -36,7 +36,7 @@ PHP_METHOD(MutationState, add)
     zval fname;
     zval retval;
     PCBC_STRING(fname, "mutationToken");
-    rv = call_user_function_ex(EG(function_table), source, &fname, &retval, 0, NULL, 1, NULL);
+    rv = call_user_function(EG(function_table), source, &fname, &retval, 0, NULL);
     if (rv == FAILURE || EG(exception) || Z_ISUNDEF(retval)) {
         RETURN_NULL();
     }
@@ -68,7 +68,7 @@ void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vector
         {
             zval bucket;
             PCBC_STRING(fname, "bucketName");
-            call_user_function_ex(EG(function_table), token, &fname, &bucket, 0, NULL, 1, NULL);
+            call_user_function(EG(function_table), token, &fname, &bucket, 0, NULL);
 
             zval new_group;
             zval *bucket_group = zend_symtable_str_find(Z_ARRVAL_P(scan_vectors), Z_STRVAL(bucket), Z_STRLEN(bucket));
@@ -85,7 +85,7 @@ void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vector
 
             zval seqno;
             PCBC_STRING(fname, "sequenceNumber");
-            call_user_function_ex(EG(function_table), token, &fname, &seqno, 0, NULL, 1, NULL);
+            call_user_function(EG(function_table), token, &fname, &seqno, 0, NULL);
             decoded = php_base64_decode_str(Z_STR(seqno));
             if (decoded) {
                 if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
@@ -100,7 +100,7 @@ void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vector
 
             zval vb_uuid;
             PCBC_STRING(fname, "partitionUuid");
-            call_user_function_ex(EG(function_table), token, &fname, &vb_uuid, 0, NULL, 1, NULL);
+            call_user_function(EG(function_table), token, &fname, &vb_uuid, 0, NULL);
             decoded = php_base64_decode_str(Z_STR(vb_uuid));
             if (decoded) {
                 if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
@@ -114,7 +114,7 @@ void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vector
 
             zval vb_id;
             PCBC_STRING(fname, "partitionId");
-            call_user_function_ex(EG(function_table), token, &fname, &vb_id, 0, NULL, 1, NULL);
+            call_user_function(EG(function_table), token, &fname, &vb_id, 0, NULL);
 
             snprintf(buf, 21, "%d", (int)Z_LVAL(vb_id));
             zend_hash_str_update(Z_ARRVAL_P(bucket_group), buf, strlen(buf), &pair);
@@ -141,11 +141,11 @@ void pcbc_mutation_state_export_for_search(zval *mutation_state, zval *scan_vect
 
             zval vb_id;
             PCBC_STRING(fname, "partitionId");
-            call_user_function_ex(EG(function_table), token, &fname, &vb_id, 0, NULL, 1, NULL);
+            call_user_function(EG(function_table), token, &fname, &vb_id, 0, NULL);
 
             zval vb_uuid;
             PCBC_STRING(fname, "partitionUuid");
-            call_user_function_ex(EG(function_table), token, &fname, &vb_uuid, 0, NULL, 1, NULL);
+            call_user_function(EG(function_table), token, &fname, &vb_uuid, 0, NULL);
             decoded = php_base64_decode_str(Z_STR(vb_uuid));
             if (decoded) {
                 if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
@@ -158,7 +158,7 @@ void pcbc_mutation_state_export_for_search(zval *mutation_state, zval *scan_vect
 
             zval seqno;
             PCBC_STRING(fname, "sequenceNumber");
-            call_user_function_ex(EG(function_table), token, &fname, &seqno, 0, NULL, 1, NULL);
+            call_user_function(EG(function_table), token, &fname, &seqno, 0, NULL);
             decoded = php_base64_decode_str(Z_STR(seqno));
             if (decoded) {
                 if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {

@@ -133,7 +133,7 @@ PHP_METHOD(Cluster, searchQuery)
         zval values;
         PCBC_STRING(fname, "jsonSerialize");
         ZVAL_UNDEF(&values);
-        rv = call_user_function_ex(EG(function_table), options, &fname, &values, 0, NULL, 1, NULL);
+        rv = call_user_function(EG(function_table), options, &fname, &values, 0, NULL);
         if (rv != FAILURE && !EG(exception) && !Z_ISUNDEF(values)) {
             zend_hash_merge(HASH_OF(&payload), HASH_OF(&values), NULL, 0);
         }

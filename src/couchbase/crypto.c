@@ -53,7 +53,7 @@ static const char *pcbc_crypto_get_key_id(struct lcbcrypto_PROVIDER *provider)
     ZVAL_UNDEF(&fname);
     PCBC_STRING(fname, "getKeyId");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 0, NULL, 1, NULL);
+    rv = call_user_function(EG(function_table), zprovider, &fname, &retval, 0, NULL);
     if (rv == FAILURE || EG(exception) || Z_ISUNDEF(retval)) {
         return NULL;
     }
@@ -74,7 +74,7 @@ static lcb_STATUS pcbc_crypto_generate_iv(struct lcbcrypto_PROVIDER *provider, u
     ZVAL_UNDEF(&fname);
     PCBC_STRING(fname, "generateIV");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 0, NULL, 1, NULL);
+    rv = call_user_function(EG(function_table), zprovider, &fname, &retval, 0, NULL);
     if (rv == FAILURE || EG(exception) || Z_ISUNDEF(retval)) {
         return LCB_ERR_INVALID_ARGUMENT;
     }
@@ -106,7 +106,7 @@ static lcb_STATUS pcbc_crypto_sign(struct lcbcrypto_PROVIDER *provider, const lc
     }
     PCBC_STRING(fname, "sign");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 1, &param, 1, NULL);
+    rv = call_user_function(EG(function_table), zprovider, &fname, &retval, 1, &param, 1, NULL);
 
     zval_ptr_dtor(&param);
     if (rv == FAILURE || EG(exception) || Z_ISUNDEF(retval)) {
@@ -143,7 +143,7 @@ static lcb_STATUS pcbc_crypto_verify_signature(struct lcbcrypto_PROVIDER *provid
     PCBC_STRINGL(params[1], sig, sig_len);
     PCBC_STRING(fname, "verifySignature");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 2, params, 1, NULL);
+    rv = call_user_function(EG(function_table), zprovider, &fname, &retval, 2, params);
 
     zval_ptr_dtor(&params[0]);
     zval_ptr_dtor(&params[1]);
@@ -181,7 +181,7 @@ static lcb_STATUS pcbc_crypto_encrypt(struct lcbcrypto_PROVIDER *provider, const
     }
     PCBC_STRING(fname, "encrypt");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 2, params, 1, NULL);
+    rv = call_user_function(EG(function_table), zprovider, &fname, &retval);
 
     zval_ptr_dtor(&params[0]);
     zval_ptr_dtor(&params[1]);
@@ -219,7 +219,7 @@ static lcb_STATUS pcbc_crypto_decrypt(struct lcbcrypto_PROVIDER *provider, const
     }
     PCBC_STRING(fname, "decrypt");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 2, params, 1, NULL);
+    rv = call_user_function(EG(function_table), zprovider, &fname, &retval, 2, params);
 
     zval_ptr_dtor(&params[0]);
     zval_ptr_dtor(&params[1]);
@@ -257,14 +257,14 @@ void pcbc_crypto_register(pcbc_bucket_t *obj, const char *name, int name_len, zv
         ZVAL_UNDEF(&fname);
 
         PCBC_STRING(fname, "generateIV");
-        rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 0, NULL, 1, NULL);
+        rv = call_user_function(EG(function_table), zprovider, &fname, &retval, 0, NULL);
         if (!(rv == FAILURE || EG(exception) || Z_ISUNDEF(retval) || Z_TYPE_P(&retval) == IS_NULL)) {
             provider->v.v1.generate_iv = pcbc_crypto_generate_iv;
         }
 
         PCBC_STRING(fname, "sign");
         array_init_size(&param, 0);
-        rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 1, &param, 1, NULL);
+        rv = call_user_function(EG(function_table), zprovider, &fname, &retval, 1, &param);
         if (!(rv == FAILURE || EG(exception) || Z_ISUNDEF(retval) || Z_TYPE_P(&retval) == IS_NULL)) {
             provider->v.v1.sign = pcbc_crypto_sign;
             provider->v.v1.verify_signature = pcbc_crypto_verify_signature;
