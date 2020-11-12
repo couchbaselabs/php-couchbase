@@ -27,12 +27,12 @@ PHP_METHOD(MatchPhraseSearchQuery, __construct)
     zend_string *value = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &value);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &value);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_match_phrase_search_query_ce, getThis(), ZEND_STRL("value"), value TSRMLS_CC);
+    zend_update_property_str(pcbc_match_phrase_search_query_ce, getThis(), ZEND_STRL("value"), value);
 }
 
 PHP_METHOD(MatchPhraseSearchQuery, analyzer)
@@ -40,12 +40,12 @@ PHP_METHOD(MatchPhraseSearchQuery, analyzer)
     zend_string *analyzer = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &analyzer);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &analyzer);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_match_phrase_search_query_ce, getThis(), ZEND_STRL("analyzer"), analyzer TSRMLS_CC);
+    zend_update_property_str(pcbc_match_phrase_search_query_ce, getThis(), ZEND_STRL("analyzer"), analyzer);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -55,12 +55,12 @@ PHP_METHOD(MatchPhraseSearchQuery, field)
     zend_string *field = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &field);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &field);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_match_phrase_search_query_ce, getThis(), ZEND_STRL("field"), field TSRMLS_CC);
+    zend_update_property_str(pcbc_match_phrase_search_query_ce, getThis(), ZEND_STRL("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -70,12 +70,12 @@ PHP_METHOD(MatchPhraseSearchQuery, boost)
     double boost = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "d", &boost);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "d", &boost);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_match_phrase_search_query_ce, getThis(), ZEND_STRL("boost"), boost TSRMLS_CC);
+    zend_update_property_long(pcbc_match_phrase_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -148,14 +148,14 @@ PHP_MINIT_FUNCTION(MatchPhraseSearchQuery)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MatchPhraseSearchQuery", match_phrase_search_query_methods);
-    pcbc_match_phrase_search_query_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_match_phrase_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_match_phrase_search_query_ce TSRMLS_CC, 2, pcbc_json_serializable_ce,
+    zend_class_implements(pcbc_match_phrase_search_query_ce, 2, pcbc_json_serializable_ce,
                           pcbc_search_query_ce);
 
-    zend_declare_property_null(pcbc_match_phrase_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_match_phrase_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_match_phrase_search_query_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_match_phrase_search_query_ce, ZEND_STRL("analyzer"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_match_phrase_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_match_phrase_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_match_phrase_search_query_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_match_phrase_search_query_ce, ZEND_STRL("analyzer"), ZEND_ACC_PRIVATE);
     return SUCCESS;
 }

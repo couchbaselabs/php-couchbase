@@ -23,7 +23,7 @@ typedef struct {
     zval val;
 } opcookie_health_res;
 
-static lcb_STATUS proc_health_results(zval *return_value, opcookie *cookie TSRMLS_DC)
+static lcb_STATUS proc_health_results(zval *return_value, opcookie *cookie)
 {
     opcookie_health_res *res;
     lcb_STATUS err = LCB_SUCCESS;
@@ -47,7 +47,6 @@ static lcb_STATUS proc_health_results(zval *return_value, opcookie *cookie TSRML
 void ping_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPPING *resp)
 {
     opcookie_health_res *result = ecalloc(1, sizeof(opcookie_health_res));
-    TSRMLS_FETCH();
 
     result->header.err = lcb_respping_status(resp);
     if (result->header.err == LCB_SUCCESS) {
@@ -75,7 +74,7 @@ PHP_METHOD(Bucket, ping)
     int rv;
     lcb_STATUS err;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|z", &options);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "|z", &options);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -92,7 +91,7 @@ PHP_METHOD(Bucket, ping)
         throw_lcb_exception(err, NULL);
     }
     lcb_wait(obj->conn->lcb, LCB_WAIT_DEFAULT);
-    err = proc_health_results(return_value, cookie TSRMLS_CC);
+    err = proc_health_results(return_value, cookie);
     opcookie_destroy(cookie);
     if (err != LCB_SUCCESS) {
         throw_lcb_exception(err, NULL);
@@ -102,8 +101,6 @@ PHP_METHOD(Bucket, ping)
 void diag_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPDIAG *resp)
 {
     opcookie_health_res *result = ecalloc(1, sizeof(opcookie_health_res));
-
-    TSRMLS_FETCH();
 
     result->header.err = lcb_respdiag_status(resp);
     if (result->header.err == LCB_SUCCESS) {
@@ -131,7 +128,7 @@ PHP_METHOD(Bucket, diagnostics)
     int rv;
     lcb_STATUS err;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|S", &report_id);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "|S", &report_id);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -146,7 +143,7 @@ PHP_METHOD(Bucket, diagnostics)
         throw_lcb_exception(err, NULL);
     }
     lcb_wait(obj->conn->lcb, LCB_WAIT_DEFAULT);
-    err = proc_health_results(return_value, cookie TSRMLS_CC);
+    err = proc_health_results(return_value, cookie);
     opcookie_destroy(cookie);
     if (err != LCB_SUCCESS) {
         throw_lcb_exception(err, NULL);

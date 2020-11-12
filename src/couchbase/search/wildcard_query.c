@@ -26,12 +26,12 @@ PHP_METHOD(WildcardSearchQuery, __construct)
     zend_string *wildcard = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &wildcard);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &wildcard);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_wildcard_search_query_ce, getThis(), ZEND_STRL("value"), wildcard TSRMLS_CC);
+    zend_update_property_str(pcbc_wildcard_search_query_ce, getThis(), ZEND_STRL("value"), wildcard);
 }
 
 PHP_METHOD(WildcardSearchQuery, field)
@@ -39,12 +39,12 @@ PHP_METHOD(WildcardSearchQuery, field)
     zend_string *field = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &field);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &field);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_wildcard_search_query_ce, getThis(), ZEND_STRL("field"), field TSRMLS_CC);
+    zend_update_property_str(pcbc_wildcard_search_query_ce, getThis(), ZEND_STRL("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -54,12 +54,12 @@ PHP_METHOD(WildcardSearchQuery, boost)
     double boost = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "d", &boost);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "d", &boost);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_wildcard_search_query_ce, getThis(), ZEND_STRL("boost"), boost TSRMLS_CC);
+    zend_update_property_long(pcbc_wildcard_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -124,13 +124,13 @@ PHP_MINIT_FUNCTION(WildcardSearchQuery)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "WildcardSearchQuery", wildcard_search_query_methods);
-    pcbc_wildcard_search_query_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_wildcard_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_wildcard_search_query_ce TSRMLS_CC, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
+    zend_class_implements(pcbc_wildcard_search_query_ce, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
 
-    zend_declare_property_null(pcbc_wildcard_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_wildcard_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_wildcard_search_query_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_wildcard_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_wildcard_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_wildcard_search_query_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

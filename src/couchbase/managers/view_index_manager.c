@@ -27,7 +27,7 @@ static void httpcb_getDesignDocument(void *ctx, zval *return_value, zval *respon
     zval view_prop;
     object_init_ex(return_value, pcbc_design_document_ce);
     array_init(&view_prop);
-    zend_update_property(pcbc_design_document_ce, return_value, ZEND_STRL("views"), &view_prop TSRMLS_CC);
+    zend_update_property(pcbc_design_document_ce, return_value, ZEND_STRL("views"), &view_prop);
     zval_delref_p(&view_prop);
 
     zval *views = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("views"));
@@ -38,14 +38,14 @@ static void httpcb_getDesignDocument(void *ctx, zval *return_value, zval *respon
         {
             zval view, *val;
             object_init_ex(&view, pcbc_view_ce);
-            zend_update_property_str(pcbc_view_ce, &view, ZEND_STRL("name"), string_key TSRMLS_CC);
+            zend_update_property_str(pcbc_view_ce, &view, ZEND_STRL("name"), string_key);
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("map"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_view_ce, &view, ZEND_STRL("map"), val TSRMLS_CC);
+                zend_update_property(pcbc_view_ce, &view, ZEND_STRL("map"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("reduce"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_view_ce, &view, ZEND_STRL("reduce"), val TSRMLS_CC);
+                zend_update_property(pcbc_view_ce, &view, ZEND_STRL("reduce"), val);
             }
             add_assoc_zval_ex(&view_prop, ZSTR_VAL(string_key), ZSTR_LEN(string_key), &view);
         }
@@ -61,7 +61,7 @@ PHP_METHOD(ViewIndexManager, getDesignDocument)
     char *path;
     int rv, path_len;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &name);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &name);
     if (rv == FAILURE) {
         return;
     }
@@ -75,9 +75,9 @@ PHP_METHOD(ViewIndexManager, getDesignDocument)
     path_len = spprintf(&path, 0, "/%.*s", (int)ZSTR_LEN(name), ZSTR_VAL(name));
     lcb_cmdhttp_path(cmd, path, path_len);
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_FORM, strlen(PCBC_CONTENT_TYPE_FORM));
-    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getDesignDocument, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getDesignDocument, NULL);
     efree(path);
-    zend_update_property_str(pcbc_design_document_ce, return_value, ZEND_STRL("name"), name TSRMLS_CC);
+    zend_update_property_str(pcbc_design_document_ce, return_value, ZEND_STRL("name"), name);
 }
 
 static void parse_ddoc_entry(zval *return_value, zval *response)
@@ -85,7 +85,7 @@ static void parse_ddoc_entry(zval *return_value, zval *response)
     zval view_prop;
     object_init_ex(return_value, pcbc_design_document_ce);
     array_init(&view_prop);
-    zend_update_property(pcbc_design_document_ce, return_value, ZEND_STRL("views"), &view_prop TSRMLS_CC);
+    zend_update_property(pcbc_design_document_ce, return_value, ZEND_STRL("views"), &view_prop);
     zval_delref_p(&view_prop);
     zval *doc = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("doc"));
     if (doc && Z_TYPE_P(doc) == IS_ARRAY) {
@@ -95,7 +95,7 @@ static void parse_ddoc_entry(zval *return_value, zval *response)
                 zval *val;
                 val = zend_symtable_str_find(Z_ARRVAL_P(meta), ZEND_STRL("id"));
                 if (val && Z_TYPE_P(val) == IS_STRING) {
-                    zend_update_property(pcbc_design_document_ce, return_value, ZEND_STRL("name"), val TSRMLS_CC);
+                    zend_update_property(pcbc_design_document_ce, return_value, ZEND_STRL("name"), val);
                 }
             }
         }
@@ -110,14 +110,14 @@ static void parse_ddoc_entry(zval *return_value, zval *response)
                     {
                         zval view, *val;
                         object_init_ex(&view, pcbc_view_ce);
-                        zend_update_property_str(pcbc_view_ce, &view, ZEND_STRL("name"), string_key TSRMLS_CC);
+                        zend_update_property_str(pcbc_view_ce, &view, ZEND_STRL("name"), string_key);
                         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("map"));
                         if (val && Z_TYPE_P(val) == IS_STRING) {
-                            zend_update_property(pcbc_view_ce, &view, ZEND_STRL("map"), val TSRMLS_CC);
+                            zend_update_property(pcbc_view_ce, &view, ZEND_STRL("map"), val);
                         }
                         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("reduce"));
                         if (val && Z_TYPE_P(val) == IS_STRING) {
-                            zend_update_property(pcbc_view_ce, &view, ZEND_STRL("reduce"), val TSRMLS_CC);
+                            zend_update_property(pcbc_view_ce, &view, ZEND_STRL("reduce"), val);
                         }
                         add_assoc_zval_ex(&view_prop, ZSTR_VAL(string_key), ZSTR_LEN(string_key), &view);
                     }
@@ -165,7 +165,7 @@ PHP_METHOD(ViewIndexManager, getAllDesignDocuments)
     path_len = spprintf(&path, 0, "/pools/default/buckets/%s/ddocs", bucket->conn->bucketname);
     lcb_cmdhttp_path(cmd, path, path_len);
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_FORM, strlen(PCBC_CONTENT_TYPE_FORM));
-    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getAllDesignDocuments, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getAllDesignDocuments, NULL);
     efree(path);
 }
 
@@ -179,7 +179,7 @@ PHP_METHOD(ViewIndexManager, upsertDesignDocument)
     smart_str buf = {0};
     int last_error;
 
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "O", &document, pcbc_design_document_ce) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &document, pcbc_design_document_ce) == FAILURE) {
         return;
     }
 
@@ -204,7 +204,7 @@ PHP_METHOD(ViewIndexManager, upsertDesignDocument)
         smart_str_0(&buf);
         lcb_cmdhttp_body(cmd, ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
     }
-    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL);
     efree(path);
     smart_str_free(&buf);
 }
@@ -217,7 +217,7 @@ PHP_METHOD(ViewIndexManager, dropDesignDocument)
     zend_string *name;
     int rv, path_len;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S", &name);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "S", &name);
     if (rv == FAILURE) {
         return;
     }
@@ -231,7 +231,7 @@ PHP_METHOD(ViewIndexManager, dropDesignDocument)
     path_len = spprintf(&path, 0, "/%*s", (int)ZSTR_LEN(name), ZSTR_VAL(name));
     lcb_cmdhttp_path(cmd, path, path_len);
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_FORM, strlen(PCBC_CONTENT_TYPE_FORM));
-    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL);
     efree(path);
 }
 
@@ -342,22 +342,22 @@ PHP_METHOD(DesignDocument, views)
 PHP_METHOD(DesignDocument, setName)
 {
     zend_string *val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_design_document_ce, getThis(), ZEND_STRL("name"), val TSRMLS_CC);
+    zend_update_property_str(pcbc_design_document_ce, getThis(), ZEND_STRL("name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(DesignDocument, setViews)
 {
     zval *val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "a", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "a", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property(pcbc_design_document_ce, getThis(), ZEND_STRL("views"), val TSRMLS_CC);
+    zend_update_property(pcbc_design_document_ce, getThis(), ZEND_STRL("views"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -429,33 +429,33 @@ PHP_METHOD(View, reduce)
 PHP_METHOD(View, setName)
 {
     zend_string *val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_view_ce, getThis(), ZEND_STRL("name"), val TSRMLS_CC);
+    zend_update_property_str(pcbc_view_ce, getThis(), ZEND_STRL("name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(View, setMap)
 {
     zend_string *val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_view_ce, getThis(), ZEND_STRL("map"), val TSRMLS_CC);
+    zend_update_property_str(pcbc_view_ce, getThis(), ZEND_STRL("map"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(View, setReduce)
 {
     zend_string *val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_view_ce, getThis(), ZEND_STRL("reduce"), val TSRMLS_CC);
+    zend_update_property_str(pcbc_view_ce, getThis(), ZEND_STRL("reduce"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -476,20 +476,20 @@ PHP_MINIT_FUNCTION(ViewIndexManager)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ViewIndexManager", view_index_manager_methods);
-    pcbc_view_index_manager_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_index_manager_ce, ZEND_STRL("bucket"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_view_index_manager_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_view_index_manager_ce, ZEND_STRL("bucket"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "DesignDocument", design_document_methods);
-    pcbc_design_document_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_design_document_ce TSRMLS_CC, 1, pcbc_json_serializable_ce);
-    zend_declare_property_null(pcbc_design_document_ce, ZEND_STRL("name"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_design_document_ce, ZEND_STRL("views"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_design_document_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_design_document_ce, 1, pcbc_json_serializable_ce);
+    zend_declare_property_null(pcbc_design_document_ce, ZEND_STRL("name"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_design_document_ce, ZEND_STRL("views"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "View", view_methods);
-    pcbc_view_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_ce, ZEND_STRL("name"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_ce, ZEND_STRL("map"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_ce, ZEND_STRL("reduce"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_view_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_view_ce, ZEND_STRL("name"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_ce, ZEND_STRL("map"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_ce, ZEND_STRL("reduce"), ZEND_ACC_PRIVATE);
     return SUCCESS;
 }
 

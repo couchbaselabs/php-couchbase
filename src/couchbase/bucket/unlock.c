@@ -27,14 +27,12 @@ struct unlock_cookie {
 
 void unlock_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPUNLOCK *resp)
 {
-    TSRMLS_FETCH();
-
     const lcb_KEY_VALUE_ERROR_CONTEXT *ectx = NULL;
     struct unlock_cookie *cookie = NULL;
     lcb_respunlock_cookie(resp, (void **)&cookie);
     zval *return_value = cookie->return_value;
     cookie->rc = lcb_respunlock_status(resp);
-    zend_update_property_long(pcbc_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc TSRMLS_CC);
+    zend_update_property_long(pcbc_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
 
     lcb_respunlock_error_context(resp, &ectx);
 
@@ -48,7 +46,7 @@ void unlock_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPUNLOCK *r
             uint64_t data;
             lcb_respunlock_cas(resp, &data);
             b64 = php_base64_encode((unsigned char *)&data, sizeof(data));
-            zend_update_property_str(pcbc_result_impl_ce, return_value, ZEND_STRL("cas"), b64 TSRMLS_CC);
+            zend_update_property_str(pcbc_result_impl_ce, return_value, ZEND_STRL("cas"), b64);
             zend_string_release(b64);
         }
     }
@@ -59,11 +57,11 @@ zend_class_entry *pcbc_unlock_options_ce;
 PHP_METHOD(UnlockOptions, timeout)
 {
     zend_long arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_unlock_options_ce, getThis(), ZEND_STRL("timeout"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_unlock_options_ce, getThis(), ZEND_STRL("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -85,7 +83,7 @@ PHP_METHOD(Collection, unlock)
     zend_string *id, *cas;
     zval *options = NULL;
 
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O!", &id, &cas, &options, pcbc_unlock_options_ce);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "SS|O!", &id, &cas, &options, pcbc_unlock_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -141,8 +139,8 @@ PHP_MINIT_FUNCTION(CollectionUnlock)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "UnlockOptions", pcbc_unlock_options_methods);
-    pcbc_unlock_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_unlock_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_unlock_options_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_unlock_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

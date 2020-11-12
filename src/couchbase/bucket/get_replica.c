@@ -28,8 +28,6 @@ struct get_replica_cookie {
 
 void getreplica_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPGETREPLICA *resp)
 {
-    TSRMLS_FETCH();
-
     const lcb_KEY_VALUE_ERROR_CONTEXT *ectx = NULL;
     struct get_replica_cookie *cookie = NULL;
     lcb_respgetreplica_cookie(resp, (void **)&cookie);
@@ -43,14 +41,14 @@ void getreplica_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPGETRE
     }
 
     cookie->rc = lcb_respgetreplica_status(resp);
-    zend_update_property_long(pcbc_get_replica_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc TSRMLS_CC);
+    zend_update_property_long(pcbc_get_replica_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
     lcb_respgetreplica_error_context(resp, &ectx);
 
     set_property_str(ectx, lcb_errctx_kv_context, pcbc_get_replica_result_impl_ce, "err_ctx");
     set_property_str(ectx, lcb_errctx_kv_ref, pcbc_get_replica_result_impl_ce, "err_ref");
     set_property_str(ectx, lcb_errctx_kv_key, pcbc_get_replica_result_impl_ce, "key");
     /* TODO: shall libcouchbase query master for replica? */
-    zend_update_property_bool(pcbc_get_replica_result_impl_ce, return_value, ZEND_STRL("is_replica"), 1 TSRMLS_CC);
+    zend_update_property_bool(pcbc_get_replica_result_impl_ce, return_value, ZEND_STRL("is_replica"), 1);
     if (cookie->rc == LCB_SUCCESS) {
         set_property_num(uint32_t, lcb_respgetreplica_flags, pcbc_get_replica_result_impl_ce, "flags");
         set_property_num(uint8_t, lcb_respgetreplica_datatype, pcbc_get_replica_result_impl_ce, "datatype");
@@ -60,7 +58,7 @@ void getreplica_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPGETRE
             lcb_respgetreplica_cas(resp, &data);
             zend_string *b64;
             b64 = php_base64_encode((unsigned char *)&data, sizeof(data));
-            zend_update_property_str(pcbc_get_replica_result_impl_ce, return_value, ZEND_STRL("cas"), b64 TSRMLS_CC);
+            zend_update_property_str(pcbc_get_replica_result_impl_ce, return_value, ZEND_STRL("cas"), b64);
             zend_string_release(b64);
         }
     }
@@ -71,11 +69,11 @@ zend_class_entry *pcbc_get_any_replica_options_ce;
 PHP_METHOD(GetAnyReplicaOptions, timeout)
 {
     zend_long arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_get_any_replica_options_ce, getThis(), ZEND_STRL("timeout"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_get_any_replica_options_ce, getThis(), ZEND_STRL("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -97,7 +95,7 @@ PHP_METHOD(Collection, getAnyReplica)
     lcb_STATUS err;
 
     int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &id, &options, pcbc_get_any_replica_options_ce);
+        zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &id, &options, pcbc_get_any_replica_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -144,11 +142,11 @@ zend_class_entry *pcbc_get_all_replicas_options_ce;
 PHP_METHOD(GetAllReplicasOptions, timeout)
 {
     zend_long arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_get_all_replicas_options_ce, getThis(), ZEND_STRL("timeout"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_get_all_replicas_options_ce, getThis(), ZEND_STRL("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -170,7 +168,7 @@ PHP_METHOD(Collection, getAllReplicas)
     lcb_STATUS err;
 
     int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &id, &options, pcbc_get_all_replicas_options_ce);
+        zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &id, &options, pcbc_get_all_replicas_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -217,12 +215,12 @@ PHP_MINIT_FUNCTION(CollectionGetReplica)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetAllReplicasOptions", pcbc_get_all_replicas_options_methods);
-    pcbc_get_all_replicas_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_all_replicas_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_get_all_replicas_options_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_get_all_replicas_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetAnyReplicaOptions", pcbc_get_any_replica_options_methods);
-    pcbc_get_any_replica_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_any_replica_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_get_any_replica_options_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_get_any_replica_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

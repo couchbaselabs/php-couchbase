@@ -22,12 +22,12 @@ zend_class_entry *pcbc_cluster_options_ce;
 PHP_METHOD(ClusterOptions, credentials)
 {
     zend_string *username, *password;
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "SS", &username, &password);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "SS", &username, &password);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_cluster_options_ce, getThis(), ZEND_STRL("username"), username TSRMLS_CC);
-    zend_update_property_str(pcbc_cluster_options_ce, getThis(), ZEND_STRL("password"), password TSRMLS_CC);
+    zend_update_property_str(pcbc_cluster_options_ce, getThis(), ZEND_STRL("username"), username);
+    zend_update_property_str(pcbc_cluster_options_ce, getThis(), ZEND_STRL("password"), password);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -48,10 +48,10 @@ PHP_MINIT_FUNCTION(ClusterOptions)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ClusterOptions", cluster_options_methods);
-    pcbc_cluster_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_cluster_options_ce = zend_register_internal_class(&ce);
 
-    zend_declare_property_null(pcbc_cluster_options_ce, ZEND_STRL("username"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_cluster_options_ce, ZEND_STRL("password"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_cluster_options_ce, ZEND_STRL("username"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_cluster_options_ce, ZEND_STRL("password"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

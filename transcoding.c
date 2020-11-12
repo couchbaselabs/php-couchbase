@@ -19,7 +19,7 @@
 #define LOGARGS(lvl) LCB_LOG_##lvl, NULL, "pcbc/transcoding", __FILE__, __LINE__
 
 int pcbc_decode_value(zval *return_value, pcbc_bucket_t *bucket, const char *bytes, int bytes_len, uint32_t flags,
-                      uint8_t datatype TSRMLS_DC)
+                      uint8_t datatype)
 {
     int rv;
     zval params[3];
@@ -32,7 +32,7 @@ int pcbc_decode_value(zval *return_value, pcbc_bucket_t *bucket, const char *byt
     ZVAL_LONG(&params[1], flags);
     ZVAL_LONG(&params[2], datatype);
 
-    rv = call_user_function(CG(function_table), NULL, &bucket->decoder, return_value, 3, params TSRMLS_CC);
+    rv = call_user_function(CG(function_table), NULL, &bucket->decoder, return_value, 3, params);
 
     zval_ptr_dtor(&params[0]);
     zval_ptr_dtor(&params[1]);
@@ -41,7 +41,7 @@ int pcbc_decode_value(zval *return_value, pcbc_bucket_t *bucket, const char *byt
 }
 
 int pcbc_encode_value(pcbc_bucket_t *bucket, zval *value, void **bytes, lcb_size_t *nbytes, lcb_uint32_t *flags,
-                      uint8_t *datatype TSRMLS_DC)
+                      uint8_t *datatype)
 {
     zval retval;
     int rv;
@@ -49,7 +49,7 @@ int pcbc_encode_value(pcbc_bucket_t *bucket, zval *value, void **bytes, lcb_size
     ZVAL_UNDEF(&retval);
     ZVAL_NULL(&retval);
 
-    rv = call_user_function(CG(function_table), NULL, &bucket->encoder, &retval, 1, value TSRMLS_CC);
+    rv = call_user_function(CG(function_table), NULL, &bucket->encoder, &retval, 1, value);
     if (rv != SUCCESS || Z_TYPE_P(&retval) != IS_ARRAY || zend_hash_num_elements(Z_ARRVAL(retval)) != 3) {
         zval_ptr_dtor(&retval);
         return FAILURE;

@@ -30,14 +30,14 @@ PHP_METHOD(Cluster, query);
 PHP_METHOD(Cluster, analyticsQuery);
 PHP_METHOD(Cluster, searchQuery);
 
-static void pcbc_bucket_init(zval *return_value, pcbc_cluster_t *cluster, const char *bucketname TSRMLS_DC)
+static void pcbc_bucket_init(zval *return_value, pcbc_cluster_t *cluster, const char *bucketname)
 {
     pcbc_bucket_t *bucket;
     pcbc_connection_t *conn;
     lcb_STATUS err;
 
     err = pcbc_connection_get(&conn, LCB_TYPE_BUCKET, cluster->connstr, bucketname, cluster->username,
-                              cluster->password TSRMLS_CC);
+                              cluster->password);
     if (err) {
         throw_lcb_exception(err, NULL);
         return;
@@ -52,7 +52,7 @@ static void pcbc_bucket_init(zval *return_value, pcbc_cluster_t *cluster, const 
     PCBC_STRING(bucket->decoder, "\\Couchbase\\defaultDecoder");
 }
 
-static void pcbc_cluster_connection_init(zval *return_value, pcbc_cluster_t *cluster TSRMLS_DC)
+static void pcbc_cluster_connection_init(zval *return_value, pcbc_cluster_t *cluster)
 {
     pcbc_connection_t *conn;
     lcb_STATUS err;
@@ -82,7 +82,7 @@ static void pcbc_cluster_connection_init(zval *return_value, pcbc_cluster_t *clu
         }
     }
 
-    err = pcbc_connection_get(&conn, type, cluster->connstr, bucket, cluster->username, cluster->password TSRMLS_CC);
+    err = pcbc_connection_get(&conn, type, cluster->connstr, bucket, cluster->username, cluster->password);
     if (url) {
         php_url_free(url);
     }
@@ -102,7 +102,7 @@ PHP_METHOD(Cluster, __construct)
 
     obj = Z_CLUSTER_OBJ_P(getThis());
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "SO", &connstr, &options, pcbc_cluster_options_ce);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "SO", &connstr, &options, pcbc_cluster_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -121,7 +121,7 @@ PHP_METHOD(Cluster, __construct)
     obj->password = estrndup(Z_STRVAL_P(prop), Z_STRLEN_P(prop));
     obj->connstr = estrndup(ZSTR_VAL(connstr), ZSTR_LEN(connstr));
     obj->conn = NULL;
-    pcbc_cluster_connection_init(return_value, obj TSRMLS_CC);
+    pcbc_cluster_connection_init(return_value, obj);
 
     pcbc_log(LOGARGS(DEBUG), "Initialize Cluster. C=%p connstr=\"%s\"", (void *)obj, obj->connstr);
 }
@@ -134,11 +134,11 @@ PHP_METHOD(Cluster, bucket)
 
     obj = Z_CLUSTER_OBJ_P(getThis());
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S", &bucketname);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "S", &bucketname);
     if (rv == FAILURE) {
         return;
     }
-    pcbc_bucket_init(return_value, obj, ZSTR_VAL(bucketname) TSRMLS_CC);
+    pcbc_bucket_init(return_value, obj, ZSTR_VAL(bucketname));
 }
 
 PHP_METHOD(Cluster, buckets)
@@ -151,7 +151,7 @@ PHP_METHOD(Cluster, buckets)
     }
 
     object_init_ex(return_value, pcbc_bucket_manager_ce);
-    zend_update_property(pcbc_bucket_manager_ce, return_value, ZEND_STRL("cluster"), getThis() TSRMLS_CC);
+    zend_update_property(pcbc_bucket_manager_ce, return_value, ZEND_STRL("cluster"), getThis());
 }
 
 PHP_METHOD(Cluster, queryIndexes)
@@ -161,7 +161,7 @@ PHP_METHOD(Cluster, queryIndexes)
     }
 
     object_init_ex(return_value, pcbc_query_index_manager_ce);
-    zend_update_property(pcbc_query_index_manager_ce, return_value, ZEND_STRL("cluster"), getThis() TSRMLS_CC);
+    zend_update_property(pcbc_query_index_manager_ce, return_value, ZEND_STRL("cluster"), getThis());
 }
 
 PHP_METHOD(Cluster, searchIndexes)
@@ -170,7 +170,7 @@ PHP_METHOD(Cluster, searchIndexes)
         RETURN_NULL();
     }
     object_init_ex(return_value, pcbc_search_index_manager_ce);
-    zend_update_property(pcbc_search_index_manager_ce, return_value, ZEND_STRL("cluster"), getThis() TSRMLS_CC);
+    zend_update_property(pcbc_search_index_manager_ce, return_value, ZEND_STRL("cluster"), getThis());
 }
 
 PHP_METHOD(Cluster, users)
@@ -179,7 +179,7 @@ PHP_METHOD(Cluster, users)
         RETURN_NULL();
     }
     object_init_ex(return_value, pcbc_user_manager_ce);
-    zend_update_property(pcbc_user_manager_ce, return_value, ZEND_STRL("cluster"), getThis() TSRMLS_CC);
+    zend_update_property(pcbc_user_manager_ce, return_value, ZEND_STRL("cluster"), getThis());
 }
 
 ZEND_BEGIN_ARG_INFO_EX(ai_Cluster_constructor, 0, 0, 2)
@@ -236,7 +236,7 @@ zend_function_entry cluster_methods[] = {
 
 zend_object_handlers pcbc_cluster_handlers;
 
-static void pcbc_cluster_free_object(zend_object *object TSRMLS_DC)
+static void pcbc_cluster_free_object(zend_object *object)
 {
     pcbc_cluster_t *obj = Z_CLUSTER_OBJ(object);
 
@@ -250,23 +250,23 @@ static void pcbc_cluster_free_object(zend_object *object TSRMLS_DC)
         efree(obj->password);
     }
 
-    zend_object_std_dtor(&obj->std TSRMLS_CC);
+    zend_object_std_dtor(&obj->std);
 }
 
-static zend_object *pcbc_cluster_create_object(zend_class_entry *class_type TSRMLS_DC)
+static zend_object *pcbc_cluster_create_object(zend_class_entry *class_type)
 {
     pcbc_cluster_t *obj = NULL;
 
     obj = PCBC_ALLOC_OBJECT_T(pcbc_cluster_t, class_type);
 
-    zend_object_std_init(&obj->std, class_type TSRMLS_CC);
+    zend_object_std_init(&obj->std, class_type);
     object_properties_init(&obj->std, class_type);
 
     obj->std.handlers = &pcbc_cluster_handlers;
     return &obj->std;
 }
 
-static HashTable *pcbc_cluster_get_debug_info(zval *object, int *is_temp TSRMLS_DC)
+static HashTable *pcbc_cluster_get_debug_info(zval *object, int *is_temp)
 {
     pcbc_cluster_t *obj = NULL;
     zval retval;
@@ -285,7 +285,7 @@ PHP_MINIT_FUNCTION(Cluster)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "Cluster", cluster_methods);
-    pcbc_cluster_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_cluster_ce = zend_register_internal_class(&ce);
     pcbc_cluster_ce->create_object = pcbc_cluster_create_object;
     PCBC_CE_DISABLE_SERIALIZATION(pcbc_cluster_ce);
 

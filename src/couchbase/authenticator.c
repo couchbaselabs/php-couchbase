@@ -24,7 +24,7 @@ PHP_MINIT_FUNCTION(Authenticator)
 {
     zend_class_entry ce;
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "Authenticator", authenticator_interface);
-    pcbc_authenticator_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_authenticator_ce = zend_register_internal_interface(&ce);
 
     return SUCCESS;
 }

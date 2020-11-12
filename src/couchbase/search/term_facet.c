@@ -27,13 +27,13 @@ PHP_METHOD(TermSearchFacet, __construct)
     zend_long limit;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sl", &field, &limit);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sl", &field, &limit);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_term_search_facet_ce, getThis(), ZEND_STRL("field"), field TSRMLS_CC);
-    zend_update_property_long(pcbc_term_search_facet_ce, getThis(), ZEND_STRL("limit"), limit TSRMLS_CC);
+    zend_update_property_str(pcbc_term_search_facet_ce, getThis(), ZEND_STRL("field"), field);
+    zend_update_property_long(pcbc_term_search_facet_ce, getThis(), ZEND_STRL("limit"), limit);
 }
 
 PHP_METHOD(TermSearchFacet, jsonSerialize)
@@ -80,11 +80,11 @@ PHP_MINIT_FUNCTION(TermSearchFacet)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "TermSearchFacet", term_search_facet_methods);
-    pcbc_term_search_facet_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_term_search_facet_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_term_search_facet_ce TSRMLS_CC, 2, pcbc_json_serializable_ce, pcbc_search_facet_ce);
+    zend_class_implements(pcbc_term_search_facet_ce, 2, pcbc_json_serializable_ce, pcbc_search_facet_ce);
 
-    zend_declare_property_null(pcbc_term_search_facet_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_term_search_facet_ce, ZEND_STRL("limit"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_term_search_facet_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_term_search_facet_ce, ZEND_STRL("limit"), ZEND_ACC_PRIVATE);
     return SUCCESS;
 }

@@ -534,249 +534,249 @@ PHP_MINIT_FUNCTION(Result)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutationToken", pcbc_mutation_token_methods);
-    pcbc_mutation_token_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_mutation_token_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutationTokenImpl", pcbc_mutation_token_impl_methods);
-    pcbc_mutation_token_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutation_token_impl_ce TSRMLS_CC, 1, pcbc_mutation_token_ce);
-    zend_declare_property_null(pcbc_mutation_token_impl_ce, ZEND_STRL("partition_id"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutation_token_impl_ce, ZEND_STRL("partition_uuid"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutation_token_impl_ce, ZEND_STRL("sequence_number"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutation_token_impl_ce, ZEND_STRL("bucket_name"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutation_token_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutation_token_impl_ce, 1, pcbc_mutation_token_ce);
+    zend_declare_property_null(pcbc_mutation_token_impl_ce, ZEND_STRL("partition_id"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutation_token_impl_ce, ZEND_STRL("partition_uuid"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutation_token_impl_ce, ZEND_STRL("sequence_number"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutation_token_impl_ce, ZEND_STRL("bucket_name"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryMetaData", pcbc_query_meta_data_methods);
-    pcbc_query_meta_data_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_query_meta_data_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryMetaDataImpl", pcbc_query_meta_data_impl_methods);
-    pcbc_query_meta_data_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_query_meta_data_impl_ce TSRMLS_CC, 1, pcbc_query_meta_data_ce);
-    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("request_id"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_query_meta_data_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_query_meta_data_impl_ce, 1, pcbc_query_meta_data_ce);
+    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("request_id"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("client_context_id"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("signature"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("errors"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("warnings"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("metrics"), ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("signature"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("errors"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("warnings"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_meta_data_impl_ce, ZEND_STRL("metrics"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchMetaData", pcbc_search_meta_data_methods);
-    pcbc_search_meta_data_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_search_meta_data_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchMetaDataImpl", pcbc_search_meta_data_impl_methods);
-    pcbc_search_meta_data_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_search_meta_data_impl_ce TSRMLS_CC, 1, pcbc_search_meta_data_ce);
-    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("success_count"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("error_count"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("took"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("total_hits"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("max_score"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("metrics"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_search_meta_data_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_search_meta_data_impl_ce, 1, pcbc_search_meta_data_ce);
+    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("success_count"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("error_count"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("took"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("total_hits"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("max_score"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("metrics"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_meta_data_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ViewMetaData", pcbc_view_meta_data_methods);
-    pcbc_view_meta_data_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_view_meta_data_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ViewMetaDataImpl", pcbc_view_meta_data_impl_methods);
-    pcbc_view_meta_data_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_view_meta_data_impl_ce TSRMLS_CC, 1, pcbc_view_meta_data_ce);
-    zend_declare_property_null(pcbc_view_meta_data_impl_ce, ZEND_STRL("total_rows"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_meta_data_impl_ce, ZEND_STRL("debug"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_view_meta_data_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_view_meta_data_impl_ce, 1, pcbc_view_meta_data_ce);
+    zend_declare_property_null(pcbc_view_meta_data_impl_ce, ZEND_STRL("total_rows"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_meta_data_impl_ce, ZEND_STRL("debug"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "Result", pcbc_result_methods);
-    pcbc_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_result_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ResultImpl", pcbc_result_impl_methods);
-    pcbc_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_result_impl_ce TSRMLS_CC, 1, pcbc_result_ce);
-    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_result_impl_ce, 1, pcbc_result_ce);
+    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetResult", pcbc_get_result_methods);
-    pcbc_get_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_get_result_ce TSRMLS_CC, 1, pcbc_result_ce);
+    pcbc_get_result_ce = zend_register_internal_interface(&ce);
+    zend_class_implements(pcbc_get_result_ce, 1, pcbc_result_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetResultImpl", pcbc_get_result_impl_methods);
-    pcbc_get_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_get_result_impl_ce TSRMLS_CC, 1, pcbc_get_result_ce);
-    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("data"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_get_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_get_result_impl_ce, 1, pcbc_get_result_ce);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("data"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetReplicaResult", pcbc_get_replica_result_methods);
-    pcbc_get_replica_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_get_replica_result_ce TSRMLS_CC, 1, pcbc_result_ce);
+    pcbc_get_replica_result_ce = zend_register_internal_interface(&ce);
+    zend_class_implements(pcbc_get_replica_result_ce, 1, pcbc_result_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetReplicaResultImpl", pcbc_get_replica_result_impl_methods);
-    pcbc_get_replica_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_get_replica_result_impl_ce TSRMLS_CC, 1, pcbc_get_replica_result_ce);
-    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("data"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("is_replica"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_get_replica_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_get_replica_result_impl_ce, 1, pcbc_get_replica_result_ce);
+    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("data"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("is_replica"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ExistsResult", pcbc_exists_result_methods);
-    pcbc_exists_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_exists_result_ce TSRMLS_CC, 1, pcbc_result_ce);
+    pcbc_exists_result_ce = zend_register_internal_interface(&ce);
+    zend_class_implements(pcbc_exists_result_ce, 1, pcbc_result_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ExistsResultImpl", pcbc_exists_result_impl_methods);
-    pcbc_exists_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_exists_result_impl_ce TSRMLS_CC, 1, pcbc_exists_result_ce);
-    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("is_found"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_exists_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_exists_result_impl_ce, 1, pcbc_exists_result_ce);
+    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_exists_result_impl_ce, ZEND_STRL("is_found"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutationResult", pcbc_mutation_result_methods);
-    pcbc_mutation_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutation_result_ce TSRMLS_CC, 1, pcbc_result_ce);
+    pcbc_mutation_result_ce = zend_register_internal_interface(&ce);
+    zend_class_implements(pcbc_mutation_result_ce, 1, pcbc_result_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutationResultImpl", pcbc_mutation_result_impl_methods);
-    pcbc_mutation_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutation_result_impl_ce TSRMLS_CC, 1, pcbc_mutation_result_ce);
-    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("mutation_token"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutation_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutation_result_impl_ce, 1, pcbc_mutation_result_ce);
+    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutation_result_impl_ce, ZEND_STRL("mutation_token"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "StoreResultImpl", pcbc_store_result_impl_methods);
-    pcbc_store_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_store_result_impl_ce TSRMLS_CC, 1, pcbc_mutation_result_ce);
-    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("mutation_token"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("is_stored"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("num_persisted"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("num_replicated"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_store_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_store_result_impl_ce, 1, pcbc_mutation_result_ce);
+    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("mutation_token"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("is_stored"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("num_persisted"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_store_result_impl_ce, ZEND_STRL("num_replicated"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CounterResult", pcbc_counter_result_methods);
-    pcbc_counter_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_counter_result_ce TSRMLS_CC, 1, pcbc_mutation_result_ce);
+    pcbc_counter_result_ce = zend_register_internal_interface(&ce);
+    zend_class_implements(pcbc_counter_result_ce, 1, pcbc_mutation_result_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CounterResultImpl", pcbc_counter_result_impl_methods);
-    pcbc_counter_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_counter_result_impl_ce TSRMLS_CC, 1, pcbc_counter_result_ce);
-    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("mutation_token"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("content"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_counter_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_counter_result_impl_ce, 1, pcbc_counter_result_ce);
+    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("mutation_token"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_counter_result_impl_ce, ZEND_STRL("content"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "LookupInResult", pcbc_lookup_in_result_methods);
-    pcbc_lookup_in_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_lookup_in_result_ce TSRMLS_CC, 1, pcbc_result_ce);
+    pcbc_lookup_in_result_ce = zend_register_internal_interface(&ce);
+    zend_class_implements(pcbc_lookup_in_result_ce, 1, pcbc_result_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "LookupInResultImpl", pcbc_lookup_in_result_impl_methods);
-    pcbc_lookup_in_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_lookup_in_result_impl_ce TSRMLS_CC, 1, pcbc_lookup_in_result_ce);
-    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("data"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_lookup_in_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_lookup_in_result_impl_ce, 1, pcbc_lookup_in_result_ce);
+    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_lookup_in_result_impl_ce, ZEND_STRL("data"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "LookupInResultEntry", pcbc_lookup_in_result_entry_methods);
-    pcbc_lookup_in_result_entry_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_in_result_entry_ce, ZEND_STRL("code"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_in_result_entry_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_lookup_in_result_entry_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_lookup_in_result_entry_ce, ZEND_STRL("code"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_lookup_in_result_entry_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateInResult", pcbc_mutate_in_result_methods);
-    pcbc_mutate_in_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_in_result_ce TSRMLS_CC, 1, pcbc_mutation_result_ce);
+    pcbc_mutate_in_result_ce = zend_register_internal_interface(&ce);
+    zend_class_implements(pcbc_mutate_in_result_ce, 1, pcbc_mutation_result_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateInResultImpl", pcbc_mutate_in_result_impl_methods);
-    pcbc_mutate_in_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_in_result_impl_ce TSRMLS_CC, 1, pcbc_mutate_in_result_ce);
-    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("mutation_token"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("data"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_in_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutate_in_result_impl_ce, 1, pcbc_mutate_in_result_ce);
+    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("mutation_token"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_in_result_impl_ce, ZEND_STRL("data"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateInResultEntry", pcbc_mutate_in_result_entry_methods);
-    pcbc_mutate_in_result_entry_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_in_result_entry_ce, ZEND_STRL("code"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_in_result_entry_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_in_result_entry_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_mutate_in_result_entry_ce, ZEND_STRL("code"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_in_result_entry_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryResult", pcbc_query_result_methods);
-    pcbc_query_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_query_result_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryResultImpl", pcbc_query_result_impl_methods);
-    pcbc_query_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_query_result_impl_ce TSRMLS_CC, 1, pcbc_query_result_ce);
-    zend_declare_property_null(pcbc_query_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_result_impl_ce, ZEND_STRL("meta"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_result_impl_ce, ZEND_STRL("rows"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_query_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_query_result_impl_ce, 1, pcbc_query_result_ce);
+    zend_declare_property_null(pcbc_query_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_result_impl_ce, ZEND_STRL("meta"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_result_impl_ce, ZEND_STRL("rows"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "AnalyticsResult", pcbc_analytics_result_methods);
-    pcbc_analytics_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_analytics_result_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "AnalyticsResultImpl", pcbc_analytics_result_impl_methods);
-    pcbc_analytics_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_analytics_result_impl_ce TSRMLS_CC, 1, pcbc_analytics_result_ce);
-    zend_declare_property_null(pcbc_analytics_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_analytics_result_impl_ce, ZEND_STRL("meta"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_analytics_result_impl_ce, ZEND_STRL("rows"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_analytics_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_analytics_result_impl_ce, 1, pcbc_analytics_result_ce);
+    zend_declare_property_null(pcbc_analytics_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_analytics_result_impl_ce, ZEND_STRL("meta"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_analytics_result_impl_ce, ZEND_STRL("rows"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchResult", pcbc_search_result_methods);
-    pcbc_search_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_search_result_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchResultImpl", pcbc_search_result_impl_methods);
-    pcbc_search_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_search_result_impl_ce TSRMLS_CC, 1, pcbc_search_result_ce);
-    zend_declare_property_null(pcbc_search_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_result_impl_ce, ZEND_STRL("meta"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_result_impl_ce, ZEND_STRL("facets"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_result_impl_ce, ZEND_STRL("rows"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_search_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_search_result_impl_ce, 1, pcbc_search_result_ce);
+    zend_declare_property_null(pcbc_search_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_result_impl_ce, ZEND_STRL("meta"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_result_impl_ce, ZEND_STRL("facets"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_result_impl_ce, ZEND_STRL("rows"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ViewResult", pcbc_view_result_methods);
-    pcbc_view_result_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_view_result_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ViewResultImpl", pcbc_view_result_impl_methods);
-    pcbc_view_result_impl_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_view_result_impl_ce TSRMLS_CC, 1, pcbc_view_result_ce);
-    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("http_status"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("body"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("body_str"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("meta"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("rows"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_view_result_impl_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_view_result_impl_ce, 1, pcbc_view_result_ce);
+    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("http_status"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("body"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("body_str"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("meta"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_result_impl_ce, ZEND_STRL("rows"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ViewRow", pcbc_view_result_entry_methods);
-    pcbc_view_result_entry_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_result_entry_ce, ZEND_STRL("id"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_result_entry_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_result_entry_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_view_result_entry_ce, ZEND_STRL("document"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_view_result_entry_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_view_result_entry_ce, ZEND_STRL("id"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_result_entry_ce, ZEND_STRL("key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_result_entry_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_view_result_entry_ce, ZEND_STRL("document"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }
@@ -868,7 +868,7 @@ PHP_METHOD(GetResultImpl, content)
     prop = zend_read_property(pcbc_get_result_impl_ce, getThis(), ZEND_STRL("data"), 0, &rv);
     PCBC_JSON_RESET_STATE;
     if (php_json_decode_ex(return_value, Z_STRVAL_P(prop), Z_STRLEN_P(prop), PHP_JSON_OBJECT_AS_ARRAY,
-                           PHP_JSON_PARSER_DEFAULT_DEPTH TSRMLS_CC)) {
+                           PHP_JSON_PARSER_DEFAULT_DEPTH)) {
         ZVAL_COPY(return_value, prop);
     }
 }

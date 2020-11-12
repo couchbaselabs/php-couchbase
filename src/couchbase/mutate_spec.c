@@ -172,88 +172,88 @@ PHP_MINIT_FUNCTION(MutateInSpec)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateInSpec", pcbc_mutate_in_spec_methods);
-    pcbc_mutate_in_spec_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_mutate_in_spec_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateInsertSpec", pcbc_mutate_insert_spec_methods);
-    pcbc_mutate_insert_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_insert_spec_ce TSRMLS_CC, 1, pcbc_mutate_in_spec_ce);
-    zend_declare_property_null(pcbc_mutate_insert_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_insert_spec_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_insert_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_insert_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_insert_spec_ce, ZEND_STRL("expand_macros"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_insert_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutate_insert_spec_ce, 1, pcbc_mutate_in_spec_ce);
+    zend_declare_property_null(pcbc_mutate_insert_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_insert_spec_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_insert_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_insert_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_insert_spec_ce, ZEND_STRL("expand_macros"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateUpsertSpec", pcbc_mutate_upsert_spec_methods);
-    pcbc_mutate_upsert_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_upsert_spec_ce TSRMLS_CC, 1, pcbc_mutate_in_spec_ce);
-    zend_declare_property_null(pcbc_mutate_upsert_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_upsert_spec_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_upsert_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_upsert_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_upsert_spec_ce, ZEND_STRL("expand_macros"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_upsert_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutate_upsert_spec_ce, 1, pcbc_mutate_in_spec_ce);
+    zend_declare_property_null(pcbc_mutate_upsert_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_upsert_spec_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_upsert_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_upsert_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_upsert_spec_ce, ZEND_STRL("expand_macros"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateReplaceSpec", pcbc_mutate_replace_spec_methods);
-    pcbc_mutate_replace_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_replace_spec_ce TSRMLS_CC, 1, pcbc_mutate_in_spec_ce);
-    zend_declare_property_null(pcbc_mutate_replace_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_replace_spec_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_replace_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_replace_spec_ce, ZEND_STRL("expand_macros"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_replace_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutate_replace_spec_ce, 1, pcbc_mutate_in_spec_ce);
+    zend_declare_property_null(pcbc_mutate_replace_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_replace_spec_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_replace_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_replace_spec_ce, ZEND_STRL("expand_macros"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateRemoveSpec", pcbc_mutate_remove_spec_methods);
-    pcbc_mutate_remove_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_remove_spec_ce TSRMLS_CC, 1, pcbc_mutate_in_spec_ce);
-    zend_declare_property_null(pcbc_mutate_remove_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_remove_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_remove_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutate_remove_spec_ce, 1, pcbc_mutate_in_spec_ce);
+    zend_declare_property_null(pcbc_mutate_remove_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_remove_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateArrayAppendSpec", pcbc_mutate_array_append_spec_methods);
-    pcbc_mutate_array_append_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_array_append_spec_ce TSRMLS_CC, 1, pcbc_mutate_in_spec_ce);
-    zend_declare_property_null(pcbc_mutate_array_append_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_append_spec_ce, ZEND_STRL("values"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_append_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_append_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_array_append_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutate_array_append_spec_ce, 1, pcbc_mutate_in_spec_ce);
+    zend_declare_property_null(pcbc_mutate_array_append_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_append_spec_ce, ZEND_STRL("values"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_append_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_append_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_mutate_array_append_spec_ce, ZEND_STRL("expand_macros"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateArrayPrependSpec", pcbc_mutate_array_prepend_spec_methods);
-    pcbc_mutate_array_prepend_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_array_prepend_spec_ce TSRMLS_CC, 1, pcbc_mutate_in_spec_ce);
-    zend_declare_property_null(pcbc_mutate_array_prepend_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_prepend_spec_ce, ZEND_STRL("values"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_prepend_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_prepend_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_array_prepend_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutate_array_prepend_spec_ce, 1, pcbc_mutate_in_spec_ce);
+    zend_declare_property_null(pcbc_mutate_array_prepend_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_prepend_spec_ce, ZEND_STRL("values"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_prepend_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_prepend_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_mutate_array_prepend_spec_ce, ZEND_STRL("expand_macros"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateArrayInsertSpec", pcbc_mutate_array_insert_spec_methods);
-    pcbc_mutate_array_insert_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_array_insert_spec_ce TSRMLS_CC, 1, pcbc_mutate_in_spec_ce);
-    zend_declare_property_null(pcbc_mutate_array_insert_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_insert_spec_ce, ZEND_STRL("values"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_insert_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_insert_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_array_insert_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutate_array_insert_spec_ce, 1, pcbc_mutate_in_spec_ce);
+    zend_declare_property_null(pcbc_mutate_array_insert_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_insert_spec_ce, ZEND_STRL("values"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_insert_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_insert_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_mutate_array_insert_spec_ce, ZEND_STRL("expand_macros"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateArrayAddUniqueSpec", pcbc_mutate_array_add_unique_spec_methods);
-    pcbc_mutate_array_add_unique_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_array_add_unique_spec_ce TSRMLS_CC, 1, pcbc_mutate_in_spec_ce);
-    zend_declare_property_null(pcbc_mutate_array_add_unique_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_add_unique_spec_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_array_add_unique_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_array_add_unique_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutate_array_add_unique_spec_ce, 1, pcbc_mutate_in_spec_ce);
+    zend_declare_property_null(pcbc_mutate_array_add_unique_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_add_unique_spec_ce, ZEND_STRL("value"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_array_add_unique_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_mutate_array_add_unique_spec_ce, ZEND_STRL("create_path"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_mutate_array_add_unique_spec_ce, ZEND_STRL("expand_macros"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutateCounterSpec", pcbc_mutate_counter_spec_methods);
-    pcbc_mutate_counter_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_mutate_counter_spec_ce TSRMLS_CC, 1, pcbc_mutate_in_spec_ce);
-    zend_declare_property_null(pcbc_mutate_counter_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_counter_spec_ce, ZEND_STRL("delta"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_counter_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutate_counter_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutate_counter_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_mutate_counter_spec_ce, 1, pcbc_mutate_in_spec_ce);
+    zend_declare_property_null(pcbc_mutate_counter_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_counter_spec_ce, ZEND_STRL("delta"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_counter_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_counter_spec_ce, ZEND_STRL("create_path"), ZEND_ACC_PRIVATE);
     return SUCCESS;
 }
 
@@ -263,16 +263,16 @@ PHP_METHOD(MutateInsertSpec, __construct)
     zval *value;
     zend_bool is_xattr = 0, create_path = 0, expand_macros = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sz|bbb", &path, &value, &is_xattr, &create_path,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sz|bbb", &path, &value, &is_xattr, &create_path,
                                          &expand_macros);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("create_path"), create_path TSRMLS_CC);
+    zend_update_property_str(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
+    zend_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("create_path"), create_path);
     zend_update_property_bool(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("expand_macros"),
-                              expand_macros TSRMLS_CC);
+                              expand_macros);
     {
         smart_str buf = {0};
         int last_error;
@@ -283,7 +283,7 @@ PHP_METHOD(MutateInsertSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_str(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("value"), buf.s TSRMLS_CC);
+        zend_update_property_str(pcbc_mutate_insert_spec_ce, getThis(), ZEND_STRL("value"), buf.s);
         smart_str_free(&buf);
     }
 }
@@ -294,16 +294,16 @@ PHP_METHOD(MutateUpsertSpec, __construct)
     zval *value;
     zend_bool is_xattr = 0, create_path = 0, expand_macros = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sz|bbb", &path, &value, &is_xattr, &create_path,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sz|bbb", &path, &value, &is_xattr, &create_path,
                                          &expand_macros);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("create_path"), create_path TSRMLS_CC);
+    zend_update_property_str(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
+    zend_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("create_path"), create_path);
     zend_update_property_bool(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("expand_macros"),
-                              expand_macros TSRMLS_CC);
+                              expand_macros);
     {
         smart_str buf = {0};
         int last_error;
@@ -314,7 +314,7 @@ PHP_METHOD(MutateUpsertSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_str(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("value"), buf.s TSRMLS_CC);
+        zend_update_property_str(pcbc_mutate_upsert_spec_ce, getThis(), ZEND_STRL("value"), buf.s);
         smart_str_free(&buf);
     }
 }
@@ -325,13 +325,13 @@ PHP_METHOD(MutateReplaceSpec, __construct)
     zval *value;
     zend_bool is_xattr = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sz|b", &path, &value, &is_xattr);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sz|b", &path, &value, &is_xattr);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("expand_macros"), is_xattr TSRMLS_CC);
+    zend_update_property_str(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_bool(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
+    zend_update_property_bool(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("expand_macros"), is_xattr);
     {
         smart_str buf = {0};
         int last_error;
@@ -342,7 +342,7 @@ PHP_METHOD(MutateReplaceSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_str(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("value"), buf.s TSRMLS_CC);
+        zend_update_property_str(pcbc_mutate_replace_spec_ce, getThis(), ZEND_STRL("value"), buf.s);
         smart_str_free(&buf);
     }
 }
@@ -352,12 +352,12 @@ PHP_METHOD(MutateRemoveSpec, __construct)
     zend_string *path;
     zend_bool is_xattr = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|b", &path, &is_xattr);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|b", &path, &is_xattr);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_remove_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_remove_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
+    zend_update_property_str(pcbc_mutate_remove_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_bool(pcbc_mutate_remove_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
 }
 
 PHP_METHOD(MutateArrayAppendSpec, __construct)
@@ -366,17 +366,17 @@ PHP_METHOD(MutateArrayAppendSpec, __construct)
     zval *value;
     zend_bool is_xattr = 0, create_path = 0, expand_macros = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sa|bbb", &path, &value, &is_xattr, &create_path,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sa|bbb", &path, &value, &is_xattr, &create_path,
                                          &expand_macros);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
+    zend_update_property_str(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_bool(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
     zend_update_property_bool(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("create_path"),
-                              create_path TSRMLS_CC);
+                              create_path);
     zend_update_property_bool(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("expand_macros"),
-                              expand_macros TSRMLS_CC);
+                              expand_macros);
     {
         smart_str buf = {0};
         int last_error;
@@ -388,7 +388,7 @@ PHP_METHOD(MutateArrayAppendSpec, __construct)
         }
         smart_str_0(&buf);
         zend_update_property_stringl(pcbc_mutate_array_append_spec_ce, getThis(), ZEND_STRL("value"),
-                                     ZSTR_VAL(buf.s) + 1, ZSTR_LEN(buf.s) - 2 TSRMLS_CC);
+                                     ZSTR_VAL(buf.s) + 1, ZSTR_LEN(buf.s) - 2);
         smart_str_free(&buf);
     }
 }
@@ -399,17 +399,17 @@ PHP_METHOD(MutateArrayPrependSpec, __construct)
     zval *value;
     zend_bool is_xattr = 0, create_path = 0, expand_macros = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sa|bbb", &path, &value, &is_xattr, &create_path,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sa|bbb", &path, &value, &is_xattr, &create_path,
                                          &expand_macros);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
+    zend_update_property_str(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_bool(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
     zend_update_property_bool(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("create_path"),
-                              create_path TSRMLS_CC);
+                              create_path);
     zend_update_property_bool(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("expand_macros"),
-                              expand_macros TSRMLS_CC);
+                              expand_macros);
     {
         smart_str buf = {0};
         int last_error;
@@ -421,7 +421,7 @@ PHP_METHOD(MutateArrayPrependSpec, __construct)
         }
         smart_str_0(&buf);
         zend_update_property_stringl(pcbc_mutate_array_prepend_spec_ce, getThis(), ZEND_STRL("value"),
-                                     ZSTR_VAL(buf.s) + 1, ZSTR_LEN(buf.s) - 2 TSRMLS_CC);
+                                     ZSTR_VAL(buf.s) + 1, ZSTR_LEN(buf.s) - 2);
         smart_str_free(&buf);
     }
 }
@@ -432,17 +432,17 @@ PHP_METHOD(MutateArrayInsertSpec, __construct)
     zval *value;
     zend_bool is_xattr = 0, create_path = 0, expand_macros = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sa|bbb", &path, &value, &is_xattr, &create_path,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sa|bbb", &path, &value, &is_xattr, &create_path,
                                          &expand_macros);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
+    zend_update_property_str(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_bool(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
     zend_update_property_bool(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("create_path"),
-                              create_path TSRMLS_CC);
+                              create_path);
     zend_update_property_bool(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("expand_macros"),
-                              expand_macros TSRMLS_CC);
+                              expand_macros);
     {
         smart_str buf = {0};
         int last_error;
@@ -454,7 +454,7 @@ PHP_METHOD(MutateArrayInsertSpec, __construct)
         }
         smart_str_0(&buf);
         zend_update_property_stringl(pcbc_mutate_array_insert_spec_ce, getThis(), ZEND_STRL("value"),
-                                     ZSTR_VAL(buf.s) + 1, ZSTR_LEN(buf.s) - 2 TSRMLS_CC);
+                                     ZSTR_VAL(buf.s) + 1, ZSTR_LEN(buf.s) - 2);
         smart_str_free(&buf);
     }
 }
@@ -465,18 +465,18 @@ PHP_METHOD(MutateArrayAddUniqueSpec, __construct)
     zval *value;
     zend_bool is_xattr = 0, create_path = 0, expand_macros = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sz|bbb", &path, &value, &is_xattr, &create_path,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sz|bbb", &path, &value, &is_xattr, &create_path,
                                          &expand_macros);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
+    zend_update_property_str(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("path"), path);
     zend_update_property_bool(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("is_xattr"),
-                              is_xattr TSRMLS_CC);
+                              is_xattr);
     zend_update_property_bool(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("create_path"),
-                              create_path TSRMLS_CC);
+                              create_path);
     zend_update_property_bool(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("expand_macros"),
-                              expand_macros TSRMLS_CC);
+                              expand_macros);
     {
         smart_str buf = {0};
         int last_error;
@@ -487,7 +487,7 @@ PHP_METHOD(MutateArrayAddUniqueSpec, __construct)
             RETURN_NULL();
         }
         smart_str_0(&buf);
-        zend_update_property_str(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("value"), buf.s TSRMLS_CC);
+        zend_update_property_str(pcbc_mutate_array_add_unique_spec_ce, getThis(), ZEND_STRL("value"), buf.s);
         smart_str_free(&buf);
     }
 }
@@ -498,14 +498,14 @@ PHP_METHOD(MutateCounterSpec, __construct)
     zend_long delta;
     zend_bool is_xattr = 0, create_path = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sl|bb", &path, &delta, &is_xattr, &create_path);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sl|bb", &path, &delta, &is_xattr, &create_path);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_long(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("delta"), delta TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
-    zend_update_property_bool(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("create_path"), create_path TSRMLS_CC);
+    zend_update_property_str(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_long(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("delta"), delta);
+    zend_update_property_bool(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
+    zend_update_property_bool(pcbc_mutate_counter_spec_ce, getThis(), ZEND_STRL("create_path"), create_path);
 }
 
 /*

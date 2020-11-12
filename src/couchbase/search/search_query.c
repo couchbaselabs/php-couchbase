@@ -24,7 +24,7 @@ PHP_MINIT_FUNCTION(SearchQuery)
 {
     zend_class_entry ce;
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchQuery", search_query_interface);
-    pcbc_search_query_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_search_query_ce = zend_register_internal_interface(&ce);
 
     return SUCCESS;
 }

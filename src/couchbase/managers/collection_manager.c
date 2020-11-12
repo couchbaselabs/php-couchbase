@@ -37,11 +37,11 @@ static void httpcb_getScope(void *ctx, zval *return_value, zval *response)
     if (!scope_name || Z_TYPE_P(scope_name) != IS_STRING) {
         return;
     }
-    zend_update_property(pcbc_scope_spec_ce, return_value, ZEND_STRL("name"), scope_name TSRMLS_CC);
+    zend_update_property(pcbc_scope_spec_ce, return_value, ZEND_STRL("name"), scope_name);
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("uid"));
     if (val && Z_TYPE_P(val) == IS_STRING) {
         zend_long uid = ZEND_STRTOL(Z_STRVAL_P(val), NULL, 16);
-        zend_update_property_long(pcbc_scope_spec_ce, return_value, ZEND_STRL("uid"), uid TSRMLS_CC);
+        zend_update_property_long(pcbc_scope_spec_ce, return_value, ZEND_STRL("uid"), uid);
     }
     zval collections;
     array_init(&collections);
@@ -52,21 +52,21 @@ static void httpcb_getScope(void *ctx, zval *return_value, zval *response)
         {
             zval collection;
             object_init_ex(&collection, pcbc_collection_spec_ce);
-            zend_update_property(pcbc_collection_spec_ce, &collection, ZEND_STRL("scope_name"), scope_name TSRMLS_CC);
+            zend_update_property(pcbc_collection_spec_ce, &collection, ZEND_STRL("scope_name"), scope_name);
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("name"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_collection_spec_ce, &collection, ZEND_STRL("name"), val TSRMLS_CC);
+                zend_update_property(pcbc_collection_spec_ce, &collection, ZEND_STRL("name"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("uid"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
                 zend_long uid = ZEND_STRTOL(Z_STRVAL_P(val), NULL, 16);
-                zend_update_property_long(pcbc_scope_spec_ce, return_value, ZEND_STRL("uid"), uid TSRMLS_CC);
+                zend_update_property_long(pcbc_scope_spec_ce, return_value, ZEND_STRL("uid"), uid);
             }
             add_next_index_zval(&collections, &collection);
         }
         ZEND_HASH_FOREACH_END();
     }
-    zend_update_property(pcbc_scope_spec_ce, return_value, ZEND_STRL("collections"), &collections TSRMLS_CC);
+    zend_update_property(pcbc_scope_spec_ce, return_value, ZEND_STRL("collections"), &collections);
     zval_delref_p(&collections);
 }
 
@@ -108,7 +108,7 @@ PHP_METHOD(CollectionManager, getAllScopes)
     lcb_cmdhttp_method(cmd, LCB_HTTP_METHOD_GET);
     path_len = spprintf(&path, 0, "/pools/default/buckets/%s/collections", bucket->conn->bucketname);
     lcb_cmdhttp_path(cmd, path, path_len);
-    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getAllScopes, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getAllScopes, NULL);
     efree(path);
 }
 
@@ -147,7 +147,7 @@ PHP_METHOD(CollectionManager, getScope)
     char *path;
     size_t path_len;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "z", &scope);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z", &scope);
     if (rv == FAILURE || Z_TYPE_P(scope) != IS_STRING) {
         RETURN_NULL();
     }
@@ -160,7 +160,7 @@ PHP_METHOD(CollectionManager, getScope)
     path_len = spprintf(&path, 0, "/pools/default/buckets/%s/collections", bucket->conn->bucketname);
     lcb_cmdhttp_path(cmd, path, path_len);
     ZVAL_ZVAL(return_value, scope, 0, NULL);
-    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getSingleScope, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getSingleScope, NULL);
     efree(path);
 }
 
@@ -170,7 +170,7 @@ PHP_METHOD(CollectionManager, createScope)
     zval *prop, val;
     zend_string *scope;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &scope);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &scope);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -191,7 +191,7 @@ PHP_METHOD(CollectionManager, createScope)
     zend_string_free(str);
     lcb_cmdhttp_body(cmd, payload, payload_len);
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_FORM, strlen(PCBC_CONTENT_TYPE_FORM));
-    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL);
     efree(payload);
     efree(path);
 }
@@ -204,7 +204,7 @@ PHP_METHOD(CollectionManager, dropScope)
     char *path;
     size_t path_len;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &scope);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &scope);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -217,7 +217,7 @@ PHP_METHOD(CollectionManager, dropScope)
     path_len = spprintf(&path, 0, "/pools/default/buckets/%s/collections/%.*s", bucket->conn->bucketname,
                         (int)ZSTR_LEN(scope), ZSTR_VAL(scope));
     lcb_cmdhttp_path(cmd, path, path_len);
-    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL);
     efree(path);
 }
 
@@ -227,7 +227,7 @@ PHP_METHOD(CollectionManager, createCollection)
     zval *prop, val, val1, val2, val3;
     zval *collection, *name, *scope_name, *max_expiry;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "O", &collection, pcbc_collection_spec_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &collection, pcbc_collection_spec_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -259,7 +259,7 @@ PHP_METHOD(CollectionManager, createCollection)
     }
     lcb_cmdhttp_body(cmd, payload, payload_len);
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_FORM, strlen(PCBC_CONTENT_TYPE_FORM));
-    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL);
     efree(payload);
     efree(path);
 }
@@ -272,7 +272,7 @@ PHP_METHOD(CollectionManager, dropCollection)
     char *path;
     size_t path_len;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "O", &collection, pcbc_collection_spec_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &collection, pcbc_collection_spec_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -291,7 +291,7 @@ PHP_METHOD(CollectionManager, dropCollection)
     path_len = spprintf(&path, 0, "/pools/default/buckets/%s/collections/%.*s/%.*s", bucket->conn->bucketname,
                         (int)Z_STRLEN_P(scope_name), Z_STRVAL_P(scope_name), (int)Z_STRLEN_P(name), Z_STRVAL_P(name));
     lcb_cmdhttp_path(cmd, path, path_len);
-    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL);
     efree(path);
 }
 
@@ -391,33 +391,33 @@ PHP_METHOD(CollectionSpec, scopeName)
 PHP_METHOD(CollectionSpec, setName)
 {
     zend_string *val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_collection_spec_ce, getThis(), ZEND_STRL("name"), val TSRMLS_CC);
+    zend_update_property_str(pcbc_collection_spec_ce, getThis(), ZEND_STRL("name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(CollectionSpec, setScopeName)
 {
     zend_string *val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_collection_spec_ce, getThis(), ZEND_STRL("scope_name"), val TSRMLS_CC);
+    zend_update_property_str(pcbc_collection_spec_ce, getThis(), ZEND_STRL("scope_name"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(CollectionSpec, setMaxExpiry)
 {
     zend_long val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "l", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "l", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_collection_spec_ce, getThis(), ZEND_STRL("max_expiry"), val TSRMLS_CC);
+    zend_update_property_long(pcbc_collection_spec_ce, getThis(), ZEND_STRL("max_expiry"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -450,20 +450,20 @@ PHP_MINIT_FUNCTION(CollectionManager)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CollectionManager", collection_manager_methods);
-    pcbc_collection_manager_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_collection_manager_ce, ZEND_STRL("bucket"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_collection_manager_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_collection_manager_ce, ZEND_STRL("bucket"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ScopeSpec", scope_spec_methods);
-    pcbc_scope_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_scope_spec_ce, ZEND_STRL("uid"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_scope_spec_ce, ZEND_STRL("name"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_scope_spec_ce, ZEND_STRL("collections"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_scope_spec_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_scope_spec_ce, ZEND_STRL("uid"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_scope_spec_ce, ZEND_STRL("name"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_scope_spec_ce, ZEND_STRL("collections"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CollectionSpec", collection_spec_methods);
-    pcbc_collection_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_collection_spec_ce, ZEND_STRL("name"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_collection_spec_ce, ZEND_STRL("scope_name"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_collection_spec_ce, ZEND_STRL("max_expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_collection_spec_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_collection_spec_ce, ZEND_STRL("name"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_collection_spec_ce, ZEND_STRL("scope_name"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_collection_spec_ce, ZEND_STRL("max_expiry"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

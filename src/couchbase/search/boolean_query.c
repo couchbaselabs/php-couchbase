@@ -30,12 +30,12 @@ PHP_METHOD(BooleanSearchQuery, boost)
     double boost = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "d", &boost);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "d", &boost);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("boost"), boost TSRMLS_CC);
+    zend_update_property_double(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -44,12 +44,12 @@ PHP_METHOD(BooleanSearchQuery, must)
 {
     zval *conjunct = NULL;
 
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "O", &conjunct, pcbc_conjunction_search_query_ce) ==
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &conjunct, pcbc_conjunction_search_query_ce) ==
         FAILURE) {
         return;
     }
 
-    zend_update_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("must"), conjunct TSRMLS_CC);
+    zend_update_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("must"), conjunct);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -58,12 +58,12 @@ PHP_METHOD(BooleanSearchQuery, mustNot)
 {
     zval *disjunct = NULL;
 
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "O", &disjunct, pcbc_disjunction_search_query_ce) ==
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &disjunct, pcbc_disjunction_search_query_ce) ==
         FAILURE) {
         return;
     }
 
-    zend_update_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("mustNot"), disjunct TSRMLS_CC);
+    zend_update_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("mustNot"), disjunct);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -72,12 +72,12 @@ PHP_METHOD(BooleanSearchQuery, should)
 {
     zval *disjunct = NULL;
 
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "O", &disjunct, pcbc_disjunction_search_query_ce) ==
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &disjunct, pcbc_disjunction_search_query_ce) ==
         FAILURE) {
         return;
     }
 
-    zend_update_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("should"), disjunct TSRMLS_CC);
+    zend_update_property(pcbc_boolean_search_query_ce, getThis(), ZEND_STRL("should"), disjunct);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -154,14 +154,14 @@ PHP_MINIT_FUNCTION(BooleanSearchQuery)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "BooleanSearchQuery", boolean_search_query_methods);
-    pcbc_boolean_search_query_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_boolean_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_boolean_search_query_ce TSRMLS_CC, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
+    zend_class_implements(pcbc_boolean_search_query_ce, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
 
-    zend_declare_property_null(pcbc_boolean_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_boolean_search_query_ce, ZEND_STRL("must"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_boolean_search_query_ce, ZEND_STRL("must_not"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_boolean_search_query_ce, ZEND_STRL("should"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_boolean_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_boolean_search_query_ce, ZEND_STRL("must"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_boolean_search_query_ce, ZEND_STRL("must_not"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_boolean_search_query_ce, ZEND_STRL("should"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

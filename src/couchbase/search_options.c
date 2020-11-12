@@ -24,44 +24,44 @@ zend_class_entry *pcbc_search_options_ce;
 PHP_METHOD(SearchOptions, timeout)
 {
     zend_long arg;
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_search_options_ce, getThis(), ZEND_STRL("timeout"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_search_options_ce, getThis(), ZEND_STRL("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(SearchOptions, limit)
 {
     zend_long arg;
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_search_options_ce, getThis(), ZEND_STRL("limit"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_search_options_ce, getThis(), ZEND_STRL("limit"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(SearchOptions, skip)
 {
     zend_long arg;
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_search_options_ce, getThis(), ZEND_STRL("skip"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_search_options_ce, getThis(), ZEND_STRL("skip"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(SearchOptions, explain)
 {
     zend_bool arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "b", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "b", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_bool(pcbc_search_options_ce, getThis(), ZEND_STRL("explain"), arg TSRMLS_CC);
+    zend_update_property_bool(pcbc_search_options_ce, getThis(), ZEND_STRL("explain"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -69,7 +69,7 @@ PHP_METHOD(SearchOptions, consistentWith)
 {
     zend_string *index;
     zval *arg;
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "SO", &index, &arg, pcbc_mutation_state_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "SO", &index, &arg, pcbc_mutation_state_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -79,13 +79,13 @@ PHP_METHOD(SearchOptions, consistentWith)
     if (Z_TYPE_P(prop) == IS_NULL) {
         array_init(&ret);
         prop = &ret;
-        zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("consistent_with"), &ret TSRMLS_CC);
+        zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("consistent_with"), &ret);
         Z_DELREF_P(prop);
     }
 
     zval scan_vectors;
     ZVAL_UNDEF(&scan_vectors);
-    pcbc_mutation_state_export_for_search(arg, &scan_vectors TSRMLS_CC);
+    pcbc_mutation_state_export_for_search(arg, &scan_vectors);
     add_assoc_zval_ex(prop, ZSTR_VAL(index), ZSTR_LEN(index), &scan_vectors);
     Z_ADDREF(scan_vectors);
 
@@ -97,7 +97,7 @@ PHP_METHOD(SearchOptions, facets)
     zval *facets;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "a", &facets);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "a", &facets);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -107,7 +107,7 @@ PHP_METHOD(SearchOptions, facets)
     ZEND_HASH_FOREACH_STR_KEY_VAL(HASH_OF(facets), string_key, entry)
     {
         if (string_key) {
-            if (!instanceof_function(Z_OBJCE_P(entry), pcbc_search_facet_ce TSRMLS_CC)) {
+            if (!instanceof_function(Z_OBJCE_P(entry), pcbc_search_facet_ce)) {
                 pcbc_log(LOGARGS(WARN), "Non-facet value detected in facets array");
                 zend_type_error("Expected facet object for %s", ZSTR_VAL(string_key));
             }
@@ -118,7 +118,7 @@ PHP_METHOD(SearchOptions, facets)
         }
     }
     ZEND_HASH_FOREACH_END();
-    zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("facets"), facets TSRMLS_CC);
+    zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("facets"), facets);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -127,7 +127,7 @@ PHP_METHOD(SearchOptions, fields)
     zval *fields = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "a", &fields);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "a", &fields);
     if (rv == FAILURE) {
         return;
     }
@@ -142,7 +142,7 @@ PHP_METHOD(SearchOptions, fields)
         }
     }
     ZEND_HASH_FOREACH_END();
-    zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("fields"), fields TSRMLS_CC);
+    zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("fields"), fields);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -152,7 +152,7 @@ PHP_METHOD(SearchOptions, sort)
     zval *args = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "a", &args);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "a", &args);
     if (rv == FAILURE) {
         return;
     }
@@ -161,13 +161,13 @@ PHP_METHOD(SearchOptions, sort)
     ZEND_HASH_FOREACH_VAL(HASH_OF(args), entry)
     {
         if (Z_TYPE_P(entry) != IS_STRING &&
-            (Z_TYPE_P(entry) != IS_OBJECT || !instanceof_function(Z_OBJCE_P(entry), pcbc_search_sort_ce TSRMLS_CC))) {
+            (Z_TYPE_P(entry) != IS_OBJECT || !instanceof_function(Z_OBJCE_P(entry), pcbc_search_sort_ce))) {
             pcbc_log(LOGARGS(WARN), "expected sort entry to be a string or SearchSort");
             zend_type_error("Expected string for a FTS field");
         }
     }
     ZEND_HASH_FOREACH_END();
-    zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("sort"), args TSRMLS_CC);
+    zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("sort"), args);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -181,14 +181,14 @@ PHP_METHOD(SearchOptions, highlight)
     zval *fields = NULL;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S|a", &style, &fields);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "S|a", &style, &fields);
     if (rv == FAILURE) {
         return;
     }
 
-    zend_update_property_str(pcbc_search_options_ce, getThis(), ZEND_STRL("highlight_style"), style TSRMLS_CC);
+    zend_update_property_str(pcbc_search_options_ce, getThis(), ZEND_STRL("highlight_style"), style);
     if (fields) {
-        zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("highlight_fields"), fields TSRMLS_CC);
+        zend_update_property(pcbc_search_options_ce, getThis(), ZEND_STRL("highlight_fields"), fields);
     }
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -358,26 +358,26 @@ PHP_MINIT_FUNCTION(SearchOptions)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchOptions", search_options_methods);
-    pcbc_search_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_search_options_ce TSRMLS_CC, 1, pcbc_json_serializable_ce);
+    pcbc_search_options_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_search_options_ce, 1, pcbc_json_serializable_ce);
 
-    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("limit"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("skip"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("explain"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("consistent_with"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("fields"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("sort"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("facets"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("highlight_style"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("highlight_fields"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("limit"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("skip"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("explain"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("consistent_with"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("fields"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("sort"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("facets"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("highlight_style"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("highlight_fields"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchHighlightMode", pcbc_search_highlight_mode_methods);
-    pcbc_search_highlight_mode_ce = zend_register_internal_interface(&ce TSRMLS_CC);
-    zend_declare_class_constant_stringl(pcbc_search_highlight_mode_ce, ZEND_STRL("HTML"), ZEND_STRL("html") TSRMLS_CC);
-    zend_declare_class_constant_stringl(pcbc_search_highlight_mode_ce, ZEND_STRL("ANSI"), ZEND_STRL("ansi") TSRMLS_CC);
+    pcbc_search_highlight_mode_ce = zend_register_internal_interface(&ce);
+    zend_declare_class_constant_stringl(pcbc_search_highlight_mode_ce, ZEND_STRL("HTML"), ZEND_STRL("html"));
+    zend_declare_class_constant_stringl(pcbc_search_highlight_mode_ce, ZEND_STRL("ANSI"), ZEND_STRL("ansi"));
     zend_declare_class_constant_stringl(pcbc_search_highlight_mode_ce, ZEND_STRL("SIMPLE"),
-                                        ZEND_STRL("simple") TSRMLS_CC);
+                                        ZEND_STRL("simple"));
 
     return SUCCESS;
 }

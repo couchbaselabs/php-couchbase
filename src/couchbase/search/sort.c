@@ -28,7 +28,7 @@ PHP_MINIT_FUNCTION(SearchSort)
 {
     zend_class_entry ce;
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchSort", search_sort_interface);
-    pcbc_search_sort_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_search_sort_ce = zend_register_internal_interface(&ce);
 
     return SUCCESS;
 }

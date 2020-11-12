@@ -41,7 +41,7 @@ PHP_METHOD(PasswordAuthenticator, __construct)
 }
 
 void pcbc_password_authenticator_init(zval *return_value, char *username, int username_len, char *password,
-                                      int password_len TSRMLS_DC)
+                                      int password_len)
 {
     pcbc_password_authenticator_t *obj;
 
@@ -60,7 +60,7 @@ PHP_METHOD(PasswordAuthenticator, username)
     size_t username_len;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &username, &username_len);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "s", &username, &username_len);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -83,7 +83,7 @@ PHP_METHOD(PasswordAuthenticator, password)
     size_t password_len;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &password, &password_len);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "s", &password, &password_len);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -100,7 +100,7 @@ PHP_METHOD(PasswordAuthenticator, password)
 }
 
 void pcbc_generate_password_lcb_auth(pcbc_password_authenticator_t *auth, lcb_AUTHENTICATOR **result,
-                                     lcb_INSTANCE_TYPE type, char **hash TSRMLS_DC)
+                                     lcb_INSTANCE_TYPE type, char **hash)
 {
     PHP_MD5_CTX md5;
     unsigned char digest[16];
@@ -141,7 +141,7 @@ zend_function_entry password_authenticator_methods[] = {
 
 zend_object_handlers password_authenticator_handlers;
 
-static void password_authenticator_free_object(zend_object *object TSRMLS_DC)
+static void password_authenticator_free_object(zend_object *object)
 {
     pcbc_password_authenticator_t *obj = Z_PASSWORD_AUTHENTICATOR_OBJ(object);
 
@@ -152,23 +152,23 @@ static void password_authenticator_free_object(zend_object *object TSRMLS_DC)
         efree(obj->password);
     }
 
-    zend_object_std_dtor(&obj->std TSRMLS_CC);
+    zend_object_std_dtor(&obj->std);
 }
 
-static zend_object *authenticator_create_object(zend_class_entry *class_type TSRMLS_DC)
+static zend_object *authenticator_create_object(zend_class_entry *class_type)
 {
     pcbc_password_authenticator_t *obj = NULL;
 
     obj = PCBC_ALLOC_OBJECT_T(pcbc_password_authenticator_t, class_type);
 
-    zend_object_std_init(&obj->std, class_type TSRMLS_CC);
+    zend_object_std_init(&obj->std, class_type);
     object_properties_init(&obj->std, class_type);
 
     obj->std.handlers = &password_authenticator_handlers;
     return &obj->std;
 }
 
-static HashTable *pcbc_password_authenticator_get_debug_info(zval *object, int *is_temp TSRMLS_DC)
+static HashTable *pcbc_password_authenticator_get_debug_info(zval *object, int *is_temp)
 {
     pcbc_password_authenticator_t *obj = NULL;
     zval retval;
@@ -188,11 +188,11 @@ PHP_MINIT_FUNCTION(PasswordAuthenticator)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "PasswordAuthenticator", password_authenticator_methods);
-    pcbc_password_authenticator_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_password_authenticator_ce = zend_register_internal_class(&ce);
     pcbc_password_authenticator_ce->create_object = authenticator_create_object;
     PCBC_CE_DISABLE_SERIALIZATION(pcbc_password_authenticator_ce);
 
-    zend_class_implements(pcbc_password_authenticator_ce TSRMLS_CC, 1, pcbc_authenticator_ce);
+    zend_class_implements(pcbc_password_authenticator_ce, 1, pcbc_authenticator_ce);
 
     memcpy(&password_authenticator_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     password_authenticator_handlers.get_debug_info = pcbc_password_authenticator_get_debug_info;

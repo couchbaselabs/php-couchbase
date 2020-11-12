@@ -28,14 +28,12 @@ struct remove_cookie {
 
 void remove_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPREMOVE *resp)
 {
-    TSRMLS_FETCH();
-
     const lcb_KEY_VALUE_ERROR_CONTEXT *ectx = NULL;
     struct remove_cookie *cookie = NULL;
     lcb_respremove_cookie(resp, (void **)&cookie);
     zval *return_value = cookie->return_value;
     cookie->rc = lcb_respremove_status(resp);
-    zend_update_property_long(pcbc_mutation_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc TSRMLS_CC);
+    zend_update_property_long(pcbc_mutation_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
 
     lcb_respremove_error_context(resp, &ectx);
     set_property_str(ectx, lcb_errctx_kv_context, pcbc_mutation_result_impl_ce, "err_ctx");
@@ -48,7 +46,7 @@ void remove_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPREMOVE *r
             uint64_t data;
             lcb_respremove_cas(resp, &data);
             b64 = php_base64_encode((unsigned char *)&data, sizeof(data));
-            zend_update_property_str(pcbc_mutation_result_impl_ce, return_value, ZEND_STRL("cas"), b64 TSRMLS_CC);
+            zend_update_property_str(pcbc_mutation_result_impl_ce, return_value, ZEND_STRL("cas"), b64);
             zend_string_release(b64);
         }
         {
@@ -59,22 +57,22 @@ void remove_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPREMOVE *r
                 object_init_ex(&val, pcbc_mutation_token_impl_ce);
 
                 zend_update_property_long(pcbc_mutation_token_impl_ce, &val, ZEND_STRL("partition_id"),
-                                          token.vbid_ TSRMLS_CC);
+                                          token.vbid_);
                 b64 = php_base64_encode((unsigned char *)&token.uuid_, sizeof(token.uuid_));
-                zend_update_property_str(pcbc_mutation_token_impl_ce, &val, ZEND_STRL("partition_uuid"), b64 TSRMLS_CC);
+                zend_update_property_str(pcbc_mutation_token_impl_ce, &val, ZEND_STRL("partition_uuid"), b64);
                 zend_string_release(b64);
                 b64 = php_base64_encode((unsigned char *)&token.seqno_, sizeof(token.seqno_));
                 zend_update_property_str(pcbc_mutation_token_impl_ce, &val, ZEND_STRL("sequence_number"),
-                                         b64 TSRMLS_CC);
+                                         b64);
                 zend_string_release(b64);
 
                 const char *bucket;
                 lcb_cntl(instance, LCB_CNTL_GET, LCB_CNTL_BUCKETNAME, &bucket);
                 zend_update_property_string(pcbc_mutation_token_impl_ce, &val, ZEND_STRL("bucket_name"),
-                                            bucket TSRMLS_CC);
+                                            bucket);
 
                 zend_update_property(pcbc_mutation_result_impl_ce, return_value, ZEND_STRL("mutation_token"),
-                                     &val TSRMLS_CC);
+                                     &val);
                 zval_ptr_dtor(&val);
             }
         }
@@ -86,14 +84,14 @@ zend_class_entry *pcbc_remove_options_ce;
 PHP_METHOD(RemoveOptions, cas)
 {
     zend_string *arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "S", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
     zend_string *decoded = php_base64_decode_str(arg);
     if (decoded) {
         if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
-            zend_update_property_str(pcbc_remove_options_ce, getThis(), ZEND_STRL("cas"), arg TSRMLS_CC);
+            zend_update_property_str(pcbc_remove_options_ce, getThis(), ZEND_STRL("cas"), arg);
         }
         zend_string_free(decoded);
     }
@@ -103,22 +101,22 @@ PHP_METHOD(RemoveOptions, cas)
 PHP_METHOD(RemoveOptions, timeout)
 {
     zend_long arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_remove_options_ce, getThis(), ZEND_STRL("timeout"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_remove_options_ce, getThis(), ZEND_STRL("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(RemoveOptions, durabilityLevel)
 {
     zend_long arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_remove_options_ce, getThis(), ZEND_STRL("durability_level"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_remove_options_ce, getThis(), ZEND_STRL("durability_level"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -149,7 +147,7 @@ PHP_METHOD(Collection, remove)
     zval *options = NULL;
     lcb_STATUS err;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &id, &options, pcbc_remove_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &id, &options, pcbc_remove_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -211,10 +209,10 @@ PHP_MINIT_FUNCTION(CollectionRemove)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "RemoveOptions", pcbc_remove_options_methods);
-    pcbc_remove_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_remove_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_remove_options_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_remove_options_ce, ZEND_STRL("durability_level"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_remove_options_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_remove_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_remove_options_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_remove_options_ce, ZEND_STRL("durability_level"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

@@ -27,14 +27,12 @@ struct get_cookie {
 
 void get_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPGET *resp)
 {
-    TSRMLS_FETCH();
-
     struct get_cookie *cookie = NULL;
     const lcb_KEY_VALUE_ERROR_CONTEXT *ectx = NULL;
     lcb_respget_cookie(resp, (void **)&cookie);
     zval *return_value = cookie->return_value;
     cookie->rc = lcb_respget_status(resp);
-    zend_update_property_long(pcbc_get_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc TSRMLS_CC);
+    zend_update_property_long(pcbc_get_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
     lcb_respget_error_context(resp, &ectx);
 
     set_property_str(ectx, lcb_errctx_kv_context, pcbc_get_result_impl_ce, "err_ctx");
@@ -49,7 +47,7 @@ void get_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPGET *resp)
             lcb_respget_cas(resp, &data);
             zend_string *b64;
             b64 = php_base64_encode((unsigned char *)&data, sizeof(data));
-            zend_update_property_str(pcbc_get_result_impl_ce, return_value, ZEND_STRL("cas"), b64 TSRMLS_CC);
+            zend_update_property_str(pcbc_get_result_impl_ce, return_value, ZEND_STRL("cas"), b64);
             zend_string_release(b64);
         }
     }
@@ -60,33 +58,33 @@ zend_class_entry *pcbc_get_options_ce;
 PHP_METHOD(GetOptions, timeout)
 {
     zend_long arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_get_options_ce, getThis(), ZEND_STRL("timeout"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_get_options_ce, getThis(), ZEND_STRL("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(GetOptions, withExpiry)
 {
     zend_bool arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "b", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "b", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_bool(pcbc_get_options_ce, getThis(), ZEND_STRL("with_expiry"), arg TSRMLS_CC);
+    zend_update_property_bool(pcbc_get_options_ce, getThis(), ZEND_STRL("with_expiry"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(GetOptions, project)
 {
     zval *arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "a", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "a", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property(pcbc_get_options_ce, getThis(), ZEND_STRL("project"), arg TSRMLS_CC);
+    zend_update_property(pcbc_get_options_ce, getThis(), ZEND_STRL("project"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -166,11 +164,11 @@ zend_class_entry *pcbc_get_and_lock_options_ce;
 PHP_METHOD(GetAndLockOptions, timeout)
 {
     zend_long arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_get_and_lock_options_ce, getThis(), ZEND_STRL("timeout"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_get_and_lock_options_ce, getThis(), ZEND_STRL("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -190,7 +188,7 @@ PHP_METHOD(Collection, getAndLock)
     zend_long expiry;
     lcb_STATUS err;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sl|O!", &id, &expiry, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sl|O!", &id, &expiry, &options,
                                          pcbc_get_and_lock_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -240,11 +238,11 @@ zend_class_entry *pcbc_get_and_touch_options_ce;
 PHP_METHOD(GetAndTouchOptions, timeout)
 {
     zend_long arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_get_and_touch_options_ce, getThis(), ZEND_STRL("timeout"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_get_and_touch_options_ce, getThis(), ZEND_STRL("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -266,7 +264,7 @@ PHP_METHOD(Collection, getAndTouch)
     zend_long expiry;
     lcb_STATUS err;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sl|O!", &id, &expiry, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sl|O!", &id, &expiry, &options,
                                          pcbc_get_and_touch_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -316,18 +314,18 @@ PHP_MINIT_FUNCTION(CollectionGet)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetOptions", pcbc_get_options_methods);
-    pcbc_get_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_options_ce, ZEND_STRL("with_expiry"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_options_ce, ZEND_STRL("project"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_get_options_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_get_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_options_ce, ZEND_STRL("with_expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_options_ce, ZEND_STRL("project"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetAndTouchOptions", pcbc_get_and_touch_options_methods);
-    pcbc_get_and_touch_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_and_touch_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_get_and_touch_options_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_get_and_touch_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetAndLockOptions", pcbc_get_and_lock_options_methods);
-    pcbc_get_and_lock_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_get_and_lock_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_get_and_lock_options_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_get_and_lock_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

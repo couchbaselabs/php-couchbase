@@ -44,33 +44,33 @@ static void httpcb_getAllIndexes(void *ctx, zval *return_value, zval *response)
             object_init_ex(&index, pcbc_query_index_ce);
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("name"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("name"), val TSRMLS_CC);
+                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("name"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("using"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("type"), val TSRMLS_CC);
+                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("type"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("is_primary"));
             if (val && (Z_TYPE_P(val) == IS_FALSE || Z_TYPE_P(val) == IS_TRUE)) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("is_primary"), val TSRMLS_CC);
+                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("is_primary"), val);
             } else {
-                zend_update_property_bool(pcbc_query_index_ce, &index, ZEND_STRL("is_primary"), 0 TSRMLS_CC);
+                zend_update_property_bool(pcbc_query_index_ce, &index, ZEND_STRL("is_primary"), 0);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("state"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("state"), val TSRMLS_CC);
+                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("state"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("keyspace_id"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("keyspace"), val TSRMLS_CC);
+                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("keyspace"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("index_key"));
             if (val && Z_TYPE_P(val) == IS_ARRAY) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("index_key"), val TSRMLS_CC);
+                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("index_key"), val);
             }
             val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("condition"));
             if (val && Z_TYPE_P(val) == IS_STRING) {
-                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("condition"), val TSRMLS_CC);
+                zend_update_property(pcbc_query_index_ce, &index, ZEND_STRL("condition"), val);
             }
             add_next_index_zval(return_value, &index);
         }
@@ -84,7 +84,7 @@ PHP_METHOD(QueryIndexManager, getAllIndexes)
     zval *prop, val;
     zend_string *bucket;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &bucket);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &bucket);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -102,7 +102,7 @@ PHP_METHOD(QueryIndexManager, getAllIndexes)
                            (int)ZSTR_LEN(bucket), ZSTR_VAL(bucket));
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_JSON, strlen(PCBC_CONTENT_TYPE_JSON));
     lcb_cmdhttp_body(cmd, payload, payload_len);
-    pcbc_http_request(return_value, cluster->conn->lcb, cmd, 1, NULL, httpcb_getAllIndexes, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, cluster->conn->lcb, cmd, 1, NULL, httpcb_getAllIndexes, NULL);
     efree(payload);
 }
 
@@ -130,7 +130,7 @@ PHP_METHOD(QueryIndexManager, createIndex)
     zval *fields, *options = NULL, *where = NULL;
     zend_bool ignore_exists_error = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "SSa|O!", &bucket, &index, &fields, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "SSa|O!", &bucket, &index, &fields, &options,
                                          pcbc_create_query_index_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -198,7 +198,7 @@ PHP_METHOD(QueryIndexManager, createIndex)
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_JSON, strlen(PCBC_CONTENT_TYPE_JSON));
     lcb_cmdhttp_body(cmd, ZSTR_VAL(payload.s), ZSTR_LEN(payload.s));
     pcbc_http_request(return_value, cluster->conn->lcb, cmd, 1, &ignore_exists_error, NULL,
-                      errcb_createIndex TSRMLS_CC);
+                      errcb_createIndex);
     smart_str_free(&with_options);
     smart_str_free(&payload);
 }
@@ -211,7 +211,7 @@ PHP_METHOD(QueryIndexManager, createPrimaryIndex)
     zval *index = NULL, *options = NULL;
     zend_bool ignore_exists_error = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &bucket, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &bucket, &options,
                                          pcbc_create_query_primary_index_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -269,7 +269,7 @@ PHP_METHOD(QueryIndexManager, createPrimaryIndex)
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_JSON, strlen(PCBC_CONTENT_TYPE_JSON));
     lcb_cmdhttp_body(cmd, ZSTR_VAL(payload.s), ZSTR_LEN(payload.s));
     pcbc_http_request(return_value, cluster->conn->lcb, cmd, 1, &ignore_exists_error, NULL,
-                      errcb_createIndex TSRMLS_CC);
+                      errcb_createIndex);
     smart_str_free(&with_options);
     smart_str_free(&payload);
 }
@@ -305,7 +305,7 @@ PHP_METHOD(QueryIndexManager, dropIndex)
     zval *options = NULL;
     zend_bool ignore_not_exists_error = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "SS|O!", &bucket, &index, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "SS|O!", &bucket, &index, &options,
                                          pcbc_drop_query_index_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -332,7 +332,7 @@ PHP_METHOD(QueryIndexManager, dropIndex)
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_JSON, strlen(PCBC_CONTENT_TYPE_JSON));
     lcb_cmdhttp_body(cmd, ZSTR_VAL(payload.s), ZSTR_LEN(payload.s));
     pcbc_http_request(return_value, cluster->conn->lcb, cmd, 1, &ignore_not_exists_error, NULL,
-                      errcb_dropIndex TSRMLS_CC);
+                      errcb_dropIndex);
     smart_str_free(&payload);
 }
 
@@ -344,7 +344,7 @@ PHP_METHOD(QueryIndexManager, dropPrimaryIndex)
     zval *options = NULL, *index = NULL;
     zend_bool ignore_not_exists_error = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|O!", &bucket, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &bucket, &options,
                                          pcbc_drop_query_primary_index_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -380,7 +380,7 @@ PHP_METHOD(QueryIndexManager, dropPrimaryIndex)
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_JSON, strlen(PCBC_CONTENT_TYPE_JSON));
     lcb_cmdhttp_body(cmd, ZSTR_VAL(payload.s), ZSTR_LEN(payload.s));
     pcbc_http_request(return_value, cluster->conn->lcb, cmd, 1, &ignore_not_exists_error, NULL,
-                      errcb_dropIndex TSRMLS_CC);
+                      errcb_dropIndex);
     smart_str_free(&payload);
 }
 
@@ -453,7 +453,7 @@ PHP_METHOD(QueryIndexManager, watchIndexes)
     zval *indexes = NULL, *options = NULL;
     zend_long timeout;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sal|O!", &bucket, &indexes, &timeout, &options,
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sal|O!", &bucket, &indexes, &timeout, &options,
                                          pcbc_watch_query_indexes_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -489,7 +489,7 @@ PHP_METHOD(QueryIndexManager, watchIndexes)
         lcb_cmdhttp_method(cmd, LCB_HTTP_METHOD_POST);
         lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_JSON, strlen(PCBC_CONTENT_TYPE_JSON));
         lcb_cmdhttp_body(cmd, payload, payload_len);
-        pcbc_http_request(return_value, cluster->conn->lcb, cmd, 1, &ctx, httpcb_watchIndexes, NULL TSRMLS_CC);
+        pcbc_http_request(return_value, cluster->conn->lcb, cmd, 1, &ctx, httpcb_watchIndexes, NULL);
     }
     efree(payload);
 }
@@ -500,7 +500,7 @@ PHP_METHOD(QueryIndexManager, buildDeferredIndexes)
     zval *prop, val;
     zend_string *bucket;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &bucket);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &bucket);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -519,7 +519,7 @@ PHP_METHOD(QueryIndexManager, buildDeferredIndexes)
                            (int)ZSTR_LEN(bucket), ZSTR_VAL(bucket), (int)ZSTR_LEN(bucket), ZSTR_VAL(bucket));
     lcb_cmdhttp_content_type(cmd, PCBC_CONTENT_TYPE_JSON, strlen(PCBC_CONTENT_TYPE_JSON));
     lcb_cmdhttp_body(cmd, payload, payload_len);
-    pcbc_http_request(return_value, cluster->conn->lcb, cmd, 1, NULL, NULL, NULL TSRMLS_CC);
+    pcbc_http_request(return_value, cluster->conn->lcb, cmd, 1, NULL, NULL, NULL);
     efree(payload);
 }
 
@@ -688,45 +688,45 @@ zend_function_entry query_index_methods[] = {
 PHP_METHOD(CreateQueryIndexOptions, condition)
 {
     zend_string *val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("condition"), val TSRMLS_CC);
+    zend_update_property_str(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("condition"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(CreateQueryIndexOptions, ignoreIfExists)
 {
     zend_bool val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "b", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "b", &val) == FAILURE) {
         RETURN_NULL();
     }
 
     zend_update_property_bool(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("ignore_if_exists"),
-                              val TSRMLS_CC);
+                              val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(CreateQueryIndexOptions, deferred)
 {
     zend_bool val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "b", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "b", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("deferred"), val TSRMLS_CC);
+    zend_update_property_bool(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("deferred"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(CreateQueryIndexOptions, numReplicas)
 {
     zend_long val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "l", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "l", &val) == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("num_replicas"), val TSRMLS_CC);
+    zend_update_property_long(pcbc_create_query_index_options_ce, getThis(), ZEND_STRL("num_replicas"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -763,48 +763,48 @@ zend_function_entry create_query_index_options_methods[] = {
 PHP_METHOD(CreateQueryPrimaryIndexOptions, indexName)
 {
     zend_string *val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &val) == FAILURE) {
         RETURN_NULL();
     }
 
     zend_update_property_str(pcbc_create_query_primary_index_options_ce, getThis(), ZEND_STRL("index_name"),
-                             val TSRMLS_CC);
+                             val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(CreateQueryPrimaryIndexOptions, ignoreIfExists)
 {
     zend_bool val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "b", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "b", &val) == FAILURE) {
         RETURN_NULL();
     }
 
     zend_update_property_bool(pcbc_create_query_primary_index_options_ce, getThis(), ZEND_STRL("ignore_if_exists"),
-                              val TSRMLS_CC);
+                              val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(CreateQueryPrimaryIndexOptions, deferred)
 {
     zend_bool val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "b", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "b", &val) == FAILURE) {
         RETURN_NULL();
     }
 
     zend_update_property_bool(pcbc_create_query_primary_index_options_ce, getThis(), ZEND_STRL("deferred"),
-                              val TSRMLS_CC);
+                              val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(CreateQueryPrimaryIndexOptions, numReplicas)
 {
     zend_long val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "l", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "l", &val) == FAILURE) {
         RETURN_NULL();
     }
 
     zend_update_property_long(pcbc_create_query_primary_index_options_ce, getThis(), ZEND_STRL("num_replicas"),
-                              val TSRMLS_CC);
+                              val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -841,12 +841,12 @@ zend_function_entry create_query_primary_index_options_methods[] = {
 PHP_METHOD(DropQueryIndexOptions, ignoreIfNotExists)
 {
     zend_bool val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "b", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "b", &val) == FAILURE) {
         RETURN_NULL();
     }
 
     zend_update_property_bool(pcbc_drop_query_index_options_ce, getThis(), ZEND_STRL("ignore_if_not_exists"),
-                              val TSRMLS_CC);
+                              val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -865,24 +865,24 @@ zend_function_entry drop_query_index_options_methods[] = {
 PHP_METHOD(DropQueryPrimaryIndexOptions, indexName)
 {
     zend_string *val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &val) == FAILURE) {
         RETURN_NULL();
     }
 
     zend_update_property_str(pcbc_drop_query_primary_index_options_ce, getThis(), ZEND_STRL("index_name"),
-                             val TSRMLS_CC);
+                             val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
 PHP_METHOD(DropQueryPrimaryIndexOptions, ignoreIfNotExists)
 {
     zend_bool val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "b", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "b", &val) == FAILURE) {
         RETURN_NULL();
     }
 
     zend_update_property_bool(pcbc_drop_query_primary_index_options_ce, getThis(), ZEND_STRL("ignore_if_not_exists"),
-                              val TSRMLS_CC);
+                              val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -907,12 +907,12 @@ zend_function_entry drop_query_primary_index_options_methods[] = {
 PHP_METHOD(WatchQueryIndexesOptions, watchPrimary)
 {
     zend_bool val;
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "b", &val) == FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "b", &val) == FAILURE) {
         RETURN_NULL();
     }
 
     zend_update_property_bool(pcbc_watch_query_indexes_options_ce, getThis(), ZEND_STRL("watch_primary"),
-                              val TSRMLS_CC);
+                              val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -933,55 +933,55 @@ PHP_MINIT_FUNCTION(QueryIndexManager)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryIndexManager", query_index_manager_methods);
-    pcbc_query_index_manager_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_index_manager_ce, ZEND_STRL("cluster"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_query_index_manager_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_query_index_manager_ce, ZEND_STRL("cluster"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryIndex", query_index_methods);
-    pcbc_query_index_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("name"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("is_primary"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("type"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("state"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("keyspace"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("index_key"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("condition"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_query_index_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("name"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("is_primary"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("type"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("state"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("keyspace"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("index_key"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("condition"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CreateQueryIndexOptions", create_query_index_options_methods);
-    pcbc_create_query_index_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_create_query_index_options_ce, ZEND_STRL("condition"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_create_query_index_options_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_create_query_index_options_ce, ZEND_STRL("condition"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_create_query_index_options_ce, ZEND_STRL("ignore_if_exists"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_create_query_index_options_ce, ZEND_STRL("num_replicas"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_create_query_index_options_ce, ZEND_STRL("deferred"), ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_create_query_index_options_ce, ZEND_STRL("deferred"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CreateQueryPrimaryIndexOptions", create_query_primary_index_options_methods);
-    pcbc_create_query_primary_index_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_create_query_primary_index_options_ce = zend_register_internal_class(&ce);
     zend_declare_property_null(pcbc_create_query_primary_index_options_ce, ZEND_STRL("index_name"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_create_query_primary_index_options_ce, ZEND_STRL("ignore_if_exists"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_create_query_primary_index_options_ce, ZEND_STRL("num_replicas"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_create_query_primary_index_options_ce, ZEND_STRL("deferred"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "DropQueryIndexOptions", drop_query_index_options_methods);
-    pcbc_drop_query_index_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_drop_query_index_options_ce = zend_register_internal_class(&ce);
     zend_declare_property_null(pcbc_drop_query_index_options_ce, ZEND_STRL("ignore_if_not_exists"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "DropQueryPrimaryIndexOptions", drop_query_primary_index_options_methods);
-    pcbc_drop_query_primary_index_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_drop_query_primary_index_options_ce = zend_register_internal_class(&ce);
     zend_declare_property_null(pcbc_drop_query_primary_index_options_ce, ZEND_STRL("index_name"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_drop_query_primary_index_options_ce, ZEND_STRL("ignore_if_not_exists"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "WatchQueryIndexesOptions", watch_query_indexes_options_methods);
-    pcbc_watch_query_indexes_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_watch_query_indexes_options_ce = zend_register_internal_class(&ce);
     zend_declare_property_null(pcbc_watch_query_indexes_options_ce, ZEND_STRL("watch_primary"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

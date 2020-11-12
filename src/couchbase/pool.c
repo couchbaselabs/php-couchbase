@@ -45,7 +45,7 @@ void ping_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPPING *rb);
 void diag_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPDIAG *rb);
 
 static lcb_STATUS pcbc_establish_connection(lcb_INSTANCE_TYPE type, lcb_INSTANCE **result, const char *connstr,
-                                            const char *username, const char *password TSRMLS_DC)
+                                            const char *username, const char *password)
 {
     lcb_LOGGER *logger = NULL;
     lcb_logger_create(&logger, &pcbc_logger);
@@ -112,7 +112,7 @@ static lcb_STATUS pcbc_establish_connection(lcb_INSTANCE_TYPE type, lcb_INSTANCE
 }
 
 static lcb_STATUS pcbc_normalize_connstr(lcb_INSTANCE_TYPE type, char *connstr, const char *bucketname,
-                                         char **normalized TSRMLS_DC)
+                                         char **normalized)
 {
     php_url *url;
     zend_bool need_free = 0;
@@ -238,7 +238,7 @@ static lcb_STATUS pcbc_normalize_connstr(lcb_INSTANCE_TYPE type, char *connstr, 
     return LCB_SUCCESS;
 }
 
-void pcbc_connection_addref(pcbc_connection_t *conn TSRMLS_DC)
+void pcbc_connection_addref(pcbc_connection_t *conn)
 {
     if (conn) {
         conn->refs++;
@@ -246,7 +246,7 @@ void pcbc_connection_addref(pcbc_connection_t *conn TSRMLS_DC)
     }
 }
 
-void pcbc_connection_delref(pcbc_connection_t *conn TSRMLS_DC)
+void pcbc_connection_delref(pcbc_connection_t *conn)
 {
     if (conn) {
         conn->refs--;
@@ -259,7 +259,7 @@ void pcbc_connection_delref(pcbc_connection_t *conn TSRMLS_DC)
     }
 }
 
-static zend_resource *pcbc_connection_lookup(smart_str *plist_key TSRMLS_DC)
+static zend_resource *pcbc_connection_lookup(smart_str *plist_key)
 {
     zend_resource *res;
     res = zend_hash_find_ptr(&EG(persistent_list), plist_key->s);
@@ -269,7 +269,7 @@ static zend_resource *pcbc_connection_lookup(smart_str *plist_key TSRMLS_DC)
     return NULL;
 }
 
-static lcb_STATUS pcbc_connection_cache(smart_str *plist_key, pcbc_connection_t *conn TSRMLS_DC)
+static lcb_STATUS pcbc_connection_cache(smart_str *plist_key, pcbc_connection_t *conn)
 {
     zend_resource res;
     res.type = pcbc_res_couchbase;
@@ -319,7 +319,7 @@ static void pcbc_destroy_connection_resource(zend_resource *res)
 }
 
 lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE type, const char *connstr,
-                               const char *bucketname, const char *username, const char *password TSRMLS_DC)
+                               const char *bucketname, const char *username, const char *password)
 {
     char *cstr = NULL;
     lcb_STATUS rv;
@@ -329,7 +329,7 @@ lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE typ
     zend_bool is_persistent = 1; // always persistent connections
     zend_resource *res = NULL;
 
-    rv = pcbc_normalize_connstr(type, (char *)connstr, bucketname, &cstr TSRMLS_CC);
+    rv = pcbc_normalize_connstr(type, (char *)connstr, bucketname, &cstr);
     if (rv != LCB_SUCCESS) {
         pcbc_log(LOGARGS(NULL, ERROR), "Failed to normalize connection string: %s", connstr);
         return rv;
@@ -340,7 +340,7 @@ lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE typ
     smart_str_appends(&plist_key, cstr);
     smart_str_appendc(&plist_key, '|');
     smart_str_appends(&plist_key, username);
-    res = pcbc_connection_lookup(&plist_key TSRMLS_CC);
+    res = pcbc_connection_lookup(&plist_key);
     if (res) {
         conn = res->ptr;
         if (conn) {
@@ -352,7 +352,7 @@ lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE typ
             } else {
                 efree(cstr);
                 smart_str_free(&plist_key);
-                pcbc_connection_addref(conn TSRMLS_CC);
+                pcbc_connection_addref(conn);
                 pcbc_log(LOGARGS(conn->lcb, DEBUG),
                          "cachehit: type=%d, connstr=%s, bucketname=%s, username=%s, lcb=%p, refs=%d", conn->type,
                          conn->connstr, conn->bucketname, conn->username, conn->lcb, conn->refs);
@@ -362,7 +362,7 @@ lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE typ
         }
     }
 
-    rv = pcbc_establish_connection(type, &lcb, cstr, username, password TSRMLS_CC);
+    rv = pcbc_establish_connection(type, &lcb, cstr, username, password);
     if (rv != LCB_SUCCESS) {
         efree(cstr);
         smart_str_free(&plist_key);
@@ -385,7 +385,7 @@ lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE typ
         }
     }
     conn->lcb = lcb;
-    rv = pcbc_connection_cache(&plist_key, conn TSRMLS_CC);
+    rv = pcbc_connection_cache(&plist_key, conn);
     smart_str_free(&plist_key);
     if (rv != LCB_SUCCESS) {
         return rv;

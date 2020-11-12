@@ -27,17 +27,17 @@ PHP_METHOD(NumericRangeSearchFacet, __construct)
     zend_long limit;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sl", &field, &limit);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sl", &field, &limit);
     if (rv == FAILURE) {
         return;
     }
 
     zval ranges;
     array_init(&ranges);
-    zend_update_property(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("ranges"), &ranges TSRMLS_CC);
+    zend_update_property(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("ranges"), &ranges);
     Z_DELREF(ranges);
-    zend_update_property_str(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("field"), field TSRMLS_CC);
-    zend_update_property_long(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("limit"), limit TSRMLS_CC);
+    zend_update_property_str(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("field"), field);
+    zend_update_property_long(pcbc_numeric_range_search_facet_ce, getThis(), ZEND_STRL("limit"), limit);
 }
 
 PHP_METHOD(NumericRangeSearchFacet, addRange)
@@ -47,7 +47,7 @@ PHP_METHOD(NumericRangeSearchFacet, addRange)
     double min = 0, max = 0;
     zend_bool min_null = 0, max_null = 0;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "Sd!d!", &name, &min, &min_null, &max, &max_null);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "Sd!d!", &name, &min, &min_null, &max, &max_null);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -130,14 +130,14 @@ PHP_MINIT_FUNCTION(NumericRangeSearchFacet)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "NumericRangeSearchFacet", numeric_search_facet_methods);
-    pcbc_numeric_range_search_facet_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_numeric_range_search_facet_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_numeric_range_search_facet_ce TSRMLS_CC, 2, pcbc_json_serializable_ce,
+    zend_class_implements(pcbc_numeric_range_search_facet_ce, 2, pcbc_json_serializable_ce,
                           pcbc_search_facet_ce);
 
-    zend_declare_property_null(pcbc_numeric_range_search_facet_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_numeric_range_search_facet_ce, ZEND_STRL("limit"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_numeric_range_search_facet_ce, ZEND_STRL("ranges"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_numeric_range_search_facet_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_numeric_range_search_facet_ce, ZEND_STRL("limit"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_numeric_range_search_facet_ce, ZEND_STRL("ranges"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

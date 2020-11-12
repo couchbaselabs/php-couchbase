@@ -31,14 +31,14 @@ PHP_METHOD(PhraseSearchQuery, __construct)
     int num_args = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "+", &args, &num_args);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "+", &args, &num_args);
     if (rv == FAILURE) {
         return;
     }
 
     zval container;
     array_init(&container);
-    zend_update_property(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("terms"), &container TSRMLS_CC);
+    zend_update_property(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("terms"), &container);
     Z_DELREF(container);
 
     if (num_args && args) {
@@ -61,12 +61,12 @@ PHP_METHOD(PhraseSearchQuery, field)
     zend_string *field = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &field);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &field);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("field"), field TSRMLS_CC);
+    zend_update_property_str(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -76,12 +76,12 @@ PHP_METHOD(PhraseSearchQuery, boost)
     double boost = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "d", &boost);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "d", &boost);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_long(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("boost"), boost TSRMLS_CC);
+    zend_update_property_long(pcbc_phrase_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -146,13 +146,13 @@ PHP_MINIT_FUNCTION(PhraseSearchQuery)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "PhraseSearchQuery", phrase_search_query_methods);
-    pcbc_phrase_search_query_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_phrase_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_phrase_search_query_ce TSRMLS_CC, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
+    zend_class_implements(pcbc_phrase_search_query_ce, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
 
-    zend_declare_property_null(pcbc_phrase_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_phrase_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_phrase_search_query_ce, ZEND_STRL("terms"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_phrase_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_phrase_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_phrase_search_query_ce, ZEND_STRL("terms"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

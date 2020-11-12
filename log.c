@@ -52,10 +52,9 @@ static void log_handler(const lcb_LOGGER *logger, uint64_t iid, const char *subs
     }
 
     char buf[PCBC_LOG_MSG_SIZE] = {0};
-    TSRMLS_FETCH();
 
     pcbc_log_formatter(buf, PCBC_LOG_MSG_SIZE, level_to_string(severity), subsys, srcline, iid, NULL, 1, fmt, ap);
-    php_log_err(buf TSRMLS_CC);
+    php_log_err(buf);
 }
 
 struct pcbc_logger_st pcbc_logger = {LCB_LOG_INFO, log_handler};
@@ -65,7 +64,6 @@ void pcbc_log(int severity, lcb_INSTANCE *instance, const char *subsys, const ch
 {
     va_list ap;
     char buf[PCBC_LOG_MSG_SIZE] = {0};
-    TSRMLS_FETCH();
 
     if (severity < pcbc_logger.minlevel) {
         return;
@@ -76,5 +74,5 @@ void pcbc_log(int severity, lcb_INSTANCE *instance, const char *subsys, const ch
                        ap);
     va_end(ap);
 
-    php_log_err(buf TSRMLS_CC);
+    php_log_err(buf);
 }

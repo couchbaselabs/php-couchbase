@@ -21,21 +21,21 @@ zend_class_entry *pcbc_default_exception_ce;
 zend_class_entry *pcbc_base_exception_ce;
 
 static void pcbc_exception_make(zval *return_value, zend_class_entry *exception_ce, long code,
-                                const char *message TSRMLS_DC)
+                                const char *message)
 {
     object_init_ex(return_value, pcbc_base_exception_ce);
 
     if (message) {
-        zend_update_property_string(pcbc_base_exception_ce, return_value, ZEND_STRL("message"), message TSRMLS_CC);
+        zend_update_property_string(pcbc_base_exception_ce, return_value, ZEND_STRL("message"), message);
     }
     if (code) {
-        zend_update_property_long(pcbc_base_exception_ce, return_value, ZEND_STRL("code"), code TSRMLS_CC);
+        zend_update_property_long(pcbc_base_exception_ce, return_value, ZEND_STRL("code"), code);
     }
 }
 
-void pcbc_exception_init(zval *return_value, long code, const char *message TSRMLS_DC)
+void pcbc_exception_init(zval *return_value, long code, const char *message)
 {
-    pcbc_exception_make(return_value, pcbc_base_exception_ce, code, message TSRMLS_CC);
+    pcbc_exception_make(return_value, pcbc_base_exception_ce, code, message);
 }
 
 zend_class_entry *pcbc_http_exception_ce;
@@ -91,113 +91,113 @@ static const zend_function_entry pcbc_base_exception_methods[] = {
 PHP_MINIT_FUNCTION(CouchbaseException)
 {
     zend_class_entry ce;
-    pcbc_default_exception_ce = (zend_class_entry *)zend_exception_get_default(TSRMLS_C);
+    pcbc_default_exception_ce = (zend_class_entry *)zend_exception_get_default();
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "BaseException", pcbc_base_exception_methods);
-    pcbc_base_exception_ce = zend_register_internal_class_ex(&ce, pcbc_default_exception_ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("ref"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("context"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_input"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_network"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_fatal"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_transient"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_data_operation"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_internal"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_plugin"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_server_under_load"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_server_generated"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_subdoc"), ZEND_ACC_PROTECTED TSRMLS_CC);
-    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_durability"), ZEND_ACC_PROTECTED TSRMLS_CC);
+    pcbc_base_exception_ce = zend_register_internal_class_ex(&ce, pcbc_default_exception_ce);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("ref"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("context"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_input"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_network"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_fatal"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_transient"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_data_operation"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_internal"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_plugin"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_server_under_load"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_server_generated"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_subdoc"), ZEND_ACC_PROTECTED);
+    zend_declare_property_null(pcbc_base_exception_ce, ZEND_STRL("is_durability"), ZEND_ACC_PROTECTED);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "HttpException", NULL);
-    pcbc_http_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_http_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryException", NULL);
-    pcbc_query_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce TSRMLS_CC);
+    pcbc_query_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryErrorException", NULL);
-    pcbc_query_error_exception_ce = zend_register_internal_class_ex(&ce, pcbc_query_exception_ce TSRMLS_CC);
+    pcbc_query_error_exception_ce = zend_register_internal_class_ex(&ce, pcbc_query_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryServiceException", NULL);
-    pcbc_query_service_exception_ce = zend_register_internal_class_ex(&ce, pcbc_query_exception_ce TSRMLS_CC);
+    pcbc_query_service_exception_ce = zend_register_internal_class_ex(&ce, pcbc_query_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchException", NULL);
-    pcbc_search_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce TSRMLS_CC);
+    pcbc_search_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "AnalyticsException", NULL);
-    pcbc_analytics_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce TSRMLS_CC);
+    pcbc_analytics_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ViewException", NULL);
-    pcbc_view_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce TSRMLS_CC);
+    pcbc_view_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "PartialViewException", NULL);
-    pcbc_partial_view_exception_ce = zend_register_internal_class_ex(&ce, pcbc_view_exception_ce TSRMLS_CC);
+    pcbc_partial_view_exception_ce = zend_register_internal_class_ex(&ce, pcbc_view_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "BindingsException", NULL);
-    pcbc_bindings_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_bindings_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "InvalidStateException", NULL);
-    pcbc_invalid_state_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_invalid_state_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "KeyValueException", NULL);
-    pcbc_key_value_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_key_value_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "DocumentNotFoundException", NULL);
-    pcbc_key_not_found_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce TSRMLS_CC);
+    pcbc_key_not_found_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce);
     zend_register_class_alias("Couchbase\\KeyNotFoundException", pcbc_key_not_found_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "KeyExistsException", NULL);
-    pcbc_key_exists_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce TSRMLS_CC);
+    pcbc_key_exists_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ValueTooBigException", NULL);
-    pcbc_value_too_big_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce TSRMLS_CC);
+    pcbc_value_too_big_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "KeyLockedException", NULL);
-    pcbc_key_locked_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce TSRMLS_CC);
+    pcbc_key_locked_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "TempFailException", NULL);
-    pcbc_temp_fail_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce TSRMLS_CC);
+    pcbc_temp_fail_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "PathNotFoundException", NULL);
-    pcbc_path_not_found_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce TSRMLS_CC);
+    pcbc_path_not_found_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "PathExistsException", NULL);
-    pcbc_path_exists_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce TSRMLS_CC);
+    pcbc_path_exists_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "InvalidRangeException", NULL);
-    pcbc_invalid_range_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce TSRMLS_CC);
+    pcbc_invalid_range_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "KeyDeletedException", NULL);
-    pcbc_key_deleted_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce TSRMLS_CC);
+    pcbc_key_deleted_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CasMismatchException", NULL);
-    pcbc_cas_mismatch_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce TSRMLS_CC);
+    pcbc_cas_mismatch_exception_ce = zend_register_internal_class_ex(&ce, pcbc_key_value_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "InvalidConfigurationException", NULL);
-    pcbc_invalid_configuration_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_invalid_configuration_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ServiceMissingException", NULL);
-    pcbc_service_missing_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_service_missing_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "NetworkException", NULL);
-    pcbc_network_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_network_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "TimeoutException", NULL);
-    pcbc_timeout_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_timeout_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "BucketMissingException", NULL);
-    pcbc_bucket_missing_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_bucket_missing_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ScopeMissingException", NULL);
-    pcbc_scope_missing_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_scope_missing_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CollectionMissingException", NULL);
-    pcbc_collection_missing_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_collection_missing_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "AuthenticationException", NULL);
-    pcbc_authentication_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_authentication_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "BadInputException", NULL);
-    pcbc_bad_input_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_bad_input_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "DurabilityException", NULL);
-    pcbc_durability_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_durability_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SubdocumentException", NULL);
-    pcbc_subdocument_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce TSRMLS_CC);
+    pcbc_subdocument_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     return SUCCESS;
 }
 
 void pcbc_create_lcb_exception(zval *return_value, long code, zend_string *context, zend_string *ref, int http_code,
-                               const char *http_msg, int opcode TSRMLS_DC)
+                               const char *http_msg, int opcode)
 {
     zend_class_entry *exc_ce = NULL;
 
@@ -374,15 +374,15 @@ void pcbc_create_lcb_exception(zval *return_value, long code, zend_string *conte
     }
     object_init_ex(return_value, exc_ce);
     zend_update_property_long(pcbc_default_exception_ce, return_value, ZEND_STRL("code"),
-                              http_code ? http_code : code TSRMLS_CC);
+                              http_code ? http_code : code);
     zend_update_property_string(pcbc_default_exception_ce, return_value, ZEND_STRL("message"),
-                                http_msg ? http_msg : lcb_strerror_short(code) TSRMLS_CC);
+                                http_msg ? http_msg : lcb_strerror_short(code));
 
     if (ref) {
-        zend_update_property_str(pcbc_base_exception_ce, return_value, ZEND_STRL("ref"), ref TSRMLS_CC);
+        zend_update_property_str(pcbc_base_exception_ce, return_value, ZEND_STRL("ref"), ref);
     }
     if (context) {
-        zend_update_property_str(pcbc_base_exception_ce, return_value, ZEND_STRL("context"), context TSRMLS_CC);
+        zend_update_property_str(pcbc_base_exception_ce, return_value, ZEND_STRL("context"), context);
     }
 }
 

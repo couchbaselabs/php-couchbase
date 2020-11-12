@@ -30,17 +30,17 @@ PHP_METHOD(DateRangeSearchFacet, __construct)
     zend_long limit;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Sl", &field, &limit);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sl", &field, &limit);
     if (rv == FAILURE) {
         return;
     }
 
     zval ranges;
     array_init(&ranges);
-    zend_update_property(pcbc_date_range_search_facet_ce, getThis(), ZEND_STRL("ranges"), &ranges TSRMLS_CC);
+    zend_update_property(pcbc_date_range_search_facet_ce, getThis(), ZEND_STRL("ranges"), &ranges);
     Z_DELREF(ranges);
-    zend_update_property_str(pcbc_date_range_search_facet_ce, getThis(), ZEND_STRL("field"), field TSRMLS_CC);
-    zend_update_property_long(pcbc_date_range_search_facet_ce, getThis(), ZEND_STRL("limit"), limit TSRMLS_CC);
+    zend_update_property_str(pcbc_date_range_search_facet_ce, getThis(), ZEND_STRL("field"), field);
+    zend_update_property_long(pcbc_date_range_search_facet_ce, getThis(), ZEND_STRL("limit"), limit);
 }
 
 PHP_METHOD(DateRangeSearchFacet, addRange)
@@ -49,7 +49,7 @@ PHP_METHOD(DateRangeSearchFacet, addRange)
     zend_string *name = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "Szz", &name, &start, &end);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Szz", &name, &start, &end);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -66,7 +66,7 @@ PHP_METHOD(DateRangeSearchFacet, addRange)
             add_assoc_stringl(&range, "start", Z_STRVAL_P(start), Z_STRLEN_P(start));
             break;
         case IS_LONG:
-            date_str = php_format_date(ZEND_STRL(PCBC_DATE_FORMAT_RFC3339), Z_LVAL_P(start), 1 TSRMLS_CC);
+            date_str = php_format_date(ZEND_STRL(PCBC_DATE_FORMAT_RFC3339), Z_LVAL_P(start), 1);
             add_assoc_str(&range, "start", date_str);
             break;
         case IS_NULL:
@@ -83,7 +83,7 @@ PHP_METHOD(DateRangeSearchFacet, addRange)
             add_assoc_stringl(&range, "end", Z_STRVAL_P(end), Z_STRLEN_P(end));
             break;
         case IS_LONG:
-            date_str = php_format_date(ZEND_STRL(PCBC_DATE_FORMAT_RFC3339), Z_LVAL_P(end), 1 TSRMLS_CC);
+            date_str = php_format_date(ZEND_STRL(PCBC_DATE_FORMAT_RFC3339), Z_LVAL_P(end), 1);
             add_assoc_str(&range, "end", date_str);
             break;
         case IS_NULL:
@@ -159,14 +159,14 @@ PHP_MINIT_FUNCTION(DateRangeSearchFacet)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "DateRangeSearchFacet", date_search_facet_methods);
-    pcbc_date_range_search_facet_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_date_range_search_facet_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_date_range_search_facet_ce TSRMLS_CC, 2, pcbc_json_serializable_ce,
+    zend_class_implements(pcbc_date_range_search_facet_ce, 2, pcbc_json_serializable_ce,
                           pcbc_search_facet_ce);
 
-    zend_declare_property_null(pcbc_date_range_search_facet_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_date_range_search_facet_ce, ZEND_STRL("limit"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_date_range_search_facet_ce, ZEND_STRL("ranges"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_date_range_search_facet_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_date_range_search_facet_ce, ZEND_STRL("limit"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_date_range_search_facet_ce, ZEND_STRL("ranges"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

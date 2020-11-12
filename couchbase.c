@@ -362,7 +362,7 @@ PHP_MINIT_FUNCTION(couchbase)
     {                                                                                                                  \
         ap_php_snprintf(buf, sizeof(buf), "COUCHBASE_%s", #name + 4);                                                  \
         zend_register_long_constant(buf, PCBC_CONST_LENGTH(buf), value, CONST_CS | CONST_PERSISTENT,                   \
-                                    module_number TSRMLS_CC);                                                          \
+                                    module_number);                                                          \
     }
 
         LCB_XERROR(X)
@@ -439,7 +439,7 @@ PHP_RINIT_FUNCTION(couchbase)
 }
 
 static void basic_encoder_v1(zval *value, int sertype, int cmprtype, long cmprthresh, double cmprfactor,
-                             zval *return_value TSRMLS_DC)
+                             zval *return_value)
 {
     zval res;
     zval flg;
@@ -515,7 +515,7 @@ static void basic_encoder_v1(zval *value, int sertype, int cmprtype, long cmprth
                 smart_str buf = {0};
 
                 PHP_VAR_SERIALIZE_INIT(var_hash);
-                php_var_serialize(&buf, value, &var_hash TSRMLS_CC);
+                php_var_serialize(&buf, value, &var_hash);
                 PHP_VAR_SERIALIZE_DESTROY(var_hash);
 
                 if (EG(exception)) {
@@ -625,7 +625,7 @@ static void basic_encoder_v1(zval *value, int sertype, int cmprtype, long cmprth
 }
 
 static void basic_decoder_v1(char *bytes, size_t bytes_len, unsigned long flags, unsigned long datatype,
-                             zend_bool jsonassoc, zval *return_value TSRMLS_DC)
+                             zend_bool jsonassoc, zval *return_value)
 {
     zval res;
     int rv;
@@ -731,7 +731,7 @@ static void basic_decoder_v1(char *bytes, size_t bytes_len, unsigned long flags,
             php_unserialize_data_t var_hash;
             const unsigned char *p = (const unsigned char *)bytes;
             PHP_VAR_UNSERIALIZE_INIT(var_hash);
-            rv = php_var_unserialize(&res, &p, p + bytes_len, &var_hash TSRMLS_CC);
+            rv = php_var_unserialize(&res, &p, p + bytes_len, &var_hash);
             if (!rv) {
                 if (!EG(exception)) {
                     pcbc_log(LOGARGS(WARN), "Failed to unserialize value at offset %ld of %d bytes",
@@ -784,7 +784,7 @@ PHP_FUNCTION(basicEncoderV1)
     long cmprthresh = DEFAULT_COUCHBASE_CMPRTHRESH;
     double cmprfactor = DEFAULT_COUCHBASE_CMPRFACTOR;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z|a", &value, &options);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "z|a", &value, &options);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -818,7 +818,7 @@ PHP_FUNCTION(basicEncoderV1)
         }
     }
 
-    basic_encoder_v1(value, sertype, cmprtype, cmprthresh, cmprfactor, return_value TSRMLS_CC);
+    basic_encoder_v1(value, sertype, cmprtype, cmprthresh, cmprfactor, return_value);
 }
 
 /* {{{ proto \Couchbase\couchbase_basic_decoder_v1(string $bytes, int $flags, int $datatype, array $options =
@@ -834,7 +834,7 @@ PHP_FUNCTION(basicDecoderV1)
     zend_bool json_array = 0;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll|a", &bytes, &bytes_len, &flags, &datatype, &options);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "sll|a", &bytes, &bytes_len, &flags, &datatype, &options);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -847,13 +847,13 @@ PHP_FUNCTION(basicDecoderV1)
         json_array = tmp && Z_TYPE_P(tmp) == IS_TRUE;
     }
 
-    basic_decoder_v1(bytes, (int)bytes_len, flags, datatype, json_array, return_value TSRMLS_CC);
+    basic_decoder_v1(bytes, (int)bytes_len, flags, datatype, json_array, return_value);
 }
 
 PHP_FUNCTION(passthruEncoder)
 {
     zval *value;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z", &value) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "z", &value) == FAILURE) {
         RETURN_NULL();
     }
 
@@ -867,7 +867,7 @@ PHP_FUNCTION(passthruEncoder)
 PHP_FUNCTION(passthruDecoder)
 {
     zval *value, *flags, *datatype;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "zzz", &value, &flags, &datatype) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "zzz", &value, &flags, &datatype) == FAILURE) {
         RETURN_NULL();
     }
 
@@ -885,13 +885,13 @@ PHP_FUNCTION(defaultEncoder)
     zval *value = NULL;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z|a", &value);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "z|a", &value);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
     basic_encoder_v1(value, PCBCG(enc_format_i), PCBCG(enc_cmpr_i), PCBCG(enc_cmpr_threshold), PCBCG(enc_cmpr_factor),
-                     return_value TSRMLS_CC);
+                     return_value);
 }
 
 /**
@@ -907,12 +907,12 @@ PHP_FUNCTION(defaultDecoder)
     unsigned long flags = 0, datatype = 0;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll|a", &bytes, &bytes_len, &flags, &datatype);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "sll|a", &bytes, &bytes_len, &flags, &datatype);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    basic_decoder_v1(bytes, (int)bytes_len, flags, datatype, PCBCG(dec_json_array), return_value TSRMLS_CC);
+    basic_decoder_v1(bytes, (int)bytes_len, flags, datatype, PCBCG(dec_json_array), return_value);
 }
 
 PHP_FUNCTION(zlibCompress)
@@ -922,7 +922,7 @@ PHP_FUNCTION(zlibCompress)
     void *dataIn, *dataOut;
     unsigned long dataSize, dataOutSize;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z", &zdata) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "z", &zdata) == FAILURE) {
         RETURN_NULL();
     }
 
@@ -937,7 +937,7 @@ PHP_FUNCTION(zlibCompress)
     efree(dataOut);
 #else
     zend_throw_exception(NULL, "The zlib library was not available when the couchbase extension was built.",
-                         0 TSRMLS_CC);
+                         0);
 #endif
 }
 
@@ -948,7 +948,7 @@ PHP_FUNCTION(zlibDecompress)
     void *dataIn, *dataOut;
     unsigned long dataSize, dataOutSize;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z", &zdata) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "z", &zdata) == FAILURE) {
         RETURN_NULL();
     }
 
@@ -962,7 +962,7 @@ PHP_FUNCTION(zlibDecompress)
     efree(dataOut);
 #else
     zend_throw_exception(NULL, "The zlib library was not available when the couchbase extension was built.",
-                         0 TSRMLS_CC);
+                         0);
 #endif
 }
 
@@ -972,7 +972,7 @@ PHP_FUNCTION(fastlzCompress)
     void *dataIn, *dataOut;
     unsigned long dataSize, dataOutSize;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z", &zdata) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "z", &zdata) == FAILURE) {
         RETURN_NULL();
     }
 
@@ -994,7 +994,7 @@ PHP_FUNCTION(fastlzDecompress)
     void *dataIn, *dataOut;
     unsigned long dataSize, dataOutSize;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z", &zdata) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "z", &zdata) == FAILURE) {
         RETURN_NULL();
     }
 

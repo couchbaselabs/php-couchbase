@@ -29,7 +29,6 @@ typedef struct {
 void http_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPHTTP *resp)
 {
     opcookie_http_res *result = ecalloc(1, sizeof(opcookie_http_res));
-    TSRMLS_FETCH();
 
     result->header.err = lcb_resphttp_status(resp);
     if (result->header.err != LCB_SUCCESS) {
@@ -62,7 +61,7 @@ void http_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPHTTP *resp)
 }
 
 static lcb_STATUS proc_http_results(zval *return_value, opcookie *cookie, void *ctx,
-                                    void(httpcb)(void *ctx, zval *, zval *) TSRMLS_DC)
+                                    void(httpcb)(void *ctx, zval *, zval *))
 {
     opcookie_http_res *res;
     lcb_STATUS err = LCB_SUCCESS;
@@ -119,10 +118,10 @@ static lcb_STATUS proc_http_results(zval *return_value, opcookie *cookie, void *
                         }
                         object_init_ex(return_value, pcbc_http_exception_ce);
                         zend_update_property_str(pcbc_default_exception_ce, return_value, ZEND_STRL("message"),
-                                                 buf.s TSRMLS_CC);
+                                                 buf.s);
                         if (first_query_code) {
                             zend_update_property_long(pcbc_default_exception_ce, return_value, ZEND_STRL("code"),
-                                                      first_query_code TSRMLS_CC);
+                                                      first_query_code);
                         }
                         smart_str_free(&buf);
                         err = LCB_ERR_HTTP;
@@ -134,7 +133,7 @@ static lcb_STATUS proc_http_results(zval *return_value, opcookie *cookie, void *
                                 mval = zend_symtable_str_find(marr, ZEND_STRL("error"));
                                 if (mval && Z_TYPE_P(mval) == IS_STRING) {
                                     zend_update_property(pcbc_default_exception_ce, return_value, ZEND_STRL("message"),
-                                                         mval TSRMLS_CC);
+                                                         mval);
                                 }
                                 err = LCB_ERR_HTTP;
                             }
@@ -165,7 +164,7 @@ static lcb_STATUS proc_http_results(zval *return_value, opcookie *cookie, void *
 }
 
 void pcbc_http_request(zval *return_value, lcb_INSTANCE *conn, lcb_CMDHTTP *cmd, int json_response, void *cbctx,
-                       void(httpcb)(void *, zval *, zval *), int(errorcb)(void *, zval *) TSRMLS_DC)
+                       void(httpcb)(void *, zval *, zval *), int(errorcb)(void *, zval *))
 {
     lcb_STATUS err;
     opcookie *cookie;
@@ -176,17 +175,17 @@ void pcbc_http_request(zval *return_value, lcb_INSTANCE *conn, lcb_CMDHTTP *cmd,
     lcb_cmdhttp_destroy(cmd);
     if (err == LCB_SUCCESS) {
         lcb_wait(conn, LCB_WAIT_DEFAULT);
-        err = proc_http_results(return_value, cookie, cbctx, httpcb TSRMLS_CC);
+        err = proc_http_results(return_value, cookie, cbctx, httpcb);
     }
     opcookie_destroy(cookie);
 
     if (Z_TYPE_P(return_value) == IS_OBJECT &&
-        instanceof_function(Z_OBJCE_P(return_value), pcbc_default_exception_ce TSRMLS_CC)) {
+        instanceof_function(Z_OBJCE_P(return_value), pcbc_default_exception_ce)) {
         if (errorcb && errorcb(cbctx, return_value) == 0) {
             zval_dtor(return_value);
             RETURN_NULL();
         }
-        zend_throw_exception_object(return_value TSRMLS_CC);
+        zend_throw_exception_object(return_value);
         RETURN_NULL();
     } else if (err != LCB_SUCCESS) {
         throw_lcb_exception(err, NULL);

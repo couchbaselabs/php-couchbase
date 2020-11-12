@@ -49,12 +49,11 @@ static const char *pcbc_crypto_get_key_id(struct lcbcrypto_PROVIDER *provider)
     int rv;
     zval fname;
     zval retval;
-    TSRMLS_FETCH();
 
     ZVAL_UNDEF(&fname);
     PCBC_STRING(fname, "getKeyId");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 0, NULL, 1, NULL TSRMLS_CC);
+    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 0, NULL, 1, NULL);
     if (rv == FAILURE || EG(exception) || Z_ISUNDEF(retval)) {
         return NULL;
     }
@@ -71,12 +70,11 @@ static lcb_STATUS pcbc_crypto_generate_iv(struct lcbcrypto_PROVIDER *provider, u
     int rv;
     zval fname;
     zval retval;
-    TSRMLS_FETCH();
 
     ZVAL_UNDEF(&fname);
     PCBC_STRING(fname, "generateIV");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 0, NULL, 1, NULL TSRMLS_CC);
+    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 0, NULL, 1, NULL);
     if (rv == FAILURE || EG(exception) || Z_ISUNDEF(retval)) {
         return LCB_ERR_INVALID_ARGUMENT;
     }
@@ -98,7 +96,6 @@ static lcb_STATUS pcbc_crypto_sign(struct lcbcrypto_PROVIDER *provider, const lc
     zval param;
     zval fname;
     zval retval;
-    TSRMLS_FETCH();
 
     ZVAL_UNDEF(&fname);
     ZVAL_UNDEF(&param);
@@ -109,7 +106,7 @@ static lcb_STATUS pcbc_crypto_sign(struct lcbcrypto_PROVIDER *provider, const lc
     }
     PCBC_STRING(fname, "sign");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 1, &param, 1, NULL TSRMLS_CC);
+    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 1, &param, 1, NULL);
 
     zval_ptr_dtor(&param);
     if (rv == FAILURE || EG(exception) || Z_ISUNDEF(retval)) {
@@ -134,7 +131,6 @@ static lcb_STATUS pcbc_crypto_verify_signature(struct lcbcrypto_PROVIDER *provid
     zval params[2];
     zval fname;
     zval retval;
-    TSRMLS_FETCH();
 
     ZVAL_UNDEF(&fname);
     ZVAL_UNDEF(&params[0]);
@@ -147,7 +143,7 @@ static lcb_STATUS pcbc_crypto_verify_signature(struct lcbcrypto_PROVIDER *provid
     PCBC_STRINGL(params[1], sig, sig_len);
     PCBC_STRING(fname, "verifySignature");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 2, params, 1, NULL TSRMLS_CC);
+    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 2, params, 1, NULL);
 
     zval_ptr_dtor(&params[0]);
     zval_ptr_dtor(&params[1]);
@@ -172,7 +168,6 @@ static lcb_STATUS pcbc_crypto_encrypt(struct lcbcrypto_PROVIDER *provider, const
     zval params[2];
     zval fname;
     zval retval;
-    TSRMLS_FETCH();
 
     ZVAL_UNDEF(&fname);
     ZVAL_UNDEF(&params[0]);
@@ -186,7 +181,7 @@ static lcb_STATUS pcbc_crypto_encrypt(struct lcbcrypto_PROVIDER *provider, const
     }
     PCBC_STRING(fname, "encrypt");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 2, params, 1, NULL TSRMLS_CC);
+    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 2, params, 1, NULL);
 
     zval_ptr_dtor(&params[0]);
     zval_ptr_dtor(&params[1]);
@@ -211,7 +206,6 @@ static lcb_STATUS pcbc_crypto_decrypt(struct lcbcrypto_PROVIDER *provider, const
     zval params[2];
     zval fname;
     zval retval;
-    TSRMLS_FETCH();
 
     ZVAL_UNDEF(&fname);
     ZVAL_UNDEF(&params[0]);
@@ -225,7 +219,7 @@ static lcb_STATUS pcbc_crypto_decrypt(struct lcbcrypto_PROVIDER *provider, const
     }
     PCBC_STRING(fname, "decrypt");
 
-    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 2, params, 1, NULL TSRMLS_CC);
+    rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 2, params, 1, NULL);
 
     zval_ptr_dtor(&params[0]);
     zval_ptr_dtor(&params[1]);
@@ -242,7 +236,7 @@ static lcb_STATUS pcbc_crypto_decrypt(struct lcbcrypto_PROVIDER *provider, const
     return LCB_ERR_INVALID_ARGUMENT;
 }
 
-void pcbc_crypto_register(pcbc_bucket_t *obj, const char *name, int name_len, zval *zprovider TSRMLS_DC)
+void pcbc_crypto_register(pcbc_bucket_t *obj, const char *name, int name_len, zval *zprovider)
 {
     lcbcrypto_PROVIDER *provider = ecalloc(1, sizeof(lcbcrypto_PROVIDER));
 
@@ -263,14 +257,14 @@ void pcbc_crypto_register(pcbc_bucket_t *obj, const char *name, int name_len, zv
         ZVAL_UNDEF(&fname);
 
         PCBC_STRING(fname, "generateIV");
-        rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 0, NULL, 1, NULL TSRMLS_CC);
+        rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 0, NULL, 1, NULL);
         if (!(rv == FAILURE || EG(exception) || Z_ISUNDEF(retval) || Z_TYPE_P(&retval) == IS_NULL)) {
             provider->v.v1.generate_iv = pcbc_crypto_generate_iv;
         }
 
         PCBC_STRING(fname, "sign");
         array_init_size(&param, 0);
-        rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 1, &param, 1, NULL TSRMLS_CC);
+        rv = call_user_function_ex(EG(function_table), zprovider, &fname, &retval, 1, &param, 1, NULL);
         if (!(rv == FAILURE || EG(exception) || Z_ISUNDEF(retval) || Z_TYPE_P(&retval) == IS_NULL)) {
             provider->v.v1.sign = pcbc_crypto_sign;
             provider->v.v1.verify_signature = pcbc_crypto_verify_signature;
@@ -286,13 +280,13 @@ void pcbc_crypto_register(pcbc_bucket_t *obj, const char *name, int name_len, zv
     lcbcrypto_register(obj->conn->lcb, name, provider);
 }
 
-void pcbc_crypto_unregister(pcbc_bucket_t *obj, const char *name, int name_len TSRMLS_DC)
+void pcbc_crypto_unregister(pcbc_bucket_t *obj, const char *name, int name_len)
 {
     lcbcrypto_unregister(obj->conn->lcb, name);
 }
 
 void pcbc_crypto_encrypt_fields(pcbc_bucket_t *obj, zval *document, zval *options, const char *prefix,
-                                zval *return_value TSRMLS_DC)
+                                zval *return_value)
 {
     smart_str buf = {0};
     int last_error;
@@ -362,7 +356,7 @@ void pcbc_crypto_encrypt_fields(pcbc_bucket_t *obj, zval *document, zval *option
 }
 
 void pcbc_crypto_decrypt_fields(pcbc_bucket_t *obj, zval *document, zval *options, const char *prefix,
-                                zval *return_value TSRMLS_DC)
+                                zval *return_value)
 {
     smart_str buf = {0};
     int last_error;
@@ -517,11 +511,11 @@ PHP_MINIT_FUNCTION(CryptoProvider)
 {
     zend_class_entry ce;
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CryptoProvider", crypto_provider_methods);
-    pcbc_crypto_provider_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_crypto_provider_ce = zend_register_internal_class(&ce);
 
     zend_declare_class_constant_long(pcbc_crypto_provider_ce, ZEND_STRL("KEY_TYPE_ENCRYPT"),
-                                     LCBCRYPTO_KEY_ENCRYPT TSRMLS_CC);
+                                     LCBCRYPTO_KEY_ENCRYPT);
     zend_declare_class_constant_long(pcbc_crypto_provider_ce, ZEND_STRL("KEY_TYPE_DECRYPT"),
-                                     LCBCRYPTO_KEY_DECRYPT TSRMLS_CC);
+                                     LCBCRYPTO_KEY_DECRYPT);
     return SUCCESS;
 }

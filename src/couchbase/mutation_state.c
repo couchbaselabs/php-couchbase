@@ -28,7 +28,7 @@ PHP_METHOD(MutationState, add)
     zval *source;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "O", &source, pcbc_mutation_result_ce);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &source, pcbc_mutation_result_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -36,7 +36,7 @@ PHP_METHOD(MutationState, add)
     zval fname;
     zval retval;
     PCBC_STRING(fname, "mutationToken");
-    rv = call_user_function_ex(EG(function_table), source, &fname, &retval, 0, NULL, 1, NULL TSRMLS_CC);
+    rv = call_user_function_ex(EG(function_table), source, &fname, &retval, 0, NULL, 1, NULL);
     if (rv == FAILURE || EG(exception) || Z_ISUNDEF(retval)) {
         RETURN_NULL();
     }
@@ -46,7 +46,7 @@ PHP_METHOD(MutationState, add)
     if (Z_TYPE_P(tokens) == IS_NULL) {
         array_init(&rv1);
         tokens = &rv1;
-        zend_update_property(pcbc_mutation_state_ce, getThis(), ZEND_STRL("tokens"), tokens TSRMLS_CC);
+        zend_update_property(pcbc_mutation_state_ce, getThis(), ZEND_STRL("tokens"), tokens);
         Z_DELREF_P(tokens);
     }
     add_next_index_zval(tokens, &retval);
@@ -54,7 +54,7 @@ PHP_METHOD(MutationState, add)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
-void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vectors TSRMLS_DC)
+void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vectors)
 {
     array_init(scan_vectors);
 
@@ -68,7 +68,7 @@ void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vector
         {
             zval bucket;
             PCBC_STRING(fname, "bucketName");
-            call_user_function_ex(EG(function_table), token, &fname, &bucket, 0, NULL, 1, NULL TSRMLS_CC);
+            call_user_function_ex(EG(function_table), token, &fname, &bucket, 0, NULL, 1, NULL);
 
             zval new_group;
             zval *bucket_group = zend_symtable_str_find(Z_ARRVAL_P(scan_vectors), Z_STRVAL(bucket), Z_STRLEN(bucket));
@@ -85,7 +85,7 @@ void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vector
 
             zval seqno;
             PCBC_STRING(fname, "sequenceNumber");
-            call_user_function_ex(EG(function_table), token, &fname, &seqno, 0, NULL, 1, NULL TSRMLS_CC);
+            call_user_function_ex(EG(function_table), token, &fname, &seqno, 0, NULL, 1, NULL);
             decoded = php_base64_decode_str(Z_STR(seqno));
             if (decoded) {
                 if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
@@ -100,7 +100,7 @@ void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vector
 
             zval vb_uuid;
             PCBC_STRING(fname, "partitionUuid");
-            call_user_function_ex(EG(function_table), token, &fname, &vb_uuid, 0, NULL, 1, NULL TSRMLS_CC);
+            call_user_function_ex(EG(function_table), token, &fname, &vb_uuid, 0, NULL, 1, NULL);
             decoded = php_base64_decode_str(Z_STR(vb_uuid));
             if (decoded) {
                 if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
@@ -114,16 +114,16 @@ void pcbc_mutation_state_export_for_n1ql(zval *mutation_state, zval *scan_vector
 
             zval vb_id;
             PCBC_STRING(fname, "partitionId");
-            call_user_function_ex(EG(function_table), token, &fname, &vb_id, 0, NULL, 1, NULL TSRMLS_CC);
+            call_user_function_ex(EG(function_table), token, &fname, &vb_id, 0, NULL, 1, NULL);
 
             snprintf(buf, 21, "%d", (int)Z_LVAL(vb_id));
-            zend_hash_str_update(Z_ARRVAL_P(bucket_group), buf, strlen(buf), &pair TSRMLS_CC);
+            zend_hash_str_update(Z_ARRVAL_P(bucket_group), buf, strlen(buf), &pair);
         }
         ZEND_HASH_FOREACH_END();
     }
 }
 
-void pcbc_mutation_state_export_for_search(zval *mutation_state, zval *scan_vectors TSRMLS_DC)
+void pcbc_mutation_state_export_for_search(zval *mutation_state, zval *scan_vectors)
 {
     array_init(scan_vectors);
 
@@ -141,11 +141,11 @@ void pcbc_mutation_state_export_for_search(zval *mutation_state, zval *scan_vect
 
             zval vb_id;
             PCBC_STRING(fname, "partitionId");
-            call_user_function_ex(EG(function_table), token, &fname, &vb_id, 0, NULL, 1, NULL TSRMLS_CC);
+            call_user_function_ex(EG(function_table), token, &fname, &vb_id, 0, NULL, 1, NULL);
 
             zval vb_uuid;
             PCBC_STRING(fname, "partitionUuid");
-            call_user_function_ex(EG(function_table), token, &fname, &vb_uuid, 0, NULL, 1, NULL TSRMLS_CC);
+            call_user_function_ex(EG(function_table), token, &fname, &vb_uuid, 0, NULL, 1, NULL);
             decoded = php_base64_decode_str(Z_STR(vb_uuid));
             if (decoded) {
                 if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
@@ -158,7 +158,7 @@ void pcbc_mutation_state_export_for_search(zval *mutation_state, zval *scan_vect
 
             zval seqno;
             PCBC_STRING(fname, "sequenceNumber");
-            call_user_function_ex(EG(function_table), token, &fname, &seqno, 0, NULL, 1, NULL TSRMLS_CC);
+            call_user_function_ex(EG(function_table), token, &fname, &seqno, 0, NULL, 1, NULL);
             decoded = php_base64_decode_str(Z_STR(seqno));
             if (decoded) {
                 if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
@@ -195,8 +195,8 @@ PHP_MINIT_FUNCTION(MutationState)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "MutationState", mutation_state_methods);
-    pcbc_mutation_state_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_mutation_state_ce, ZEND_STRL("tokens"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_mutation_state_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_mutation_state_ce, ZEND_STRL("tokens"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

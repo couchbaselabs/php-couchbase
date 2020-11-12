@@ -44,20 +44,20 @@ zend_function_entry cert_authenticator_methods[] = {
 
 zend_object_handlers cert_authenticator_handlers;
 
-static void cert_authenticator_free_object(zend_object *object TSRMLS_DC)
+static void cert_authenticator_free_object(zend_object *object)
 {
     pcbc_cert_authenticator_t *obj = Z_CERT_AUTHENTICATOR_OBJ(object);
 
-    zend_object_std_dtor(&obj->std TSRMLS_CC);
+    zend_object_std_dtor(&obj->std);
 }
 
-static zend_object *authenticator_create_object(zend_class_entry *class_type TSRMLS_DC)
+static zend_object *authenticator_create_object(zend_class_entry *class_type)
 {
     pcbc_cert_authenticator_t *obj = NULL;
 
     obj = PCBC_ALLOC_OBJECT_T(pcbc_cert_authenticator_t, class_type);
 
-    zend_object_std_init(&obj->std, class_type TSRMLS_CC);
+    zend_object_std_init(&obj->std, class_type);
     object_properties_init(&obj->std, class_type);
 
     obj->std.handlers = &cert_authenticator_handlers;
@@ -69,11 +69,11 @@ PHP_MINIT_FUNCTION(CertAuthenticator)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CertAuthenticator", cert_authenticator_methods);
-    pcbc_cert_authenticator_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_cert_authenticator_ce = zend_register_internal_class(&ce);
     pcbc_cert_authenticator_ce->create_object = authenticator_create_object;
     PCBC_CE_DISABLE_SERIALIZATION(pcbc_cert_authenticator_ce);
 
-    zend_class_implements(pcbc_cert_authenticator_ce TSRMLS_CC, 1, pcbc_authenticator_ce);
+    zend_class_implements(pcbc_cert_authenticator_ce, 1, pcbc_authenticator_ce);
 
     memcpy(&cert_authenticator_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     cert_authenticator_handlers.free_obj = cert_authenticator_free_object;

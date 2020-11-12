@@ -70,25 +70,25 @@ PHP_MINIT_FUNCTION(LookupInSpec)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "LookupInSpec", pcbc_lookup_in_spec_methods);
-    pcbc_lookup_in_spec_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_lookup_in_spec_ce = zend_register_internal_interface(&ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "LookupGetSpec", pcbc_lookup_get_spec_methods);
-    pcbc_lookup_get_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_lookup_get_spec_ce TSRMLS_CC, 1, pcbc_lookup_in_spec_ce);
-    zend_declare_property_null(pcbc_lookup_get_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_get_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_lookup_get_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_lookup_get_spec_ce, 1, pcbc_lookup_in_spec_ce);
+    zend_declare_property_null(pcbc_lookup_get_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_lookup_get_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "LookupCountSpec", pcbc_lookup_count_spec_methods);
-    pcbc_lookup_count_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_lookup_count_spec_ce TSRMLS_CC, 1, pcbc_lookup_in_spec_ce);
-    zend_declare_property_null(pcbc_lookup_count_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_count_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_lookup_count_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_lookup_count_spec_ce, 1, pcbc_lookup_in_spec_ce);
+    zend_declare_property_null(pcbc_lookup_count_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_lookup_count_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "LookupExistsSpec", pcbc_lookup_exists_spec_methods);
-    pcbc_lookup_exists_spec_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_class_implements(pcbc_lookup_exists_spec_ce TSRMLS_CC, 1, pcbc_lookup_in_spec_ce);
-    zend_declare_property_null(pcbc_lookup_exists_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_lookup_exists_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_lookup_exists_spec_ce = zend_register_internal_class(&ce);
+    zend_class_implements(pcbc_lookup_exists_spec_ce, 1, pcbc_lookup_in_spec_ce);
+    zend_declare_property_null(pcbc_lookup_exists_spec_ce, ZEND_STRL("path"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_lookup_exists_spec_ce, ZEND_STRL("is_xattr"), ZEND_ACC_PRIVATE);
     return SUCCESS;
 }
 
@@ -97,12 +97,12 @@ PHP_METHOD(LookupGetSpec, __construct)
     zend_string *path;
     zend_bool is_xattr = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|b", &path, &is_xattr);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|b", &path, &is_xattr);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_lookup_get_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_bool(pcbc_lookup_get_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
+    zend_update_property_str(pcbc_lookup_get_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_bool(pcbc_lookup_get_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
 }
 
 PHP_METHOD(LookupCountSpec, __construct)
@@ -110,12 +110,12 @@ PHP_METHOD(LookupCountSpec, __construct)
     zend_string *path;
     zend_bool is_xattr = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|b", &path, &is_xattr);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|b", &path, &is_xattr);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_lookup_count_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_bool(pcbc_lookup_count_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
+    zend_update_property_str(pcbc_lookup_count_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_bool(pcbc_lookup_count_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
 }
 
 PHP_METHOD(LookupExistsSpec, __construct)
@@ -123,12 +123,12 @@ PHP_METHOD(LookupExistsSpec, __construct)
     zend_string *path;
     zend_bool is_xattr = 0;
 
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S|b", &path, &is_xattr);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|b", &path, &is_xattr);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_lookup_exists_spec_ce, getThis(), ZEND_STRL("path"), path TSRMLS_CC);
-    zend_update_property_bool(pcbc_lookup_exists_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr TSRMLS_CC);
+    zend_update_property_str(pcbc_lookup_exists_spec_ce, getThis(), ZEND_STRL("path"), path);
+    zend_update_property_bool(pcbc_lookup_exists_spec_ce, getThis(), ZEND_STRL("is_xattr"), is_xattr);
 }
 
 /*

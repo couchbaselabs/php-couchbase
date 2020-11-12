@@ -24,7 +24,7 @@ PHP_MINIT_FUNCTION(SearchFacet)
 {
     zend_class_entry ce;
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchFacet", search_facet_interface);
-    pcbc_search_facet_ce = zend_register_internal_interface(&ce TSRMLS_CC);
+    pcbc_search_facet_ce = zend_register_internal_interface(&ce);
 
     return SUCCESS;
 }

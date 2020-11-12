@@ -30,16 +30,16 @@ PHP_METHOD(GeoDistanceSearchQuery, __construct)
     double lon, lat;
     zend_string *distance = NULL;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "dd|S", &lon, &lat, &distance);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "dd|S", &lon, &lat, &distance);
     if (rv == FAILURE) {
         return;
     }
 
-    zend_update_property_double(pcbc_geo_distance_search_query_ce, getThis(), ZEND_STRL("longitude"), lon TSRMLS_CC);
-    zend_update_property_double(pcbc_geo_distance_search_query_ce, getThis(), ZEND_STRL("latitude"), lat TSRMLS_CC);
+    zend_update_property_double(pcbc_geo_distance_search_query_ce, getThis(), ZEND_STRL("longitude"), lon);
+    zend_update_property_double(pcbc_geo_distance_search_query_ce, getThis(), ZEND_STRL("latitude"), lat);
     if (distance) {
         zend_update_property_str(pcbc_geo_distance_search_query_ce, getThis(), ZEND_STRL("distance"),
-                                 distance TSRMLS_CC);
+                                 distance);
     }
 }
 
@@ -48,12 +48,12 @@ PHP_METHOD(GeoDistanceSearchQuery, field)
     zend_string *field = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &field);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &field);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_str(pcbc_geo_distance_search_query_ce, getThis(), ZEND_STRL("field"), field TSRMLS_CC);
+    zend_update_property_str(pcbc_geo_distance_search_query_ce, getThis(), ZEND_STRL("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -63,12 +63,12 @@ PHP_METHOD(GeoDistanceSearchQuery, boost)
     double boost = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "d", &boost);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "d", &boost);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_geo_distance_search_query_ce, getThis(), ZEND_STRL("boost"), boost TSRMLS_CC);
+    zend_update_property_double(pcbc_geo_distance_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -143,16 +143,16 @@ PHP_MINIT_FUNCTION(GeoDistanceSearchQuery)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GeoDistanceSearchQuery", geo_distance_search_query_methods);
-    pcbc_geo_distance_search_query_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_geo_distance_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_geo_distance_search_query_ce TSRMLS_CC, 2, pcbc_json_serializable_ce,
+    zend_class_implements(pcbc_geo_distance_search_query_ce, 2, pcbc_json_serializable_ce,
                           pcbc_search_query_ce);
 
-    zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("longitude"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("latitude"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("distance"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("longitude"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("latitude"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("distance"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

@@ -26,12 +26,12 @@ PHP_METHOD(SearchSortId, descending)
     zend_bool descending = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "b", &descending);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "b", &descending);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_bool(pcbc_search_sort_id_ce, getThis(), ZEND_STRL("desc"), descending TSRMLS_CC);
+    zend_update_property_bool(pcbc_search_sort_id_ce, getThis(), ZEND_STRL("desc"), descending);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -75,9 +75,9 @@ PHP_MINIT_FUNCTION(SearchSortId)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchSortId", search_sort_id_methods);
-    pcbc_search_sort_id_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_search_sort_id_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_search_sort_id_ce TSRMLS_CC, 2, pcbc_json_serializable_ce, pcbc_search_sort_ce);
-    zend_declare_property_null(pcbc_search_sort_id_ce, ZEND_STRL("desc"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_class_implements(pcbc_search_sort_id_ce, 2, pcbc_json_serializable_ce, pcbc_search_sort_ce);
+    zend_declare_property_null(pcbc_search_sort_id_ce, ZEND_STRL("desc"), ZEND_ACC_PRIVATE);
     return SUCCESS;
 }

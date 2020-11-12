@@ -30,11 +30,11 @@ PHP_METHOD(DateRangeSearchQuery, field)
     zend_string *field = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &field);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &field);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_str(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("field"), field TSRMLS_CC);
+    zend_update_property_str(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("field"), field);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -44,13 +44,13 @@ PHP_METHOD(DateRangeSearchQuery, dateTimeParser)
     zend_string *date_time_parser = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "S", &date_time_parser);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &date_time_parser);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
     zend_update_property_str(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("date_time_parser"),
-                             date_time_parser TSRMLS_CC);
+                             date_time_parser);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -60,12 +60,12 @@ PHP_METHOD(DateRangeSearchQuery, boost)
     double boost = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "d", &boost);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "d", &boost);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("boost"), boost TSRMLS_CC);
+    zend_update_property_double(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -80,19 +80,19 @@ PHP_METHOD(DateRangeSearchQuery, start)
     zend_bool inclusive = 1, inclusive_null = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "z|b!", &start, &inclusive, &inclusive_null);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z|b!", &start, &inclusive, &inclusive_null);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
     switch (Z_TYPE_P(start)) {
     case IS_STRING:
-        zend_update_property(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("start"), start TSRMLS_CC);
+        zend_update_property(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("start"), start);
         break;
     case IS_LONG: {
         zend_string *date_str = NULL;
-        date_str = php_format_date(ZEND_STRL(PCBC_DATE_FORMAT_RFC3339), Z_LVAL_P(start), 1 TSRMLS_CC);
-        zend_update_property_str(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("start"), date_str TSRMLS_CC);
+        date_str = php_format_date(ZEND_STRL(PCBC_DATE_FORMAT_RFC3339), Z_LVAL_P(start), 1);
+        zend_update_property_str(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("start"), date_str);
     } break;
     default:
         zend_type_error("Start date must be either formatted string or integer (Unix timestamp)");
@@ -100,7 +100,7 @@ PHP_METHOD(DateRangeSearchQuery, start)
     }
     if (!inclusive_null) {
         zend_update_property_bool(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("inclusive_start"),
-                                  inclusive TSRMLS_CC);
+                                  inclusive);
     }
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -116,19 +116,19 @@ PHP_METHOD(DateRangeSearchQuery, end)
     zend_bool inclusive = 1, inclusive_null = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "z|b!", &end, &inclusive, &inclusive_null);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z|b!", &end, &inclusive, &inclusive_null);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
     switch (Z_TYPE_P(end)) {
     case IS_STRING:
-        zend_update_property(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("end"), end TSRMLS_CC);
+        zend_update_property(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("end"), end);
         break;
     case IS_LONG: {
         zend_string *date_str = NULL;
-        date_str = php_format_date(ZEND_STRL(PCBC_DATE_FORMAT_RFC3339), Z_LVAL_P(end), 1 TSRMLS_CC);
-        zend_update_property_str(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("end"), date_str TSRMLS_CC);
+        date_str = php_format_date(ZEND_STRL(PCBC_DATE_FORMAT_RFC3339), Z_LVAL_P(end), 1);
+        zend_update_property_str(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("end"), date_str);
     } break;
     default:
         zend_type_error("End date must be either formatted string or integer (Unix timestamp)");
@@ -136,7 +136,7 @@ PHP_METHOD(DateRangeSearchQuery, end)
     }
     if (!inclusive_null) {
         zend_update_property_bool(pcbc_date_range_search_query_ce, getThis(), ZEND_STRL("inclusive_end"),
-                                  inclusive TSRMLS_CC);
+                                  inclusive);
     }
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -238,20 +238,20 @@ PHP_MINIT_FUNCTION(DateRangeSearchQuery)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "DateRangeSearchQuery", date_range_search_query_methods);
-    pcbc_date_range_search_query_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_date_range_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_date_range_search_query_ce TSRMLS_CC, 2, pcbc_json_serializable_ce,
+    zend_class_implements(pcbc_date_range_search_query_ce, 2, pcbc_json_serializable_ce,
                           pcbc_search_query_ce);
 
-    zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("start"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("start"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("inclusive_start"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("end"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("inclusive_end"), ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("end"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("inclusive_end"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_date_range_search_query_ce, ZEND_STRL("date_time_parser"),
-                               ZEND_ACC_PRIVATE TSRMLS_CC);
+                               ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

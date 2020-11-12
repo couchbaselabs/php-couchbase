@@ -28,14 +28,14 @@ PHP_METHOD(ConjunctionSearchQuery, __construct)
     zval *queries = NULL;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "|a", &queries);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "|a", &queries);
     if (rv == FAILURE) {
         return;
     }
 
     zval container;
     array_init(&container);
-    zend_update_property(pcbc_conjunction_search_query_ce, getThis(), ZEND_STRL("queries"), &container TSRMLS_CC);
+    zend_update_property(pcbc_conjunction_search_query_ce, getThis(), ZEND_STRL("queries"), &container);
     Z_DELREF(container);
 
     if (queries && Z_TYPE_P(queries) != IS_NULL) {
@@ -43,7 +43,7 @@ PHP_METHOD(ConjunctionSearchQuery, __construct)
         ZEND_HASH_FOREACH_VAL(HASH_OF(queries), entry)
         {
             if (Z_TYPE_P(entry) != IS_OBJECT ||
-                !instanceof_function(Z_OBJCE_P(entry), pcbc_search_query_ce TSRMLS_CC)) {
+                !instanceof_function(Z_OBJCE_P(entry), pcbc_search_query_ce)) {
                 pcbc_log(LOGARGS(WARN), "Non-query value detected in queries array");
                 zend_type_error("Expected SearchQuery for a FTS conjunction query");
             }
@@ -59,12 +59,12 @@ PHP_METHOD(ConjunctionSearchQuery, boost)
     double boost = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "d", &boost);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "d", &boost);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
-    zend_update_property_double(pcbc_conjunction_search_query_ce, getThis(), ZEND_STRL("boost"), boost TSRMLS_CC);
+    zend_update_property_double(pcbc_conjunction_search_query_ce, getThis(), ZEND_STRL("boost"), boost);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -75,7 +75,7 @@ PHP_METHOD(ConjunctionSearchQuery, every)
     int num_args = 0;
     int rv;
 
-    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "+", &args, &num_args);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "+", &args, &num_args);
     if (rv == FAILURE) {
         return;
     }
@@ -88,7 +88,7 @@ PHP_METHOD(ConjunctionSearchQuery, every)
             zval *entry;
             entry = &args[i];
             if (Z_TYPE_P(entry) != IS_OBJECT ||
-                !instanceof_function(Z_OBJCE_P(entry), pcbc_search_query_ce TSRMLS_CC)) {
+                !instanceof_function(Z_OBJCE_P(entry), pcbc_search_query_ce)) {
                 pcbc_log(LOGARGS(WARN), "Non-query value detected in queries array");
                 zend_type_error("Expected SearchQuery for a FTS conjunction query");
             }
@@ -154,13 +154,13 @@ PHP_MINIT_FUNCTION(ConjunctionSearchQuery)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ConjunctionSearchQuery", conjunction_search_query_methods);
-    pcbc_conjunction_search_query_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_conjunction_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_conjunction_search_query_ce TSRMLS_CC, 2, pcbc_json_serializable_ce,
+    zend_class_implements(pcbc_conjunction_search_query_ce, 2, pcbc_json_serializable_ce,
                           pcbc_search_query_ce);
 
-    zend_declare_property_null(pcbc_conjunction_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE TSRMLS_CC);
-    zend_declare_property_null(pcbc_conjunction_search_query_ce, ZEND_STRL("queries"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    zend_declare_property_null(pcbc_conjunction_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_conjunction_search_query_ce, ZEND_STRL("queries"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

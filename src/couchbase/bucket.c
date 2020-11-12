@@ -39,7 +39,7 @@ PHP_METHOD(Bucket, setTranscoder)
     zval *encoder, *decoder;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "zz", &encoder, &decoder);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "zz", &encoder, &decoder);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -68,7 +68,7 @@ PHP_METHOD(Bucket, __set)
     long val;
     lcb_uint32_t lcbval;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &name, &name_len, &val);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "sl", &name, &name_len, &val);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -114,7 +114,7 @@ PHP_METHOD(Bucket, __get)
     int rv, cmd;
     lcb_uint32_t lcbval;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &name, &name_len);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "s", &name, &name_len);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -172,7 +172,7 @@ PHP_METHOD(Bucket, collections)
     }
 
     object_init_ex(return_value, pcbc_collection_manager_ce);
-    zend_update_property(pcbc_collection_manager_ce, return_value, ZEND_STRL("bucket"), getThis() TSRMLS_CC);
+    zend_update_property(pcbc_collection_manager_ce, return_value, ZEND_STRL("bucket"), getThis());
 }
 
 PHP_METHOD(Bucket, viewIndexes)
@@ -182,7 +182,7 @@ PHP_METHOD(Bucket, viewIndexes)
     }
 
     object_init_ex(return_value, pcbc_view_index_manager_ce);
-    zend_update_property(pcbc_view_index_manager_ce, return_value, ZEND_STRL("bucket"), getThis() TSRMLS_CC);
+    zend_update_property(pcbc_view_index_manager_ce, return_value, ZEND_STRL("bucket"), getThis());
 }
 
 PHP_METHOD(Bucket, defaultCollection)
@@ -195,7 +195,7 @@ PHP_METHOD(Bucket, defaultCollection)
     }
 
     object_init_ex(return_value, pcbc_collection_ce);
-    zend_update_property(pcbc_collection_ce, return_value, ZEND_STRL("bucket"), getThis() TSRMLS_CC);
+    zend_update_property(pcbc_collection_ce, return_value, ZEND_STRL("bucket"), getThis());
 }
 
 PHP_METHOD(Bucket, defaultScope)
@@ -208,7 +208,7 @@ PHP_METHOD(Bucket, defaultScope)
     }
 
     object_init_ex(return_value, pcbc_scope_ce);
-    zend_update_property(pcbc_scope_ce, return_value, ZEND_STRL("bucket"), getThis() TSRMLS_CC);
+    zend_update_property(pcbc_scope_ce, return_value, ZEND_STRL("bucket"), getThis());
 }
 
 PHP_METHOD(Bucket, scope)
@@ -216,14 +216,14 @@ PHP_METHOD(Bucket, scope)
     int rv;
     zend_string *name;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S", &name);
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "S", &name);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
 
     object_init_ex(return_value, pcbc_scope_ce);
-    zend_update_property(pcbc_scope_ce, return_value, ZEND_STRL("bucket"), getThis() TSRMLS_CC);
-    zend_update_property_str(pcbc_scope_ce, return_value, ZEND_STRL("name"), name TSRMLS_CC);
+    zend_update_property(pcbc_scope_ce, return_value, ZEND_STRL("bucket"), getThis());
+    zend_update_property_str(pcbc_scope_ce, return_value, ZEND_STRL("name"), name);
 }
 
 ZEND_BEGIN_ARG_INFO_EX(ai_Bucket_none, 0, 0, 0)
@@ -301,7 +301,7 @@ zend_function_entry bucket_methods[] = {
 
 zend_object_handlers pcbc_bucket_handlers;
 
-static void pcbc_bucket_free_object(zend_object *object TSRMLS_DC)
+static void pcbc_bucket_free_object(zend_object *object)
 {
     pcbc_bucket_t *obj = Z_BUCKET_OBJ(object);
 
@@ -311,7 +311,7 @@ static void pcbc_bucket_free_object(zend_object *object TSRMLS_DC)
         for (ptr = obj->crypto_head; ptr;) {
             cur = ptr;
             if (cur->name) {
-                pcbc_crypto_unregister(obj, cur->name, cur->name_len TSRMLS_CC);
+                pcbc_crypto_unregister(obj, cur->name, cur->name_len);
                 efree(cur->name);
             }
             ptr = ptr->next;
@@ -319,7 +319,7 @@ static void pcbc_bucket_free_object(zend_object *object TSRMLS_DC)
         }
     }
     */
-    pcbc_connection_delref(obj->conn TSRMLS_CC);
+    pcbc_connection_delref(obj->conn);
     if (!Z_ISUNDEF(obj->encoder)) {
         zval_ptr_dtor(&obj->encoder);
         ZVAL_UNDEF(&obj->encoder);
@@ -329,23 +329,23 @@ static void pcbc_bucket_free_object(zend_object *object TSRMLS_DC)
         ZVAL_UNDEF(&obj->decoder);
     }
 
-    zend_object_std_dtor(&obj->std TSRMLS_CC);
+    zend_object_std_dtor(&obj->std);
 }
 
-static zend_object *pcbc_bucket_create_object(zend_class_entry *class_type TSRMLS_DC)
+static zend_object *pcbc_bucket_create_object(zend_class_entry *class_type)
 {
     pcbc_bucket_t *obj = NULL;
 
     obj = PCBC_ALLOC_OBJECT_T(pcbc_bucket_t, class_type);
 
-    zend_object_std_init(&obj->std, class_type TSRMLS_CC);
+    zend_object_std_init(&obj->std, class_type);
     object_properties_init(&obj->std, class_type);
 
     obj->std.handlers = &pcbc_bucket_handlers;
     return &obj->std;
 }
 
-static HashTable *pcbc_bucket_get_debug_info(zval *object, int *is_temp TSRMLS_DC)
+static HashTable *pcbc_bucket_get_debug_info(zval *object, int *is_temp)
 {
     pcbc_bucket_t *obj = NULL;
     zval retval;
@@ -393,7 +393,7 @@ PHP_MINIT_FUNCTION(Bucket)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "Bucket", bucket_methods);
-    pcbc_bucket_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    pcbc_bucket_ce = zend_register_internal_class(&ce);
     pcbc_bucket_ce->create_object = pcbc_bucket_create_object;
     PCBC_CE_DISABLE_SERIALIZATION(pcbc_bucket_ce);
 

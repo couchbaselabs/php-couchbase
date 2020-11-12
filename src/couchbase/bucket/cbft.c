@@ -28,14 +28,12 @@ struct search_cookie {
 
 static void ftsrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RESPSEARCH *resp)
 {
-    TSRMLS_FETCH();
-
     struct search_cookie *cookie;
     lcb_respsearch_cookie(resp, (void **)&cookie);
     cookie->rc = lcb_respsearch_status(resp);
     zval *return_value = cookie->return_value;
 
-    zend_update_property_long(pcbc_search_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc TSRMLS_CC);
+    zend_update_property_long(pcbc_search_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
 
     const char *row = NULL;
     size_t nrow = 0;
@@ -57,19 +55,19 @@ static void ftsrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RESP
 
             mval = zend_symtable_str_find(marr, ZEND_STRL("took"));
             if (mval) {
-                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("took"), mval TSRMLS_CC);
+                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("took"), mval);
             }
             mval = zend_symtable_str_find(marr, ZEND_STRL("total_hits"));
             if (mval) {
-                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("total_hits"), mval TSRMLS_CC);
+                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("total_hits"), mval);
             }
             mval = zend_symtable_str_find(marr, ZEND_STRL("max_score"));
             if (mval) {
-                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("max_score"), mval TSRMLS_CC);
+                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("max_score"), mval);
             }
             mval = zend_symtable_str_find(marr, ZEND_STRL("metrics"));
             if (mval) {
-                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("metrics"), mval TSRMLS_CC);
+                zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("metrics"), mval);
             }
 
             mstatus = zend_symtable_str_find(marr, ZEND_STRL("status"));
@@ -78,28 +76,28 @@ static void ftsrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RESP
                 case IS_STRING:
                     // TODO: read and expose value in "error" key
                     zend_update_property_stringl(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("status"),
-                                                 Z_STRVAL_P(mstatus), Z_STRLEN_P(mstatus) TSRMLS_CC);
+                                                 Z_STRVAL_P(mstatus), Z_STRLEN_P(mstatus));
                     break;
                 case IS_ARRAY:
                     zend_update_property_string(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("status"),
-                                                "success" TSRMLS_CC);
+                                                "success");
                     mval = zend_symtable_str_find(Z_ARRVAL_P(mstatus), ZEND_STRL("successful"));
                     if (mval) {
                         zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("success_count"),
-                                             mval TSRMLS_CC);
+                                             mval);
                     }
                     mval = zend_symtable_str_find(Z_ARRVAL_P(mstatus), ZEND_STRL("failed"));
                     if (mval) {
                         zend_update_property(pcbc_search_meta_data_impl_ce, &meta, ZEND_STRL("error_count"),
-                                             mval TSRMLS_CC);
+                                             mval);
                     }
                     break;
                 }
             }
-            zend_update_property(pcbc_search_result_impl_ce, return_value, ZEND_STRL("meta"), &meta TSRMLS_CC);
+            zend_update_property(pcbc_search_result_impl_ce, return_value, ZEND_STRL("meta"), &meta);
             mval = zend_symtable_str_find(marr, ZEND_STRL("facets"));
             if (mval) {
-                zend_update_property(pcbc_search_result_impl_ce, return_value, ZEND_STRL("facets"), mval TSRMLS_CC);
+                zend_update_property(pcbc_search_result_impl_ce, return_value, ZEND_STRL("facets"), mval);
             }
             zval_ptr_dtor(&meta);
             zval_dtor(&value);
@@ -119,7 +117,7 @@ PHP_METHOD(Cluster, searchQuery)
     zval *options = NULL;
     int rv;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "SO|O!", &index, &query, pcbc_search_query_ce, &options,
+    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "SO|O!", &index, &query, pcbc_search_query_ce, &options,
                                pcbc_search_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
@@ -135,7 +133,7 @@ PHP_METHOD(Cluster, searchQuery)
         zval values;
         PCBC_STRING(fname, "jsonSerialize");
         ZVAL_UNDEF(&values);
-        rv = call_user_function_ex(EG(function_table), options, &fname, &values, 0, NULL, 1, NULL TSRMLS_CC);
+        rv = call_user_function_ex(EG(function_table), options, &fname, &values, 0, NULL, 1, NULL);
         if (rv != FAILURE && !EG(exception) && !Z_ISUNDEF(values)) {
             zend_hash_merge(HASH_OF(&payload), HASH_OF(&values), NULL, 0);
         }
@@ -163,7 +161,7 @@ PHP_METHOD(Cluster, searchQuery)
     object_init_ex(return_value, pcbc_search_result_impl_ce);
     zval hits;
     array_init(&hits);
-    zend_update_property(pcbc_search_result_impl_ce, return_value, ZEND_STRL("rows"), &hits TSRMLS_CC);
+    zend_update_property(pcbc_search_result_impl_ce, return_value, ZEND_STRL("rows"), &hits);
     Z_DELREF(hits);
     struct search_cookie cookie = {LCB_SUCCESS, return_value};
 

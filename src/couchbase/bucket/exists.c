@@ -27,27 +27,25 @@ struct exists_cookie {
 
 void exists_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPEXISTS *resp)
 {
-    TSRMLS_FETCH();
-
     const lcb_KEY_VALUE_ERROR_CONTEXT *ectx = NULL;
     struct exists_cookie *cookie = NULL;
     lcb_respexists_cookie(resp, (void **)&cookie);
     zval *return_value = cookie->return_value;
     cookie->rc = lcb_respexists_status(resp);
-    zend_update_property_long(pcbc_exists_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc TSRMLS_CC);
+    zend_update_property_long(pcbc_exists_result_impl_ce, return_value, ZEND_STRL("status"), cookie->rc);
     lcb_respexists_error_context(resp, &ectx);
 
     set_property_str(ectx, lcb_errctx_kv_context, pcbc_exists_result_impl_ce, "err_ctx");
     set_property_str(ectx, lcb_errctx_kv_ref, pcbc_exists_result_impl_ce, "err_ref");
     set_property_str(ectx, lcb_errctx_kv_key, pcbc_exists_result_impl_ce, "key");
     zend_update_property_bool(pcbc_exists_result_impl_ce, return_value, ZEND_STRL("is_found"),
-                              lcb_respexists_is_found(resp) TSRMLS_CC);
+                              lcb_respexists_is_found(resp));
     if (cookie->rc == LCB_SUCCESS) {
         uint64_t data;
         lcb_respexists_cas(resp, &data);
         zend_string *b64;
         b64 = php_base64_encode((unsigned char *)&data, sizeof(data));
-        zend_update_property_str(pcbc_exists_result_impl_ce, return_value, ZEND_STRL("cas"), b64 TSRMLS_CC);
+        zend_update_property_str(pcbc_exists_result_impl_ce, return_value, ZEND_STRL("cas"), b64);
         zend_string_release(b64);
     }
 }
@@ -57,11 +55,11 @@ zend_class_entry *pcbc_exists_options_ce;
 PHP_METHOD(ExistsOptions, timeout)
 {
     zend_long arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &arg);
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "l", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
-    zend_update_property_long(pcbc_exists_options_ce, getThis(), ZEND_STRL("timeout"), arg TSRMLS_CC);
+    zend_update_property_long(pcbc_exists_options_ce, getThis(), ZEND_STRL("timeout"), arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -131,8 +129,8 @@ PHP_MINIT_FUNCTION(CollectionExists)
     zend_class_entry ce;
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ExistsOptions", pcbc_exists_options_methods);
-    pcbc_exists_options_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    zend_declare_property_null(pcbc_exists_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE TSRMLS_CC);
+    pcbc_exists_options_ce = zend_register_internal_class(&ce);
+    zend_declare_property_null(pcbc_exists_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }
