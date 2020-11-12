@@ -603,15 +603,10 @@ PHP_METHOD(Bucket, viewQuery)
         }
         prop = zend_read_property(pcbc_view_options_ce, options, ZEND_STRL("query"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_ARRAY) {
-            rv = php_url_encode_hash_ex(HASH_OF(prop), &query_str, NULL, 0, NULL, 0, NULL, 0, NULL, NULL,
+            php_url_encode_hash_ex(HASH_OF(prop), &query_str, NULL, 0, NULL, 0, NULL, 0, NULL, NULL,
                                         PHP_QUERY_RFC1738);
-            if (rv == FAILURE) {
-                pcbc_log(LOGARGS(obj->conn->lcb, WARN), "Failed to encode views query options as RFC1738 string");
-                smart_str_free(&query_str);
-            } else {
-                if (!PCBC_SMARTSTR_EMPTY(query_str)) {
-                    lcb_cmdview_option_string(cmd, ZSTR_VAL(query_str.s), ZSTR_LEN(query_str.s));
-                }
+            if (!PCBC_SMARTSTR_EMPTY(query_str)) {
+                lcb_cmdview_option_string(cmd, ZSTR_VAL(query_str.s), ZSTR_LEN(query_str.s));
             }
         }
         prop = zend_read_property(pcbc_view_options_ce, options, ZEND_STRL("body"), 0, &ret);

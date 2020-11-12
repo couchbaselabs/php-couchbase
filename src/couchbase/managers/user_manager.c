@@ -344,7 +344,7 @@ PHP_METHOD(UserManager, upsertUser)
         add_assoc_stringl(&payload, "roles", ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
         smart_str_free(&buf);
     }
-    rv = php_url_encode_hash_ex(HASH_OF(&payload), &buf, NULL, 0, NULL, 0, NULL, 0, NULL, NULL,
+    php_url_encode_hash_ex(HASH_OF(&payload), &buf, NULL, 0, NULL, 0, NULL, 0, NULL, NULL,
                                 PHP_QUERY_RFC1738);
     zval_dtor(&payload);
     if (rv == FAILURE) {

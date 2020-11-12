@@ -200,7 +200,7 @@ PHP_METHOD(BucketManager, createBucket)
         prop = zend_read_property(pcbc_bucket_settings_ce, settings, ZEND_STRL("replica_indexes"), 0, &ret);
         add_assoc_bool(&payload, "replicaIndex", Z_TYPE_P(prop) == IS_TRUE);
 
-        rv = php_url_encode_hash_ex(HASH_OF(&payload), &buf, NULL, 0, NULL, 0, NULL, 0, NULL, NULL,
+        php_url_encode_hash_ex(HASH_OF(&payload), &buf, NULL, 0, NULL, 0, NULL, 0, NULL, NULL,
                                     PHP_QUERY_RFC1738);
         zval_ptr_dtor(&payload);
         if (rv == FAILURE) {
