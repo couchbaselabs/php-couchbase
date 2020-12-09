@@ -40,7 +40,7 @@ class SearchTest extends TestCase {
         $options->credentials(getenv('CB_USER'), getenv('CB_PASSWORD'));
         $this->cluster = new Cluster($testDSN, $options);
     }
-/*
+
     public function testSearchWithLimit() {
         $query = new MatchPhraseSearchQuery("hop beer");
         $options = new SearchOptions();
@@ -100,9 +100,10 @@ class SearchTest extends TestCase {
     }
 
     function testSearchWithFields() {
+        $nameField = "name";
         $query = new MatchPhraseSearchQuery("hop beer");
         $options = new SearchOptions();
-        $options->limit(3)->fields(["name"]);
+        $options->limit(3)->fields([$nameField]);
 
         $result = $this->cluster->searchQuery("beer-search", $query, $options);
 
@@ -221,10 +222,8 @@ class SearchTest extends TestCase {
             }
         }
     }
-*/
-    function testSearchWithFacets() {
-        $this->assertTrue(true);
 
+    function testSearchWithFacets() {
         $query = (new TermSearchQuery("beer"))->field("type");
         $options = new SearchOptions();
         $options->facets([

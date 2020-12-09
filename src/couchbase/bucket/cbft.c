@@ -284,7 +284,6 @@ PHP_METHOD(Cluster, searchQuery)
     smart_str buf = {0};
     int last_error;
     PCBC_JSON_ENCODE(&buf, &payload, 0, last_error);
-    zval_dtor(&options_payload);
     zval_dtor(&payload);
     if (last_error != 0) {
         pcbc_log(LOGARGS(cluster->conn->lcb, WARN), "Failed to encode FTS query as JSON: json_last_error=%d",
