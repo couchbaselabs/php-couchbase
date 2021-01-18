@@ -721,7 +721,7 @@ namespace Couchbase {
     /**
     *  Occurs when the requested document could not be found.
     */
-    class KeyNotFoundException extends KeyValueException implements Throwable
+    class DocumentNotFoundException extends KeyValueException implements Throwable
     {
     }
 
