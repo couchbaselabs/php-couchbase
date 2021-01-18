@@ -1882,6 +1882,18 @@ namespace Couchbase {
         public function collection(string $name): Collection
         {
         }
+
+        /**
+         * Executes a N1QL query against the cluster with scopeName set implicitly.
+         *
+         * @param string $statement the N1QL query statement to execute
+         * @param QueryOptions $options the options to use when executing the query
+         * @return QueryResult
+         */
+        public function query(string $statement, QueryOptions $options = null): QueryResult
+        {
+        }
+
     }
 
     class ScopeSpec
@@ -4256,6 +4268,28 @@ namespace Couchbase {
          * @return QueryOptions
          */
         public function metrics(bool $arg): QueryOptions
+        {
+        }
+
+        /**
+         * Associate scope name with query
+         *
+         * @param string $arg the name of the scope
+         * @return QueryOptions
+         */
+        public function scopeName(string $arg): QueryOptions
+        {
+        }
+
+        /**
+         * Associate scope qualifier (also known as `query_context`) with the query.
+         *
+         * The qualifier must be in form `${bucketName}.${scopeName}` or `default:${bucketName}.${scopeName}`
+         *
+         * @param string $arg the scope qualifier
+         * @return QueryOptions
+         */
+        public function scopeQualifier(string $arg): QueryOptions
         {
         }
     }

@@ -22,6 +22,8 @@ zend_class_entry *pcbc_binary_collection_ce;
 zend_class_entry *pcbc_collection_ce;
 zend_class_entry *pcbc_scope_ce;
 
+PHP_METHOD(Scope, query);
+
 PHP_METHOD(Scope, __construct)
 {
     zend_string *name = NULL;
@@ -81,11 +83,17 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Scope_collection, 0, 1, Couchbase\\Col
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Scope_query, 0, 1, Couchbase\\QueryResult, 0)
+ZEND_ARG_TYPE_INFO(0, statement, IS_STRING, 0)
+ZEND_ARG_OBJ_INFO(0, queryOptions, Couchbase\\QueryOptions, 1)
+ZEND_END_ARG_INFO()
+
 // clang-format off
 zend_function_entry scope_methods[] = {
     PHP_ME(Scope, __construct, ai_Scope___construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
     PHP_ME(Scope, name, ai_Scope_name, ZEND_ACC_PUBLIC)
     PHP_ME(Scope, collection, ai_Scope_collection, ZEND_ACC_PUBLIC)
+    PHP_ME(Scope, query, ai_Scope_query, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 // clang-format on
