@@ -32,7 +32,12 @@ cd ${PROJECT_ROOT}
 
 PHP_EXECUTABLE="${CB_PHP_PREFIX}/bin/php"
 
+if [ -d "${PROJECT_ROOT}/../couchbase-php-client/src" ]
+then
+    CB_EXTRA_ARGS="-d ${PROJECT_ROOT}/../couchbase-php-client/src"
+
 ${PHP_EXECUTABLE} \
     ${CB_PHPDOC_PHAR} \
     -t ${PROJECT_ROOT}/build/couchbase-php-client-${CB_VERSION} \
-    -d ${PROJECT_ROOT}/api
+    -d ${PROJECT_ROOT}/api \
+    ${CB_EXTRA_ARGS}
