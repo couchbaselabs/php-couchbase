@@ -274,10 +274,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_scope, 0, 1, Couchbase\\Scope, 
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_collections, 0, 1, Couchbase\\CollectionManager, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_collections, 0, 0, Couchbase\\CollectionManager, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_viewIndexes, 0, 1, Couchbase\\ViewIndexManager, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Bucket_viewIndexes, 0, 0, Couchbase\\ViewIndexManager, 0)
 ZEND_END_ARG_INFO()
 
 // clang-format off

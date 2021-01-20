@@ -53,6 +53,7 @@ class ViewQueryTest extends CouchbaseTestCase {
         $ddoc = new \Couchbase\DesignDocument();
         $ddoc->setName("_design/" . $ddocName);
         $ddoc->setViews([$view->name() => $view]);
+
         $this->manager->upsertDesignDocument($ddoc);
         sleep(1); // give design document a second to settle
 

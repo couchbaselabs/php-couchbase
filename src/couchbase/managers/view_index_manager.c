@@ -285,14 +285,13 @@ PHP_METHOD(DesignDocument, jsonSerialize)
             zval view, *val, ret;
             array_init(&view);
             val = pcbc_read_property(pcbc_view_ce, entry, ("map"), 0, &ret);
-            if (val && Z_TYPE_P(val)) {
-                add_assoc_zval(&view, "map", val);
+            if (val && Z_TYPE_P(val) == IS_STRING) {
+                add_assoc_stringl(&view, "map", Z_STRVAL_P(val), Z_STRLEN_P(val));
             }
             val = pcbc_read_property(pcbc_view_ce, entry, ("reduce"), 0, &ret);
-            if (val && Z_TYPE_P(val)) {
-                add_assoc_zval(&view, "reduce", val);
+            if (val && Z_TYPE_P(val) == IS_STRING) {
+                add_assoc_stringl(&view, "reduce", Z_STRVAL_P(val), Z_STRLEN_P(val));
             }
-            zval_addref_p(&views);
             add_assoc_zval_ex(&views, ZSTR_VAL(string_key), ZSTR_LEN(string_key), &view);
         }
         ZEND_HASH_FOREACH_END();

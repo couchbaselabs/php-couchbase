@@ -95,6 +95,7 @@ static void viewrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RES
                              last_error);
                 } else {
                     pcbc_update_property(pcbc_view_result_entry_ce, &entry, ("key"), &key);
+                    zval_dtor(&key);
                 }
             }
 
@@ -109,6 +110,7 @@ static void viewrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RES
                              last_error);
                 } else {
                     pcbc_update_property(pcbc_view_result_entry_ce, &entry, ("value"), &value);
+                    zval_dtor(&value);
                 }
             }
 
@@ -127,6 +129,7 @@ static void viewrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RES
                     } else {
                         pcbc_update_property(pcbc_view_result_entry_ce, &entry, ("document"),
                                              &document);
+                        zval_dtor(&document);
                     }
                 }
             }
