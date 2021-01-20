@@ -24,6 +24,7 @@ struct get_replica_cookie {
     int is_single;
     lcb_STATUS rc;
     zval *return_value;
+    zval *decoder;
 };
 
 void getreplica_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPGETREPLICA *resp)
@@ -42,6 +43,7 @@ void getreplica_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPGETRE
 
     cookie->rc = lcb_respgetreplica_status(resp);
     pcbc_update_property_long(pcbc_get_replica_result_impl_ce, return_value, ("status"), cookie->rc);
+    pcbc_update_property(pcbc_get_replica_result_impl_ce, return_value, ("decoder"), cookie->decoder);
     lcb_respgetreplica_error_context(resp, &ectx);
 
     set_property_str(ectx, lcb_errctx_kv_context, pcbc_get_replica_result_impl_ce, "err_ctx");
@@ -77,13 +79,30 @@ PHP_METHOD(GetAnyReplicaOptions, timeout)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(GetAnyReplicaOptions, decoder)
+{
+    zval *arg;
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+
+    pcbc_update_property(pcbc_get_any_replica_options_ce, getThis(), ("decoder"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAnyReplicaOptions_timeout, 0, 1, Couchbase\\GetAnyReplicaOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAnyReplicaOptions_decoder, 0, 1, Couchbase\\GetAnyReplicaOptions, 0)
+ZEND_ARG_TYPE_INFO(0, arg, IS_CALLABLE, 0)
 ZEND_END_ARG_INFO()
 
 // clang-format off
 static const zend_function_entry pcbc_get_any_replica_options_methods[] = {
     PHP_ME(GetAnyReplicaOptions, timeout, ai_GetAnyReplicaOptions_timeout, ZEND_ACC_PUBLIC)
+    PHP_ME(GetAnyReplicaOptions, decoder, ai_GetAnyReplicaOptions_decoder, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 // clang-format on
@@ -100,6 +119,8 @@ PHP_METHOD(Collection, getAnyReplica)
     }
     PCBC_RESOLVE_COLLECTION;
 
+    zval decoder = {0};
+    ZVAL_NULL(&decoder);
     lcb_CMDGETREPLICA *cmd;
     lcb_cmdgetreplica_create(&cmd, LCB_REPLICA_MODE_ANY);
     lcb_cmdgetreplica_collection(cmd, scope_str, scope_len, collection_str, collection_len);
@@ -109,6 +130,10 @@ PHP_METHOD(Collection, getAnyReplica)
         prop = pcbc_read_property(pcbc_get_any_replica_options_ce, options, ("timeout"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdgetreplica_timeout(cmd, Z_LVAL_P(prop));
+        }
+        prop = pcbc_read_property(pcbc_get_any_replica_options_ce, options, ("decoder"), 0, &ret);
+        if (Z_TYPE_P(prop) != IS_NULL) {
+            ZVAL_COPY(&decoder, prop);
         }
     }
 
@@ -121,7 +146,8 @@ PHP_METHOD(Collection, getAnyReplica)
         lcb_cmdgetreplica_parent_span(cmd, span);
     }
     object_init_ex(return_value, pcbc_get_replica_result_impl_ce);
-    struct get_replica_cookie cookie = {1, LCB_SUCCESS, return_value};
+    struct get_replica_cookie cookie = {1, LCB_SUCCESS, return_value,
+                                        Z_TYPE(decoder) == IS_NULL ? &bucket->decoder : &decoder};
     err = lcb_getreplica(bucket->conn->lcb, &cookie, cmd);
     lcb_cmdgetreplica_destroy(cmd);
     if (err == LCB_SUCCESS) {
@@ -149,13 +175,30 @@ PHP_METHOD(GetAllReplicasOptions, timeout)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(GetAllReplicasOptions, decoder)
+{
+    zval *arg;
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+
+    pcbc_update_property(pcbc_get_all_replicas_options_ce, getThis(), ("decoder"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAllReplicasOptions_timeout, 0, 1, Couchbase\\GetAllReplicasOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAllReplicasOptions_decoder, 0, 1, Couchbase\\GetAllReplicasOptions, 0)
+ZEND_ARG_TYPE_INFO(0, arg, IS_CALLABLE, 0)
 ZEND_END_ARG_INFO()
 
 // clang-format off
 static const zend_function_entry pcbc_get_all_replicas_options_methods[] = {
     PHP_ME(GetAllReplicasOptions, timeout, ai_GetAllReplicasOptions_timeout, ZEND_ACC_PUBLIC)
+    PHP_ME(GetAllReplicasOptions, decoder, ai_GetAllReplicasOptions_decoder, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 // clang-format on
@@ -172,6 +215,8 @@ PHP_METHOD(Collection, getAllReplicas)
     }
     PCBC_RESOLVE_COLLECTION;
 
+    zval decoder = {0};
+    ZVAL_NULL(&decoder);
     lcb_CMDGETREPLICA *cmd;
     lcb_cmdgetreplica_create(&cmd, LCB_REPLICA_MODE_ALL);
     lcb_cmdgetreplica_collection(cmd, scope_str, scope_len, collection_str, collection_len);
@@ -181,6 +226,10 @@ PHP_METHOD(Collection, getAllReplicas)
         prop = pcbc_read_property(pcbc_get_all_replicas_options_ce, options, ("timeout"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdgetreplica_timeout(cmd, Z_LVAL_P(prop));
+        }
+        prop = pcbc_read_property(pcbc_get_all_replicas_options_ce, options, ("decoder"), 0, &ret);
+        if (Z_TYPE_P(prop) != IS_NULL) {
+            ZVAL_COPY(&decoder, prop);
         }
     }
 
@@ -193,7 +242,8 @@ PHP_METHOD(Collection, getAllReplicas)
         lcb_cmdgetreplica_parent_span(cmd, span);
     }
     array_init(return_value);
-    struct get_replica_cookie cookie = {0, LCB_SUCCESS, return_value};
+    struct get_replica_cookie cookie = {0, LCB_SUCCESS, return_value,
+                                        Z_TYPE(decoder) == IS_NULL ? &bucket->decoder : &decoder};
     err = lcb_getreplica(bucket->conn->lcb, &cookie, cmd);
     lcb_cmdgetreplica_destroy(cmd);
     if (err == LCB_SUCCESS) {
@@ -215,10 +265,12 @@ PHP_MINIT_FUNCTION(CollectionGetReplica)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetAllReplicasOptions", pcbc_get_all_replicas_options_methods);
     pcbc_get_all_replicas_options_ce = zend_register_internal_class(&ce);
     zend_declare_property_null(pcbc_get_all_replicas_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_all_replicas_options_ce, ZEND_STRL("decoder"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetAnyReplicaOptions", pcbc_get_any_replica_options_methods);
     pcbc_get_any_replica_options_ce = zend_register_internal_class(&ce);
     zend_declare_property_null(pcbc_get_any_replica_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_any_replica_options_ce, ZEND_STRL("decoder"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

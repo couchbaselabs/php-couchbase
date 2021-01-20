@@ -340,9 +340,8 @@ typedef struct {
     size_t err_reflen;
 } opcookie_res;
 
-int pcbc_decode_value(zval *return_value, pcbc_bucket_t *bucket, const char *bytes, int bytes_len, uint32_t flags,
-                      uint8_t datatype);
-int pcbc_encode_value(pcbc_bucket_t *bucket, zval *value, void **bytes, lcb_size_t *nbytes, lcb_uint32_t *flags,
+int pcbc_decode_value(zval *decoder, zval *return_value, zval *bytes, uint32_t flags, uint8_t datatype);
+int pcbc_encode_value(zval *encoder, zval *value, void **bytes, lcb_size_t *nbytes, lcb_uint32_t *flags,
                       uint8_t *datatype);
 
 void pcbc_http_request(zval *return_value, lcb_INSTANCE *conn, lcb_CMDHTTP *cmd, int json_response, void *cbctx,

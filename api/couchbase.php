@@ -3503,6 +3503,17 @@ namespace Couchbase {
         public function project(array $arg): GetOptions
         {
         }
+
+        /**
+         * Associate custom transcoder with the request.
+         *
+         * @param callable $arg decoding function with signature (returns decoded value):
+         *
+         *   `function decoder(string $bytes, int $flags, int $datatype): mixed`
+         */
+        public function decoder(callable $arg): GetOptions
+        {
+        }
     }
 
     class GetAndTouchOptions
@@ -3514,6 +3525,17 @@ namespace Couchbase {
          * @return GetAndTouchOptions
          */
         public function timeout(int $arg): GetAndTouchOptions
+        {
+        }
+
+        /**
+         * Associate custom transcoder with the request.
+         *
+         * @param callable $arg decoding function with signature (returns decoded value):
+         *
+         *   `function decoder(string $bytes, int $flags, int $datatype): mixed`
+         */
+        public function decoder(callable $arg): GetAndTouchOptions
         {
         }
     }
@@ -3529,6 +3551,17 @@ namespace Couchbase {
         public function timeout(int $arg): GetAndLockOptions
         {
         }
+
+        /**
+         * Associate custom transcoder with the request.
+         *
+         * @param callable $arg decoding function with signature (returns decoded value):
+         *
+         *   `function decoder(string $bytes, int $flags, int $datatype): mixed`
+         */
+        public function decoder(callable $arg): GetAndLockOptions
+        {
+        }
     }
 
     class GetAllReplicasOptions
@@ -3542,6 +3575,17 @@ namespace Couchbase {
         public function timeout(int $arg): GetAllReplicasOptions
         {
         }
+
+        /**
+         * Associate custom transcoder with the request.
+         *
+         * @param callable $arg decoding function with signature (returns decoded value):
+         *
+         *   `function decoder(string $bytes, int $flags, int $datatype): mixed`
+         */
+        public function decoder(callable $arg): GetAllRepliacasOptions
+        {
+        }
     }
 
     class GetAnyReplicaOptions
@@ -3553,6 +3597,17 @@ namespace Couchbase {
          * @return GetAnyReplicaOptions
          */
         public function timeout(int $arg): GetAnyReplicaOptions
+        {
+        }
+
+        /**
+         * Associate custom transcoder with the request.
+         *
+         * @param callable $arg decoding function with signature (returns decoded value):
+         *
+         *   `function decoder(string $bytes, int $flags, int $datatype): mixed`
+         */
+        public function decoder(callable $arg): GetAnyReplicaOptions
         {
         }
     }
@@ -3614,6 +3669,17 @@ namespace Couchbase {
         public function durabilityLevel(int $arg): InsertOptions
         {
         }
+
+        /**
+         * Associate custom transcoder with the request.
+         *
+         * @param callable $arg encoding function with signature (returns tuple of bytes, flags and datatype):
+         *
+         *   `function encoder($value): [string $bytes, int $flags, int $datatype]`
+         */
+        public function encoder(callable $arg): InsertOptions
+        {
+        }
     }
 
     class UpsertOptions
@@ -3657,6 +3723,17 @@ namespace Couchbase {
         public function durabilityLevel(int $arg): UpsertOptions
         {
         }
+
+        /**
+         * Associate custom transcoder with the request.
+         *
+         * @param callable $arg encoding function with signature (returns tuple of bytes, flags and datatype):
+         *
+         *   `function encoder($value): [string $bytes, int $flags, int $datatype]`
+         */
+        public function encoder(callable $arg): UpsertOptions
+        {
+        }
     }
 
     class ReplaceOptions
@@ -3698,6 +3775,17 @@ namespace Couchbase {
          * @return ReplaceOptions
          */
         public function durabilityLevel(int $arg): ReplaceOptions
+        {
+        }
+
+        /**
+         * Associate custom transcoder with the request.
+         *
+         * @param callable $arg encoding function with signature (returns tuple of bytes, flags and datatype):
+         *
+         *   `function encoder($value): [string $bytes, int $flags, int $datatype]`
+         */
+        public function encoder(callable $arg): ReplaceOptions
         {
         }
     }

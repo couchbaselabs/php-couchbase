@@ -13,17 +13,24 @@
  * custom encoder to store data, you must use the respective decoder for correct
  * behaviour.
  */
+use \Couchbase\ClusterOptions;
+use \Couchbase\Cluster;
+use \Couchbase\UpsertOptions;
+use \Couchbase\GetOptions;
 
 /*
  * Create a new Cluster object to represent the connection to our
  * cluster and specify any needed options such as SSL.
  */
-$cb = new \Couchbase\Cluster('couchbase://localhost');
+$options = new ClusterOptions();
+$options->credentials('Administrator', 'password');
+$cluster = new Cluster('couchbase://localhost', $options);
 
 /*
  * We open the default bucket to store our cached data in.
  */
-$db = $cb->bucket('default');
+$bucket = $cluster->bucket("default");
+$collection = $bucket->defaultCollection();
 
 /*
  * Some flags for differentiating what kind of data is stored so our
@@ -69,12 +76,6 @@ function example_decoder($bytes, $flags, $datatype) {
 }
 
 /*
- * Here we simply set our transcoder functions above as the active transcoders
- * for our bucket object.
- */
-$db->setTranscoder('example_encoder', 'example_decoder');
-
-/*
  * Create an image to test with
  */
 $im = imagecreatetruecolor(300, 50);
@@ -84,17 +85,20 @@ imagestring($im, 6, 10, 10,  'Couchbase Rocks!', $text_color);
 /*
  * Store it in Couchbase.  This should execute our custom encoder.
  */
-$db->upsert('test_image', $im);
-
+$options = new UpsertOptions();
+$options->encoder('example_encoder'); // Could be any callable.
+$collection->upsert('test_image', $im, $options);
 
 /*
  * Now lets retreive it back, it should still be an image thanks to our
  * custom decoder.
  */
-$image_doc = $db->get('test_image');
+$options = new GetOptions();
+$options->decoder('example_decoder'); // Could be any callable.
+$image_doc = $collection->get('test_image', $options);
 
 /*
  * Output our retrieved document to the browser with a image/png content-type.
  */
 header('Content-Type: image/png');
-imagepng($image_doc->value);
+imagepng($image_doc->content());

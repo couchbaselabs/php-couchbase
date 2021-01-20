@@ -125,6 +125,18 @@ PHP_METHOD(GetOptions, project)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(GetOptions, decoder)
+{
+    zval *arg;
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+
+    pcbc_update_property(pcbc_get_options_ce, getThis(), ("decoder"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetOptions_timeout, 0, 1, Couchbase\\GetOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -137,11 +149,16 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetOptions_project, 0, 1, Couchbase\\G
 ZEND_ARG_TYPE_INFO(0, arg, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetOptions_decoder, 0, 1, Couchbase\\GetOptions, 0)
+ZEND_ARG_TYPE_INFO(0, arg, IS_CALLABLE, 0)
+ZEND_END_ARG_INFO()
+
 // clang-format off
 static const zend_function_entry pcbc_get_options_methods[] = {
     PHP_ME(GetOptions, timeout, ai_GetOptions_timeout, ZEND_ACC_PUBLIC)
     PHP_ME(GetOptions, withExpiry, ai_GetOptions_withExpiry, ZEND_ACC_PUBLIC)
     PHP_ME(GetOptions, project, ai_GetOptions_project, ZEND_ACC_PUBLIC)
+    PHP_ME(GetOptions, decoder, ai_GetOptions_decoder, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 // clang-format on
@@ -158,6 +175,8 @@ PHP_METHOD(Collection, get)
     }
     PCBC_RESOLVE_COLLECTION;
 
+    zval decoder = {0};
+    ZVAL_NULL(&decoder);
     zend_bool with_expiry = 0;
     zend_long timeout = 0;
     if (options) {
@@ -170,9 +189,15 @@ PHP_METHOD(Collection, get)
         if (Z_TYPE_P(prop) == IS_TRUE) {
             with_expiry = 1;
         }
+        prop = pcbc_read_property(pcbc_get_options_ce, options, ("decoder"), 0, &ret);
+        if (Z_TYPE_P(prop) != IS_NULL) {
+            ZVAL_COPY(&decoder, prop);
+        }
     }
 
     object_init_ex(return_value, pcbc_get_result_impl_ce);
+    pcbc_update_property(pcbc_get_result_impl_ce, return_value, ("decoder"),
+                         Z_TYPE(decoder) == IS_NULL ? &bucket->decoder : &decoder);
 
     lcbtrace_SPAN *span = NULL;
     lcbtrace_TRACER *tracer = lcb_get_tracer(bucket->conn->lcb);
@@ -252,12 +277,33 @@ PHP_METHOD(GetAndLockOptions, timeout)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(GetAndLockOptions, decoder)
+{
+    zval *arg;
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+
+    pcbc_update_property(pcbc_get_and_lock_options_ce, getThis(), ("decoder"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAndLockOptions_timeout, 0, 1, Couchbase\\GetAndLockOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAndLockOptions_decoder, 0, 1, Couchbase\\GetAndLockOptions, 0)
+ZEND_ARG_TYPE_INFO(0, arg, IS_CALLABLE, 0)
+ZEND_END_ARG_INFO()
+
+// clang-format off
 static const zend_function_entry pcbc_get_and_lock_options_methods[] = {
-    PHP_ME(GetAndLockOptions, timeout, ai_GetAndLockOptions_timeout, ZEND_ACC_PUBLIC) PHP_FE_END};
+    PHP_ME(GetAndLockOptions, timeout, ai_GetAndLockOptions_timeout, ZEND_ACC_PUBLIC)
+    PHP_ME(GetAndLockOptions, decoder, ai_GetAndLockOptions_decoder, ZEND_ACC_PUBLIC)
+    PHP_FE_END
+};
+// clang-format on
 
 PHP_METHOD(Collection, getAndLock)
 {
@@ -279,11 +325,17 @@ PHP_METHOD(Collection, getAndLock)
     lcb_cmdget_key(cmd, ZSTR_VAL(id), ZSTR_LEN(id));
     lcb_cmdget_locktime(cmd, expiry);
 
+    zval decoder = {0};
+    ZVAL_NULL(&decoder);
     if (options) {
         zval *prop, ret;
         prop = pcbc_read_property(pcbc_get_and_lock_options_ce, options, ("timeout"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdget_timeout(cmd, Z_LVAL_P(prop));
+        }
+        prop = pcbc_read_property(pcbc_get_and_lock_options_ce, options, ("decoder"), 0, &ret);
+        if (Z_TYPE_P(prop) != IS_NULL) {
+            ZVAL_COPY(&decoder, prop);
         }
     }
 
@@ -296,6 +348,8 @@ PHP_METHOD(Collection, getAndLock)
         lcb_cmdget_parent_span(cmd, span);
     }
     object_init_ex(return_value, pcbc_get_result_impl_ce);
+    pcbc_update_property(pcbc_get_result_impl_ce, return_value, ("decoder"),
+                         Z_TYPE(decoder) == IS_NULL ? &bucket->decoder : &decoder);
     struct get_cookie cookie = {LCB_SUCCESS, return_value};
     err = lcb_get(bucket->conn->lcb, &cookie, cmd);
     lcb_cmdget_destroy(cmd);
@@ -324,13 +378,30 @@ PHP_METHOD(GetAndTouchOptions, timeout)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(GetAndTouchOptions, decoder)
+{
+    zval *arg;
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+
+    pcbc_update_property(pcbc_get_and_touch_options_ce, getThis(), ("decoder"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAndTouchOptions_timeout, 0, 1, Couchbase\\GetAndTouchOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetAndTouchOptions_decoder, 0, 1, Couchbase\\GetAndTouchOptions, 0)
+ZEND_ARG_TYPE_INFO(0, arg, IS_CALLABLE, 0)
 ZEND_END_ARG_INFO()
 
 // clang-format off
 static const zend_function_entry pcbc_get_and_touch_options_methods[] = {
     PHP_ME(GetAndTouchOptions, timeout, ai_GetAndTouchOptions_timeout, ZEND_ACC_PUBLIC)
+    PHP_ME(GetAndTouchOptions, decoder, ai_GetAndTouchOptions_decoder, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 // clang-format on
@@ -355,11 +426,17 @@ PHP_METHOD(Collection, getAndTouch)
     lcb_cmdget_key(cmd, ZSTR_VAL(id), ZSTR_LEN(id));
     lcb_cmdget_expiry(cmd, expiry);
 
+    zval decoder = {0};
+    ZVAL_NULL(&decoder);
     if (options) {
         zval *prop, ret;
         prop = pcbc_read_property(pcbc_get_and_touch_options_ce, options, ("timeout"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdget_timeout(cmd, Z_LVAL_P(prop));
+        }
+        prop = pcbc_read_property(pcbc_get_and_touch_options_ce, options, ("decoder"), 0, &ret);
+        if (Z_TYPE_P(prop) != IS_NULL) {
+            ZVAL_COPY(&decoder, prop);
         }
     }
 
@@ -372,6 +449,8 @@ PHP_METHOD(Collection, getAndTouch)
         lcb_cmdget_parent_span(cmd, span);
     }
     object_init_ex(return_value, pcbc_get_result_impl_ce);
+    pcbc_update_property(pcbc_get_result_impl_ce, return_value, ("decoder"),
+                         Z_TYPE(decoder) == IS_NULL ? &bucket->decoder : &decoder);
     struct get_cookie cookie = {LCB_SUCCESS, return_value};
     err = lcb_get(bucket->conn->lcb, &cookie, cmd);
     lcb_cmdget_destroy(cmd);
@@ -396,14 +475,17 @@ PHP_MINIT_FUNCTION(CollectionGet)
     zend_declare_property_null(pcbc_get_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_get_options_ce, ZEND_STRL("with_expiry"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_get_options_ce, ZEND_STRL("project"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_options_ce, ZEND_STRL("decoder"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetAndTouchOptions", pcbc_get_and_touch_options_methods);
     pcbc_get_and_touch_options_ce = zend_register_internal_class(&ce);
     zend_declare_property_null(pcbc_get_and_touch_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_and_touch_options_ce, ZEND_STRL("decoder"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetAndLockOptions", pcbc_get_and_lock_options_methods);
     pcbc_get_and_lock_options_ce = zend_register_internal_class(&ce);
     zend_declare_property_null(pcbc_get_and_lock_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_and_lock_options_ce, ZEND_STRL("decoder"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }

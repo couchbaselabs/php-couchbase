@@ -768,6 +768,7 @@ PHP_MINIT_FUNCTION(Result)
     zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("status"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("decoder"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetReplicaResult", pcbc_get_replica_result_methods);
     pcbc_get_replica_result_ce = zend_register_internal_interface(&ce);
@@ -784,6 +785,7 @@ PHP_MINIT_FUNCTION(Result)
     zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_get_replica_result_impl_ce, ZEND_STRL("is_replica"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("decoder"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ExistsResult", pcbc_exists_result_methods);
     pcbc_exists_result_ce = zend_register_internal_interface(&ce);
@@ -1092,13 +1094,13 @@ PHP_METHOD(GetResultImpl, content)
         return;
     }
 
-    zval *prop, rv;
-    prop = pcbc_read_property(pcbc_get_result_impl_ce, getThis(), ("data"), 0, &rv);
-    PCBC_JSON_RESET_STATE;
-    if (php_json_decode_ex(return_value, Z_STRVAL_P(prop), Z_STRLEN_P(prop), PHP_JSON_OBJECT_AS_ARRAY,
-                           PHP_JSON_PARSER_DEFAULT_DEPTH)) {
-        ZVAL_COPY_DEREF(return_value, prop);
-    }
+    zval *prop, *decoder, *flags, *datatype, rv1, rv2, rv3, rv4;
+    prop = pcbc_read_property(pcbc_get_result_impl_ce, getThis(), ("data"), 0, &rv1);
+    decoder = pcbc_read_property(pcbc_get_result_impl_ce, getThis(), ("decoder"), 0, &rv2);
+    flags = pcbc_read_property(pcbc_get_result_impl_ce, getThis(), ("flags"), 0, &rv3);
+    datatype = pcbc_read_property(pcbc_get_result_impl_ce, getThis(), ("datatype"), 0, &rv4);
+    pcbc_decode_value(decoder, return_value, prop, Z_TYPE_P(flags) == IS_LONG ? Z_LVAL_P(flags) : 0,
+                      Z_TYPE_P(datatype) == IS_LONG ? Z_LVAL_P(datatype) : 0);
 }
 
 PHP_METHOD(GetReplicaResultImpl, cas)
@@ -1129,9 +1131,13 @@ PHP_METHOD(GetReplicaResultImpl, content)
         return;
     }
 
-    zval *prop, rv;
-    prop = pcbc_read_property(pcbc_get_replica_result_impl_ce, getThis(), ("data"), 0, &rv);
-    ZVAL_COPY_DEREF(return_value, prop);
+    zval *prop, *decoder, *flags, *datatype, rv1, rv2, rv3, rv4;
+    prop = pcbc_read_property(pcbc_get_result_impl_ce, getThis(), ("data"), 0, &rv1);
+    decoder = pcbc_read_property(pcbc_get_result_impl_ce, getThis(), ("decoder"), 0, &rv2);
+    flags = pcbc_read_property(pcbc_get_result_impl_ce, getThis(), ("flags"), 0, &rv3);
+    datatype = pcbc_read_property(pcbc_get_result_impl_ce, getThis(), ("datatype"), 0, &rv4);
+    pcbc_decode_value(decoder, return_value, prop, Z_TYPE_P(flags) == IS_LONG ? Z_LVAL_P(flags) : 0,
+                      Z_TYPE_P(datatype) == IS_LONG ? Z_LVAL_P(datatype) : 0);
 }
 
 PHP_METHOD(GetReplicaResultImpl, isReplica)

@@ -125,6 +125,18 @@ PHP_METHOD(InsertOptions, durabilityLevel)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(InsertOptions, encoder)
+{
+    zval *arg;
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+
+    pcbc_update_property(pcbc_insert_options_ce, getThis(), ("encoder"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_InsertOptions_timeout, 0, 1, Couchbase\\InsertOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -137,11 +149,16 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_InsertOptions_durabilityLevel, 0, 1, C
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_InsertOptions_encoder, 0, 1, Couchbase\\InsertOptions, 0)
+ZEND_ARG_TYPE_INFO(0, arg, IS_CALLABLE, 0)
+ZEND_END_ARG_INFO()
+
 // clang-format off
 static const zend_function_entry pcbc_insert_options_methods[] = {
     PHP_ME(InsertOptions, timeout, ai_InsertOptions_timeout, ZEND_ACC_PUBLIC)
     PHP_ME(InsertOptions, expiry, ai_InsertOptions_expiry, ZEND_ACC_PUBLIC)
     PHP_ME(InsertOptions, durabilityLevel, ai_InsertOptions_durabilityLevel, ZEND_ACC_PUBLIC)
+    PHP_ME(InsertOptions, encoder, ai_InsertOptions_encoder, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 // clang-format on
@@ -158,6 +175,8 @@ PHP_METHOD(Collection, insert)
     }
     PCBC_RESOLVE_COLLECTION;
 
+    zval encoder = {0};
+    ZVAL_NULL(&encoder);
     lcb_CMDSTORE *cmd;
     lcb_cmdstore_create(&cmd, LCB_STORE_INSERT);
     lcb_cmdstore_collection(cmd, scope_str, scope_len, collection_str, collection_len);
@@ -174,6 +193,10 @@ PHP_METHOD(Collection, insert)
         prop = pcbc_read_property(pcbc_insert_options_ce, options, ("durability_level"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdstore_durability(cmd, Z_LVAL_P(prop));
+        }
+        prop = pcbc_read_property(pcbc_insert_options_ce, options, ("encoder"), 0, &ret);
+        if (Z_TYPE_P(prop) != IS_NULL) {
+            ZVAL_COPY(&encoder, prop);
         }
     }
 
@@ -198,7 +221,8 @@ PHP_METHOD(Collection, insert)
     size_t nbytes;
     uint32_t flags;
     uint8_t datatype;
-    rv = pcbc_encode_value(bucket, value, &bytes, &nbytes, &flags, &datatype);
+    rv = pcbc_encode_value(Z_TYPE(encoder) == IS_NULL ? &bucket->encoder : &encoder, value, &bytes, &nbytes, &flags,
+                           &datatype);
     if (span) {
         lcbtrace_span_finish(span, LCBTRACE_NOW);
     }
@@ -283,6 +307,18 @@ PHP_METHOD(UpsertOptions, durabilityLevel)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(UpsertOptions, encoder)
+{
+    zval *arg;
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+
+    pcbc_update_property(pcbc_upsert_options_ce, getThis(), ("encoder"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_cas, 0, 1, Couchbase\\UpsertOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_STRING, 0)
 ZEND_END_ARG_INFO()
@@ -299,12 +335,17 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_durabilityLevel, 0, 1, C
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_encoder, 0, 1, Couchbase\\UpsertOptions, 0)
+ZEND_ARG_TYPE_INFO(0, arg, IS_CALLABLE, 0)
+ZEND_END_ARG_INFO()
+
 // clang-format off
 static const zend_function_entry pcbc_upsert_options_methods[] = {
     PHP_ME(UpsertOptions, cas, ai_UpsertOptions_cas, ZEND_ACC_PUBLIC)
     PHP_ME(UpsertOptions, timeout, ai_UpsertOptions_timeout, ZEND_ACC_PUBLIC)
     PHP_ME(UpsertOptions, expiry, ai_UpsertOptions_expiry, ZEND_ACC_PUBLIC)
     PHP_ME(UpsertOptions, durabilityLevel, ai_UpsertOptions_durabilityLevel, ZEND_ACC_PUBLIC)
+    PHP_ME(UpsertOptions, encoder, ai_UpsertOptions_encoder, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 // clang-format on
@@ -321,6 +362,8 @@ PHP_METHOD(Collection, upsert)
     }
     PCBC_RESOLVE_COLLECTION;
 
+    zval encoder = {0};
+    ZVAL_NULL(&encoder);
     lcb_CMDSTORE *cmd;
     lcb_cmdstore_create(&cmd, LCB_STORE_UPSERT);
     lcb_cmdstore_collection(cmd, scope_str, scope_len, collection_str, collection_len);
@@ -348,6 +391,10 @@ PHP_METHOD(Collection, upsert)
                 zend_string_free(decoded);
             }
         }
+        prop = pcbc_read_property(pcbc_upsert_options_ce, options, ("encoder"), 0, &ret);
+        if (Z_TYPE_P(prop) != IS_NULL) {
+            ZVAL_COPY(&encoder, prop);
+        }
     }
 
     lcbtrace_SPAN *parent_span = NULL;
@@ -372,7 +419,8 @@ PHP_METHOD(Collection, upsert)
     uint32_t flags;
     uint8_t datatype;
 
-    rv = pcbc_encode_value(bucket, value, &bytes, &nbytes, &flags, &datatype);
+    rv = pcbc_encode_value(Z_TYPE(encoder) == IS_NULL ? &bucket->encoder : &encoder, value, &bytes, &nbytes, &flags,
+                           &datatype);
     if (span) {
         lcbtrace_span_finish(span, LCBTRACE_NOW);
     }
@@ -457,6 +505,18 @@ PHP_METHOD(ReplaceOptions, durabilityLevel)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(ReplaceOptions, encoder)
+{
+    zval *arg;
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "z", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+
+    pcbc_update_property(pcbc_replace_options_ce, getThis(), ("encoder"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_cas, 0, 1, Couchbase\\ReplaceOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_STRING, 0)
 ZEND_END_ARG_INFO()
@@ -473,12 +533,17 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_durabilityLevel, 0, 1, 
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_encoder, 0, 1, Couchbase\\ReplaceOptions, 0)
+ZEND_ARG_TYPE_INFO(0, arg, IS_CALLABLE, 0)
+ZEND_END_ARG_INFO()
+
 // clang-format off
 static const zend_function_entry pcbc_replace_options_methods[] = {
     PHP_ME(ReplaceOptions, cas, ai_ReplaceOptions_cas, ZEND_ACC_PUBLIC)
     PHP_ME(ReplaceOptions, timeout, ai_ReplaceOptions_timeout, ZEND_ACC_PUBLIC)
     PHP_ME(ReplaceOptions, expiry, ai_ReplaceOptions_expiry, ZEND_ACC_PUBLIC)
     PHP_ME(ReplaceOptions, durabilityLevel, ai_ReplaceOptions_durabilityLevel, ZEND_ACC_PUBLIC)
+    PHP_ME(ReplaceOptions, encoder, ai_ReplaceOptions_encoder, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 // clang-format on
@@ -495,6 +560,8 @@ PHP_METHOD(Collection, replace)
     }
     PCBC_RESOLVE_COLLECTION;
 
+    zval encoder = {0};
+    ZVAL_NULL(&encoder);
     lcb_CMDSTORE *cmd;
     lcb_cmdstore_create(&cmd, LCB_STORE_REPLACE);
     lcb_cmdstore_collection(cmd, scope_str, scope_len, collection_str, collection_len);
@@ -522,6 +589,10 @@ PHP_METHOD(Collection, replace)
                 zend_string_free(decoded);
             }
         }
+        prop = pcbc_read_property(pcbc_replace_options_ce, options, ("encoder"), 0, &ret);
+        if (Z_TYPE_P(prop) != IS_NULL) {
+            ZVAL_COPY(&encoder, prop);
+        }
     }
 
     lcbtrace_SPAN *parent_span = NULL;
@@ -545,7 +616,8 @@ PHP_METHOD(Collection, replace)
     size_t nbytes;
     uint32_t flags;
     uint8_t datatype;
-    rv = pcbc_encode_value(bucket, value, &bytes, &nbytes, &flags, &datatype);
+    rv = pcbc_encode_value(Z_TYPE(encoder) == IS_NULL ? &bucket->encoder : &encoder, value, &bytes, &nbytes, &flags,
+                           &datatype);
     if (span) {
         lcbtrace_span_finish(span, LCBTRACE_NOW);
     }
@@ -841,6 +913,7 @@ PHP_MINIT_FUNCTION(CollectionStore)
     zend_declare_property_null(pcbc_insert_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_insert_options_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_insert_options_ce, ZEND_STRL("durability_level"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_insert_options_ce, ZEND_STRL("encoder"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "UpsertOptions", pcbc_upsert_options_methods);
     pcbc_upsert_options_ce = zend_register_internal_class(&ce);
@@ -848,6 +921,7 @@ PHP_MINIT_FUNCTION(CollectionStore)
     zend_declare_property_null(pcbc_upsert_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_upsert_options_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_upsert_options_ce, ZEND_STRL("durability_level"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_upsert_options_ce, ZEND_STRL("encoder"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ReplaceOptions", pcbc_replace_options_methods);
     pcbc_replace_options_ce = zend_register_internal_class(&ce);
@@ -855,6 +929,7 @@ PHP_MINIT_FUNCTION(CollectionStore)
     zend_declare_property_null(pcbc_replace_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_replace_options_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_replace_options_ce, ZEND_STRL("durability_level"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_replace_options_ce, ZEND_STRL("encoder"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "AppendOptions", pcbc_append_options_methods);
     pcbc_append_options_ce = zend_register_internal_class(&ce);
