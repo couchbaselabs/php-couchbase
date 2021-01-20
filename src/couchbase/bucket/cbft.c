@@ -270,7 +270,7 @@ PHP_METHOD(Cluster, searchQuery)
         PCBC_STRING(fname, "jsonSerialize");
         rv = call_user_function(EG(function_table), options, &fname, &options_payload, 0, NULL);
         if (rv != FAILURE && !EG(exception) && !Z_ISUNDEF(options_payload)) {
-            zend_hash_merge(HASH_OF(&payload), HASH_OF(&options_payload), NULL, 0);
+            zend_hash_merge(HASH_OF(&payload), HASH_OF(&options_payload), zval_add_ref, 0);
         }
         zval_dtor(&fname);
     }
@@ -285,6 +285,7 @@ PHP_METHOD(Cluster, searchQuery)
     int last_error;
     PCBC_JSON_ENCODE(&buf, &payload, 0, last_error);
     zval_dtor(&payload);
+    zval_dtor(&options_payload);
     if (last_error != 0) {
         pcbc_log(LOGARGS(cluster->conn->lcb, WARN), "Failed to encode FTS query as JSON: json_last_error=%d",
                  last_error);
