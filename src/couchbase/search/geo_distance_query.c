@@ -38,8 +38,7 @@ PHP_METHOD(GeoDistanceSearchQuery, __construct)
     pcbc_update_property_double(pcbc_geo_distance_search_query_ce, getThis(), ("longitude"), lon);
     pcbc_update_property_double(pcbc_geo_distance_search_query_ce, getThis(), ("latitude"), lat);
     if (distance) {
-        pcbc_update_property_str(pcbc_geo_distance_search_query_ce, getThis(), ("distance"),
-                                 distance);
+        pcbc_update_property_str(pcbc_geo_distance_search_query_ce, getThis(), ("distance"), distance);
     }
 }
 
@@ -145,8 +144,7 @@ PHP_MINIT_FUNCTION(GeoDistanceSearchQuery)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GeoDistanceSearchQuery", geo_distance_search_query_methods);
     pcbc_geo_distance_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_geo_distance_search_query_ce, 2, pcbc_json_serializable_ce,
-                          pcbc_search_query_ce);
+    zend_class_implements(pcbc_geo_distance_search_query_ce, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
 
     zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_geo_distance_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);

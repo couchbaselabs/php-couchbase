@@ -108,8 +108,7 @@ ZEND_ARG_TYPE_INFO(0, field, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, limit, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_NumericRangeSearchFacet_addRange, 0, 3, Couchbase\\NumericRangeSearchFacet,
-                                       0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_NumericRangeSearchFacet_addRange, 0, 3, Couchbase\\NumericRangeSearchFacet, 0)
 ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, min, IS_DOUBLE, 1)
 ZEND_ARG_TYPE_INFO(0, max, IS_DOUBLE, 1)
@@ -131,8 +130,7 @@ PHP_MINIT_FUNCTION(NumericRangeSearchFacet)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "NumericRangeSearchFacet", numeric_search_facet_methods);
     pcbc_numeric_range_search_facet_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_numeric_range_search_facet_ce, 2, pcbc_json_serializable_ce,
-                          pcbc_search_facet_ce);
+    zend_class_implements(pcbc_numeric_range_search_facet_ce, 2, pcbc_json_serializable_ce, pcbc_search_facet_ce);
 
     zend_declare_property_null(pcbc_numeric_range_search_facet_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_numeric_range_search_facet_ce, ZEND_STRL("limit"), ZEND_ACC_PRIVATE);

@@ -513,9 +513,7 @@ PHP_MINIT_FUNCTION(CryptoProvider)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CryptoProvider", crypto_provider_methods);
     pcbc_crypto_provider_ce = zend_register_internal_class(&ce);
 
-    zend_declare_class_constant_long(pcbc_crypto_provider_ce, ZEND_STRL("KEY_TYPE_ENCRYPT"),
-                                     LCBCRYPTO_KEY_ENCRYPT);
-    zend_declare_class_constant_long(pcbc_crypto_provider_ce, ZEND_STRL("KEY_TYPE_DECRYPT"),
-                                     LCBCRYPTO_KEY_DECRYPT);
+    zend_declare_class_constant_long(pcbc_crypto_provider_ce, ZEND_STRL("KEY_TYPE_ENCRYPT"), LCBCRYPTO_KEY_ENCRYPT);
+    zend_declare_class_constant_long(pcbc_crypto_provider_ce, ZEND_STRL("KEY_TYPE_DECRYPT"), LCBCRYPTO_KEY_DECRYPT);
     return SUCCESS;
 }

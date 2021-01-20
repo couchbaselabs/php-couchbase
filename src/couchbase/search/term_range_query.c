@@ -64,8 +64,7 @@ PHP_METHOD(TermRangeSearchQuery, min)
 
     pcbc_update_property_str(pcbc_term_range_search_query_ce, getThis(), ("min"), min);
     if (!inclusive_null) {
-        pcbc_update_property_bool(pcbc_term_range_search_query_ce, getThis(), ("inclusive_min"),
-                                  inclusive);
+        pcbc_update_property_bool(pcbc_term_range_search_query_ce, getThis(), ("inclusive_min"), inclusive);
     }
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -84,8 +83,7 @@ PHP_METHOD(TermRangeSearchQuery, max)
 
     pcbc_update_property_str(pcbc_term_range_search_query_ce, getThis(), ("max"), max);
     if (!inclusive_null) {
-        pcbc_update_property_bool(pcbc_term_range_search_query_ce, getThis(), ("inclusive_max"),
-                                  inclusive);
+        pcbc_update_property_bool(pcbc_term_range_search_query_ce, getThis(), ("inclusive_max"), inclusive);
     }
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -177,8 +175,7 @@ PHP_MINIT_FUNCTION(TermRangeSearchQuery)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "TermRangeSearchQuery", term_range_search_query_methods);
     pcbc_term_range_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_term_range_search_query_ce, 2, pcbc_json_serializable_ce,
-                          pcbc_search_query_ce);
+    zend_class_implements(pcbc_term_range_search_query_ce, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
 
     zend_declare_property_null(pcbc_term_range_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_term_range_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);

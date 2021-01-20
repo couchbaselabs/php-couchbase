@@ -160,8 +160,7 @@ PHP_MINIT_FUNCTION(DateRangeSearchFacet)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "DateRangeSearchFacet", date_search_facet_methods);
     pcbc_date_range_search_facet_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_date_range_search_facet_ce, 2, pcbc_json_serializable_ce,
-                          pcbc_search_facet_ce);
+    zend_class_implements(pcbc_date_range_search_facet_ce, 2, pcbc_json_serializable_ce, pcbc_search_facet_ce);
 
     zend_declare_property_null(pcbc_date_range_search_facet_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_date_range_search_facet_ce, ZEND_STRL("limit"), ZEND_ACC_PRIVATE);

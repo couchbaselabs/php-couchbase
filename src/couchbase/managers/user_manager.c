@@ -47,8 +47,7 @@ static void httpcb_getUser(void *ctx, zval *return_value, zval *response)
     }
     zval external_groups;
     array_init(&external_groups);
-    pcbc_update_property(pcbc_user_and_metadata_ce, return_value, ("external_groups"),
-                         &external_groups);
+    pcbc_update_property(pcbc_user_and_metadata_ce, return_value, ("external_groups"), &external_groups);
     zval_ptr_dtor(&external_groups);
     val = zend_symtable_str_find(Z_ARRVAL_P(response), ZEND_STRL("external_groups"));
     if (val && Z_TYPE_P(val) == IS_ARRAY) {
@@ -166,8 +165,7 @@ PHP_METHOD(UserManager, getUser)
     zval *options = NULL;
     zend_string *username;
 
-    int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &username, &options, pcbc_get_user_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &username, &options, pcbc_get_user_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -344,8 +342,7 @@ PHP_METHOD(UserManager, upsertUser)
         add_assoc_stringl(&payload, "roles", ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
         smart_str_free(&buf);
     }
-    php_url_encode_hash_ex(HASH_OF(&payload), &buf, NULL, 0, NULL, 0, NULL, 0, NULL, NULL,
-                                PHP_QUERY_RFC1738);
+    php_url_encode_hash_ex(HASH_OF(&payload), &buf, NULL, 0, NULL, 0, NULL, 0, NULL, NULL, PHP_QUERY_RFC1738);
     zval_dtor(&payload);
     if (rv == FAILURE) {
         smart_str_free(&buf);
@@ -366,8 +363,7 @@ PHP_METHOD(UserManager, dropUser)
     zval *options = NULL;
     zend_string *username;
 
-    int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &username, &options, pcbc_drop_user_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &username, &options, pcbc_drop_user_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -432,8 +428,7 @@ static void httpcb_getRoles(void *ctx, zval *return_value, zval *response)
         zval_ptr_dtor(&role);
         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("name"));
         if (val && Z_TYPE_P(val) == IS_STRING) {
-            pcbc_update_property(pcbc_role_and_description_ce, &role_and_desc, ("display_name"),
-                                 val);
+            pcbc_update_property(pcbc_role_and_description_ce, &role_and_desc, ("display_name"), val);
         }
         val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("desc"));
         if (val && Z_TYPE_P(val) == IS_STRING) {

@@ -33,14 +33,10 @@ PHP_METHOD(GeoBoundingBoxSearchQuery, __construct)
     if (rv == FAILURE) {
         return;
     }
-    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_longitude"),
-                                tl_lon);
-    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_latitude"),
-                                tl_lat);
-    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_longitude"),
-                                br_lon);
-    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_latitude"),
-                                br_lat);
+    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_longitude"), tl_lon);
+    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_latitude"), tl_lat);
+    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_longitude"), br_lon);
+    pcbc_update_property_double(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_latitude"), br_lat);
 }
 
 PHP_METHOD(GeoBoundingBoxSearchQuery, field)
@@ -88,22 +84,18 @@ PHP_METHOD(GeoBoundingBoxSearchQuery, jsonSerialize)
 
     zval top_left;
     array_init(&top_left);
-    prop =
-        pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_longitude"), 0, &ret);
+    prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_longitude"), 0, &ret);
     add_next_index_zval(&top_left, prop);
-    prop =
-        pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_latitude"), 0, &ret);
+    prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_latitude"), 0, &ret);
     add_next_index_zval(&top_left, prop);
     add_assoc_zval(return_value, "top_left", &top_left);
     Z_TRY_ADDREF(top_left);
 
     zval bottom_right;
     array_init(&bottom_right);
-    prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_longitude"), 0,
-                              &ret);
+    prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_longitude"), 0, &ret);
     add_next_index_zval(&bottom_right, prop);
-    prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_latitude"), 0,
-                              &ret);
+    prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_latitude"), 0, &ret);
     add_next_index_zval(&bottom_right, prop);
     add_assoc_zval(return_value, "bottom_right", &bottom_right);
     Z_TRY_ADDREF(bottom_right);
@@ -158,15 +150,13 @@ PHP_MINIT_FUNCTION(GeoBoundingBoxSearchQuery)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GeoBoundingBoxSearchQuery", geo_bounding_box_search_query_methods);
     pcbc_geo_bounding_box_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_geo_bounding_box_search_query_ce, 2, pcbc_json_serializable_ce,
-                          pcbc_search_query_ce);
+    zend_class_implements(pcbc_geo_bounding_box_search_query_ce, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
 
     zend_declare_property_null(pcbc_geo_bounding_box_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_geo_bounding_box_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_geo_bounding_box_search_query_ce, ZEND_STRL("top_left_longitude"),
                                ZEND_ACC_PRIVATE);
-    zend_declare_property_null(pcbc_geo_bounding_box_search_query_ce, ZEND_STRL("top_left_latitude"),
-                               ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_geo_bounding_box_search_query_ce, ZEND_STRL("top_left_latitude"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_geo_bounding_box_search_query_ce, ZEND_STRL("bottom_right_longitude"),
                                ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_geo_bounding_box_search_query_ce, ZEND_STRL("bottom_right_latitude"),

@@ -38,8 +38,7 @@ void exists_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPEXISTS *r
     set_property_str(ectx, lcb_errctx_kv_context, pcbc_exists_result_impl_ce, "err_ctx");
     set_property_str(ectx, lcb_errctx_kv_ref, pcbc_exists_result_impl_ce, "err_ref");
     set_property_str(ectx, lcb_errctx_kv_key, pcbc_exists_result_impl_ce, "key");
-    pcbc_update_property_bool(pcbc_exists_result_impl_ce, return_value, ("is_found"),
-                              lcb_respexists_is_found(resp));
+    pcbc_update_property_bool(pcbc_exists_result_impl_ce, return_value, ("is_found"), lcb_respexists_is_found(resp));
     if (cookie->rc == LCB_SUCCESS) {
         uint64_t data;
         lcb_respexists_cas(resp, &data);

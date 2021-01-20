@@ -94,8 +94,7 @@ PHP_METHOD(Collection, getAnyReplica)
     zval *options = NULL;
     lcb_STATUS err;
 
-    int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &id, &options, pcbc_get_any_replica_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &id, &options, pcbc_get_any_replica_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -167,8 +166,7 @@ PHP_METHOD(Collection, getAllReplicas)
     zval *options = NULL;
     lcb_STATUS err;
 
-    int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &id, &options, pcbc_get_all_replicas_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &id, &options, pcbc_get_all_replicas_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }

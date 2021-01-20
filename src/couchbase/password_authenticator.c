@@ -168,7 +168,6 @@ static zend_object *authenticator_create_object(zend_class_entry *class_type)
     return &obj->std;
 }
 
-
 #if PHP_VERSION_ID < 80000
 static HashTable *pcbc_password_authenticator_get_debug_info(zval *object, int *is_temp)
 {

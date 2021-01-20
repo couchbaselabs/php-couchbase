@@ -124,8 +124,7 @@ PHP_MINIT_FUNCTION(BooleanFieldSearchQuery)
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "BooleanFieldSearchQuery", boolean_field_search_query_methods);
     pcbc_boolean_field_search_query_ce = zend_register_internal_class(&ce);
-    zend_class_implements(pcbc_boolean_field_search_query_ce, 2, pcbc_json_serializable_ce,
-                          pcbc_search_query_ce);
+    zend_class_implements(pcbc_boolean_field_search_query_ce, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
 
     zend_declare_property_null(pcbc_boolean_field_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_boolean_field_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);

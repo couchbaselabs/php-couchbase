@@ -65,8 +65,7 @@ static void analytics_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_R
             }
             mval = zend_symtable_str_find(marr, ZEND_STRL("clientContextID"));
             if (mval) {
-                pcbc_update_property(pcbc_query_meta_data_impl_ce, &meta, ("client_context_id"),
-                                     mval);
+                pcbc_update_property(pcbc_query_meta_data_impl_ce, &meta, ("client_context_id"), mval);
             }
             mval = zend_symtable_str_find(marr, ZEND_STRL("signature"));
             if (mval) {
@@ -298,8 +297,7 @@ PHP_METHOD(Cluster, analyticsQuery)
     zend_string *statement;
     zval *options = NULL;
 
-    int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &statement, &options, pcbc_analytics_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S|O!", &statement, &options, pcbc_analytics_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }

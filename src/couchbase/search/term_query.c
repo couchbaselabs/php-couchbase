@@ -59,8 +59,7 @@ PHP_METHOD(TermSearchQuery, prefixLength)
         RETURN_NULL();
     }
 
-    pcbc_update_property_long(pcbc_term_search_query_ce, getThis(), ("prefix_length"),
-                              prefix_length);
+    pcbc_update_property_long(pcbc_term_search_query_ce, getThis(), ("prefix_length"), prefix_length);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }

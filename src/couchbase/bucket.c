@@ -348,11 +348,13 @@ static zend_object *pcbc_bucket_create_object(zend_class_entry *class_type)
 #if PHP_VERSION_ID < 80000
 static HashTable *pcbc_bucket_get_debug_info(zval *object, int *is_temp)
 {
-    pcbc_bucket_t *obj = Z_BUCKET_OBJ_P(object);;
+    pcbc_bucket_t *obj = Z_BUCKET_OBJ_P(object);
+    ;
 #else
 static HashTable *pcbc_bucket_get_debug_info(zend_object *object, int *is_temp)
 {
-    pcbc_bucket_t *obj = pcbc_bucket_fetch_object(object);;
+    pcbc_bucket_t *obj = pcbc_bucket_fetch_object(object);
+    ;
 #endif
     zval retval;
 

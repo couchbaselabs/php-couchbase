@@ -44,8 +44,7 @@ PHP_METHOD(BooleanSearchQuery, must)
 {
     zval *conjunct = NULL;
 
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &conjunct, pcbc_conjunction_search_query_ce) ==
-        FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &conjunct, pcbc_conjunction_search_query_ce) == FAILURE) {
         return;
     }
 
@@ -58,8 +57,7 @@ PHP_METHOD(BooleanSearchQuery, mustNot)
 {
     zval *disjunct = NULL;
 
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &disjunct, pcbc_disjunction_search_query_ce) ==
-        FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &disjunct, pcbc_disjunction_search_query_ce) == FAILURE) {
         return;
     }
 
@@ -72,8 +70,7 @@ PHP_METHOD(BooleanSearchQuery, should)
 {
     zval *disjunct = NULL;
 
-    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &disjunct, pcbc_disjunction_search_query_ce) ==
-        FAILURE) {
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &disjunct, pcbc_disjunction_search_query_ce) == FAILURE) {
         return;
     }
 

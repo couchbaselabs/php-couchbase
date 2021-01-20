@@ -83,8 +83,7 @@ PHP_METHOD(Collection, touch)
     zend_long expiry;
     zval *options = NULL;
 
-    int rv =
-        zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sl|O!", &id, &expiry, &options, pcbc_touch_options_ce);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Sl|O!", &id, &expiry, &options, pcbc_touch_options_ce);
     if (rv == FAILURE) {
         RETURN_NULL();
     }

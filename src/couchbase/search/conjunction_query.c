@@ -42,8 +42,7 @@ PHP_METHOD(ConjunctionSearchQuery, __construct)
         zval *entry;
         ZEND_HASH_FOREACH_VAL(HASH_OF(queries), entry)
         {
-            if (Z_TYPE_P(entry) != IS_OBJECT ||
-                !instanceof_function(Z_OBJCE_P(entry), pcbc_search_query_ce)) {
+            if (Z_TYPE_P(entry) != IS_OBJECT || !instanceof_function(Z_OBJCE_P(entry), pcbc_search_query_ce)) {
                 pcbc_log(LOGARGS(WARN), "Non-query value detected in queries array");
                 zend_type_error("Expected SearchQuery for a FTS conjunction query");
             }
@@ -87,8 +86,7 @@ PHP_METHOD(ConjunctionSearchQuery, every)
         for (i = 0; i < num_args; ++i) {
             zval *entry;
             entry = &args[i];
-            if (Z_TYPE_P(entry) != IS_OBJECT ||
-                !instanceof_function(Z_OBJCE_P(entry), pcbc_search_query_ce)) {
+            if (Z_TYPE_P(entry) != IS_OBJECT || !instanceof_function(Z_OBJCE_P(entry), pcbc_search_query_ce)) {
                 pcbc_log(LOGARGS(WARN), "Non-query value detected in queries array");
                 zend_type_error("Expected SearchQuery for a FTS conjunction query");
             }
@@ -156,8 +154,7 @@ PHP_MINIT_FUNCTION(ConjunctionSearchQuery)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ConjunctionSearchQuery", conjunction_search_query_methods);
     pcbc_conjunction_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_conjunction_search_query_ce, 2, pcbc_json_serializable_ce,
-                          pcbc_search_query_ce);
+    zend_class_implements(pcbc_conjunction_search_query_ce, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
 
     zend_declare_property_null(pcbc_conjunction_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_conjunction_search_query_ce, ZEND_STRL("queries"), ZEND_ACC_PRIVATE);

@@ -36,8 +36,8 @@ static void pcbc_bucket_init(zval *return_value, pcbc_cluster_t *cluster, const 
     pcbc_connection_t *conn;
     lcb_STATUS err;
 
-    err = pcbc_connection_get(&conn, LCB_TYPE_BUCKET, cluster->connstr, bucketname, cluster->username,
-                              cluster->password);
+    err =
+        pcbc_connection_get(&conn, LCB_TYPE_BUCKET, cluster->connstr, bucketname, cluster->username, cluster->password);
     if (err) {
         throw_lcb_exception(err, NULL);
         return;

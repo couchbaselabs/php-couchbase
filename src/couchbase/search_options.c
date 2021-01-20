@@ -400,8 +400,7 @@ PHP_MINIT_FUNCTION(SearchOptions)
     pcbc_search_highlight_mode_ce = zend_register_internal_interface(&ce);
     zend_declare_class_constant_stringl(pcbc_search_highlight_mode_ce, ZEND_STRL("HTML"), ZEND_STRL("html"));
     zend_declare_class_constant_stringl(pcbc_search_highlight_mode_ce, ZEND_STRL("ANSI"), ZEND_STRL("ansi"));
-    zend_declare_class_constant_stringl(pcbc_search_highlight_mode_ce, ZEND_STRL("SIMPLE"),
-                                        ZEND_STRL("simple"));
+    zend_declare_class_constant_stringl(pcbc_search_highlight_mode_ce, ZEND_STRL("SIMPLE"), ZEND_STRL("simple"));
 
     return SUCCESS;
 }

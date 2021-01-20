@@ -139,8 +139,7 @@ PHP_MINIT_FUNCTION(SearchSortGeoDistance)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchSortGeoDistance", search_sort_geo_distance_methods);
     pcbc_search_sort_geo_distance_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_search_sort_geo_distance_ce, 2, pcbc_json_serializable_ce,
-                          pcbc_search_sort_ce);
+    zend_class_implements(pcbc_search_sort_geo_distance_ce, 2, pcbc_json_serializable_ce, pcbc_search_sort_ce);
     zend_declare_property_null(pcbc_search_sort_geo_distance_ce, ZEND_STRL("desc"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_search_sort_geo_distance_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_search_sort_geo_distance_ce, ZEND_STRL("longitude"), ZEND_ACC_PRIVATE);

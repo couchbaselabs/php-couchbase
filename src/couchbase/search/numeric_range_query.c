@@ -64,8 +64,7 @@ PHP_METHOD(NumericRangeSearchQuery, min)
 
     pcbc_update_property_double(pcbc_numeric_range_search_query_ce, getThis(), ("min"), min);
     if (!inclusive_null) {
-        pcbc_update_property_bool(pcbc_numeric_range_search_query_ce, getThis(), ("inclusive_min"),
-                                  inclusive);
+        pcbc_update_property_bool(pcbc_numeric_range_search_query_ce, getThis(), ("inclusive_min"), inclusive);
     }
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -84,8 +83,7 @@ PHP_METHOD(NumericRangeSearchQuery, max)
 
     pcbc_update_property_double(pcbc_numeric_range_search_query_ce, getThis(), ("max"), max);
     if (!inclusive_null) {
-        pcbc_update_property_bool(pcbc_numeric_range_search_query_ce, getThis(), ("inclusive_max"),
-                                  inclusive);
+        pcbc_update_property_bool(pcbc_numeric_range_search_query_ce, getThis(), ("inclusive_max"), inclusive);
     }
 
     RETURN_ZVAL(getThis(), 1, 0);
@@ -177,17 +175,14 @@ PHP_MINIT_FUNCTION(NumericRangeSearchQuery)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "NumericRangeSearchQuery", numeric_range_search_query_methods);
     pcbc_numeric_range_search_query_ce = zend_register_internal_class(&ce);
 
-    zend_class_implements(pcbc_numeric_range_search_query_ce, 2, pcbc_json_serializable_ce,
-                          pcbc_search_query_ce);
+    zend_class_implements(pcbc_numeric_range_search_query_ce, 2, pcbc_json_serializable_ce, pcbc_search_query_ce);
 
     zend_declare_property_null(pcbc_numeric_range_search_query_ce, ZEND_STRL("boost"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_numeric_range_search_query_ce, ZEND_STRL("field"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_numeric_range_search_query_ce, ZEND_STRL("min"), ZEND_ACC_PRIVATE);
-    zend_declare_property_null(pcbc_numeric_range_search_query_ce, ZEND_STRL("inclusive_min"),
-                               ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_numeric_range_search_query_ce, ZEND_STRL("inclusive_min"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_numeric_range_search_query_ce, ZEND_STRL("max"), ZEND_ACC_PRIVATE);
-    zend_declare_property_null(pcbc_numeric_range_search_query_ce, ZEND_STRL("inclusive_max"),
-                               ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_numeric_range_search_query_ce, ZEND_STRL("inclusive_max"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }
