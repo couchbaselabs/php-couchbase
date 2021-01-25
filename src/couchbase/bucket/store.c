@@ -260,15 +260,17 @@ zend_class_entry *pcbc_upsert_options_ce;
 PHP_METHOD(UpsertOptions, cas)
 {
     zend_string *arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "S", &arg);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
     zend_string *decoded = php_base64_decode_str(arg);
+    if (decoded && ZSTR_LEN(decoded) == sizeof(uint64_t)) {
+        pcbc_update_property_str(pcbc_upsert_options_ce, getThis(), ("cas"), arg);
+    } else {
+        throw_lcb_exception(LCB_ERR_INVALID_ARGUMENT, NULL);
+    }
     if (decoded) {
-        if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
-            pcbc_update_property_str(pcbc_upsert_options_ce, getThis(), ("cas"), arg);
-        }
         zend_string_free(decoded);
     }
     RETURN_ZVAL(getThis(), 1, 0);
@@ -458,15 +460,17 @@ zend_class_entry *pcbc_replace_options_ce;
 PHP_METHOD(ReplaceOptions, cas)
 {
     zend_string *arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "S", &arg);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
     zend_string *decoded = php_base64_decode_str(arg);
+    if (decoded && ZSTR_LEN(decoded) == sizeof(uint64_t)) {
+        pcbc_update_property_str(pcbc_replace_options_ce, getThis(), ("cas"), arg);
+    } else {
+        throw_lcb_exception(LCB_ERR_INVALID_ARGUMENT, NULL);
+    }
     if (decoded) {
-        if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
-            pcbc_update_property_str(pcbc_replace_options_ce, getThis(), ("cas"), arg);
-        }
         zend_string_free(decoded);
     }
     RETURN_ZVAL(getThis(), 1, 0);
@@ -655,15 +659,17 @@ zend_class_entry *pcbc_append_options_ce;
 PHP_METHOD(AppendOptions, cas)
 {
     zend_string *arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "S", &arg);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
     zend_string *decoded = php_base64_decode_str(arg);
+    if (decoded && ZSTR_LEN(decoded) == sizeof(uint64_t)) {
+        pcbc_update_property_str(pcbc_append_options_ce, getThis(), ("cas"), arg);
+    } else {
+        throw_lcb_exception(LCB_ERR_INVALID_ARGUMENT, NULL);
+    }
     if (decoded) {
-        if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
-            pcbc_update_property_str(pcbc_append_options_ce, getThis(), ("cas"), arg);
-        }
         zend_string_free(decoded);
     }
     RETURN_ZVAL(getThis(), 1, 0);
@@ -782,15 +788,17 @@ zend_class_entry *pcbc_prepend_options_ce;
 PHP_METHOD(PrependOptions, cas)
 {
     zend_string *arg;
-    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "S", &arg);
+    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &arg);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
     zend_string *decoded = php_base64_decode_str(arg);
+    if (decoded && ZSTR_LEN(decoded) == sizeof(uint64_t)) {
+        pcbc_update_property_str(pcbc_prepend_options_ce, getThis(), ("cas"), arg);
+    } else {
+        throw_lcb_exception(LCB_ERR_INVALID_ARGUMENT, NULL);
+    }
     if (decoded) {
-        if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
-            pcbc_update_property_str(pcbc_prepend_options_ce, getThis(), ("cas"), arg);
-        }
         zend_string_free(decoded);
     }
     RETURN_ZVAL(getThis(), 1, 0);
