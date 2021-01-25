@@ -3,6 +3,8 @@ require_once('CouchbaseTestCase.php');
 
 use \Couchbase\Cluster;
 use \Couchbase\ClusterOptions;
+use \Couchbase\GetOptions;
+use \Couchbase\UpsertOptions;
 
 class BucketTest extends CouchbaseTestCase {
 
@@ -75,6 +77,62 @@ class BucketTest extends CouchbaseTestCase {
         $this->assertNotNull($res->cas());
         $this->assertEquals($res->content(), ['name' => 'bob']);
         return $key;
+    }
+
+    /**
+     * Test reaction on empty value
+     *
+     * @depends testConnect
+     */
+    function testReadingEmptyString($c) {
+        $key = $this->makeKey('emptyString');
+
+        $passThruDecoder = function($bytes, $flags, $datatype) { return $bytes; };
+        $passThruEncoder = function($value) { return [$value, 0x00, 0x00]; };
+
+        $res = $c->upsert($key, "");
+        $this->assertNotNull($res->cas());
+        $cas = $res->cas();
+
+        $res = $c->get($key);
+        $this->assertEquals($cas, $res->cas());
+        $this->assertEquals($res->content(), "");
+
+        $options = new GetOptions();
+        $options->decoder($passThruDecoder);
+        $res = $c->get($key, $options);
+        $this->assertEquals($cas, $res->cas());
+        $this->assertEquals($res->content(), "");
+
+        $options = new UpsertOptions();
+        $options->encoder($passThruEncoder);
+        $res = $c->upsert($key, "", $options);
+        $this->assertNotNull($res->cas());
+        $cas = $res->cas();
+
+        $res = $c->get($key);
+        $this->assertEquals($cas, $res->cas());
+        $this->assertEquals($res->content(), "");
+
+        $options = new GetOptions();
+        $options->decoder($passThruDecoder);
+        $res = $c->get($key, $options);
+        $this->assertEquals($cas, $res->cas());
+        $this->assertEquals($res->content(), "");
+
+        $res = $c->upsert($key, null);
+        $this->assertNotNull($res->cas());
+        $cas = $res->cas();
+
+        $res = $c->get($key);
+        $this->assertEquals($cas, $res->cas());
+        $this->assertEquals($res->content(), null);
+
+        $options = new GetOptions();
+        $options->decoder($passThruDecoder);
+        $res = $c->get($key, $options);
+        $this->assertEquals($cas, $res->cas());
+        $this->assertEquals($res->content(), "null");
     }
 
     /**
