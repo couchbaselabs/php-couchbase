@@ -36,7 +36,7 @@
  *   bytes. For example, the original document consists of 100 bytes. In this case factor 1.0 will require compressor
  *   to yield values not larger than 100 bytes (100/1.0), and 1.5 -- not larger than 66 bytes (100/1.5).
  *
- * * `couchbase.decoder.json_arrays` (boolean), default: `false`
+ * * `couchbase.decoder.json_arrays` (boolean), default: `true`
  *
  *   controls the form of the documents, returned by the server if they were in JSON format. When true, it will generate
  *   arrays of arrays, otherwise instances of stdClass.
@@ -257,9 +257,7 @@ namespace Couchbase {
          *
          * @return DateTimeInterface|null
          */
-        public function expiryTime(): ?DateTimeInterface
-        {
-        }
+        public function expiryTime(): ?DateTimeInterface;
     }
 
     /**
@@ -357,9 +355,7 @@ namespace Couchbase {
          *
          * @return DateTimeInterface|null
          */
-        public function expiryTime(): ?DateTimeInterface
-        {
-        }
+        public function expiryTime(): ?DateTimeInterface;
     }
 
     /**
@@ -2689,7 +2685,6 @@ namespace Couchbase {
     {
         public function jsonSerialize() {}
 
-        /** @ignore */
         public function __construct()
         {
         }
@@ -2779,6 +2774,8 @@ namespace Couchbase {
 
     class Coordinate implements JsonSerializable
     {
+        public function jsonSerialize() {}
+
         /**
          * @param float $longitude
          * @param float $latitude
