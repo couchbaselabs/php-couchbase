@@ -3751,7 +3751,7 @@ namespace Couchbase {
          * @param int|DateTimeInterface $arg the relative expiry time in seconds or DateTimeInterface object for absolute point in time
          * @return ReplaceOptions
          */
-        public function expiry(mixed $arg): UpsertOptions
+        public function expiry(mixed $arg): ReplaceOptions
         {
         }
 
@@ -3895,7 +3895,7 @@ namespace Couchbase {
          * @param int|DateTimeInterface $arg the relative expiry time in seconds or DateTimeInterface object for absolute point in time
          * @return IncrementOptions
          */
-        public function expiry(mixed $arg): UpsertOptions
+        public function expiry(mixed $arg): IncrementOptions
         {
         }
 
@@ -3949,7 +3949,7 @@ namespace Couchbase {
          * @param int|DateTimeInterface $arg the relative expiry time in seconds or DateTimeInterface object for absolute point in time
          * @return DecrementOptions
          */
-        public function expiry(mixed $arg): UpsertOptions
+        public function expiry(mixed $arg): DecrementOptions
         {
         }
 
@@ -4074,7 +4074,7 @@ namespace Couchbase {
          * @param int|DateTimeInterface $arg the relative expiry time in seconds or DateTimeInterface object for absolute point in time
          * @return MutateInOptions
          */
-        public function expiry(mixed $arg): UpsertOptions
+        public function expiry(mixed $arg): MutateInOptions
         {
         }
 
