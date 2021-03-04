@@ -5,9 +5,11 @@ use \Couchbase\Cluster;
 use \Couchbase\ClusterOptions;
 use \Couchbase\GetOptions;
 use \Couchbase\UpsertOptions;
+use \Couchbase\ReplaceOptions;
+use \Couchbase\RemoveOptions;
+use \Couchbase\MutateInOptions;
 
 class BucketTest extends CouchbaseTestCase {
-
     /**
      * Test that connections with invalid details fail.
      */
@@ -77,6 +79,45 @@ class BucketTest extends CouchbaseTestCase {
         $this->assertNotNull($res->cas());
         $this->assertEquals($res->content(), ['name' => 'bob']);
         return $key;
+    }
+
+    /**
+     * Verifies that library-generated CAS values work as expected
+     *
+     * @depends testConnect
+     */
+    function testGoodCas($c) {
+        $key = $this->makeKey('goodCas');
+
+        $res = $c->upsert($key, ['name' => 'bob']);
+        $this->assertNotNull($res->cas());
+        $cas1 = $res->cas();
+        var_dump($res->cas());
+
+        $options = new ReplaceOptions();
+        $options->cas($cas1);
+        $res = $c->replace($key, ['name' => 'john'], $options);
+        $this->assertNotNull($res->cas());
+        $cas2 = $res->cas();
+        $this->assertNotEquals($cas1, $cas2);
+
+        $res = $c->get($key);
+        $this->assertEquals($cas2, $res->cas());
+        $this->assertEquals($res->content(), ['name' => 'john']);
+    }
+
+    function testBadCas() {
+        // strings are not CAS
+        $options = new RemoveOptions();
+        $this->wrapException(function() use($options) {
+            $options->cas("0xdeadbeef");
+        }, '\Couchbase\BadInputException');
+
+        // Application should not attempt to generate CAS literals
+        $options = new MutateInOptions();
+        $this->wrapException(function() use($options) {
+            $options->cas("776t3g==");
+        }, '\Couchbase\BadInputException');
     }
 
     /**

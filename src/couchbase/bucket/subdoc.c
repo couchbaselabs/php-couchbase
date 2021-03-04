@@ -336,10 +336,12 @@ PHP_METHOD(MutateInOptions, cas)
         RETURN_NULL();
     }
     zend_string *decoded = php_base64_decode_str(arg);
+    if (decoded && ZSTR_LEN(decoded) == sizeof(uint64_t)) {
+        pcbc_update_property_str(pcbc_mutate_in_options_ce, getThis(), ("cas"), arg);
+    } else {
+        throw_lcb_exception(LCB_ERR_INVALID_ARGUMENT, NULL);
+    }
     if (decoded) {
-        if (ZSTR_LEN(decoded) == sizeof(uint64_t)) {
-            pcbc_update_property_str(pcbc_mutate_in_options_ce, getThis(), ("cas"), arg);
-        }
         zend_string_free(decoded);
     }
     RETURN_ZVAL(getThis(), 1, 0);

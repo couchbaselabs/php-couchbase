@@ -3702,16 +3702,6 @@ namespace Couchbase {
         }
 
         /**
-         * Sets the cas value for the operation.
-         *
-         * @param string $arg the cas value
-         * @return UpsertOptions
-         */
-        public function cas(string $arg): UpsertOptions
-        {
-        }
-
-        /**
          * Sets the durability level to enforce when writing the document.
          *
          * @param int $arg the durability level to enforce

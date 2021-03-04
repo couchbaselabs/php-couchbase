@@ -259,21 +259,8 @@ zend_class_entry *pcbc_upsert_options_ce;
 
 PHP_METHOD(UpsertOptions, cas)
 {
-    zend_string *arg;
-    int rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &arg);
-    if (rv == FAILURE) {
-        RETURN_NULL();
-    }
-    zend_string *decoded = php_base64_decode_str(arg);
-    if (decoded && ZSTR_LEN(decoded) == sizeof(uint64_t)) {
-        pcbc_update_property_str(pcbc_upsert_options_ce, getThis(), ("cas"), arg);
-    } else {
-        throw_lcb_exception(LCB_ERR_INVALID_ARGUMENT, NULL);
-    }
-    if (decoded) {
-        zend_string_free(decoded);
-    }
-    RETURN_ZVAL(getThis(), 1, 0);
+    zend_parse_parameters_none_throw();
+    RETURN_NULL();
 }
 
 PHP_METHOD(UpsertOptions, timeout)
@@ -343,7 +330,7 @@ ZEND_END_ARG_INFO()
 
 // clang-format off
 static const zend_function_entry pcbc_upsert_options_methods[] = {
-    PHP_ME(UpsertOptions, cas, ai_UpsertOptions_cas, ZEND_ACC_PUBLIC)
+    PHP_ME(UpsertOptions, cas, ai_UpsertOptions_cas, ZEND_ACC_PUBLIC|ZEND_ACC_DEPRECATED)
     PHP_ME(UpsertOptions, timeout, ai_UpsertOptions_timeout, ZEND_ACC_PUBLIC)
     PHP_ME(UpsertOptions, expiry, ai_UpsertOptions_expiry, ZEND_ACC_PUBLIC)
     PHP_ME(UpsertOptions, durabilityLevel, ai_UpsertOptions_durabilityLevel, ZEND_ACC_PUBLIC)
