@@ -35,6 +35,7 @@ PHP_EXECUTABLE="${CB_PHP_PREFIX}/bin/php"
 if [ -d "${PROJECT_ROOT}/../couchbase-php-client/src" ]
 then
     CB_EXTRA_ARGS="-d ${PROJECT_ROOT}/../couchbase-php-client/src"
+fi
 
 ${PHP_EXECUTABLE} \
     ${CB_PHPDOC_PHAR} \
