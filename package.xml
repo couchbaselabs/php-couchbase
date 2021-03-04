@@ -18,9 +18,9 @@
         <active>yes</active>
     </lead>
 
-    <date>2021-01-20</date>
+    <date>2021-03-04</date>
     <version>
-        <release>3.1.0</release>
+        <release>3.1.1</release>
         <api>3.1.0</api>
     </version>
     <stability>
@@ -29,11 +29,9 @@
     </stability>
     <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2</license>
     <notes>
-        PCBC-742: Propagate custom value transcoder to results
-        PCBC-707: Add scope-level query and scope qualifier support for QueryOptions.
-        PCBC-741: Fix memory leak in Bucket::viewQuery()
-        PCBC-734: Fix destruction of SearchOptions.
-        PCBC-591: KeyNotFoundException is an alias for DocumentNotFoundException
+        PCBC-745: throw BadInputException when string cannot be used as CAS
+        PCBC-746: add tests for transcoding empty value
+        PCBC-748: fix *Option#expiry() return value in documentation stubs
     </notes>
     <contents>
         <dir name="/">
@@ -157,6 +155,25 @@
     <providesextension>couchbase</providesextension>
     <extsrcrelease/>
     <changelog>
+        <release>
+            <date>2021-01-20</date>
+            <version>
+                <release>3.1.0</release>
+                <api>3.1.0</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2</license>
+            <notes>
+                PCBC-742: Propagate custom value transcoder to results
+                PCBC-707: Add scope-level query and scope qualifier support for QueryOptions.
+                PCBC-741: Fix memory leak in Bucket::viewQuery()
+                PCBC-734: Fix destruction of SearchOptions.
+                PCBC-591: KeyNotFoundException is an alias for DocumentNotFoundException
+            </notes>
+        </release>
         <release>
             <date>2020-12-06</date>
             <version>
