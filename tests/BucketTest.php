@@ -92,7 +92,6 @@ class BucketTest extends CouchbaseTestCase {
         $res = $c->upsert($key, ['name' => 'bob']);
         $this->assertNotNull($res->cas());
         $cas1 = $res->cas();
-        var_dump($res->cas());
 
         $options = new ReplaceOptions();
         $options->cas($cas1);
@@ -274,7 +273,7 @@ class BucketTest extends CouchbaseTestCase {
         $this->wrapException(function() use($c, $key, $old_cas) {
             $options = (new \Couchbase\ReplaceOptions())->cas($old_cas);
             $c->replace($key, 'ferret', $options);
-        }, '\Couchbase\CasMismatchException', COUCHBASE_KEYALREADYEXISTS);
+        }, '\Couchbase\CasMismatchException', COUCHBASE_ERR_CAS_MISMATCH);
     }
 
     /**
@@ -527,7 +526,7 @@ class BucketTest extends CouchbaseTestCase {
                 new \Couchbase\MutateUpsertSpec('created_at', time(), true, true),
                 new \Couchbase\MutateReplaceSpec('', ["duplicate" => "yes"])
             ], $options);
-        }, '\Couchbase\KeyExistsException');
+        }, '\Couchbase\CasMismatchException');
 
         $options = (new \Couchbase\MutateInOptions())->storeSemantics(\Couchbase\StoreSemantics::REPLACE);
         $result = $c->mutateIn($key, [
@@ -583,7 +582,7 @@ class BucketTest extends CouchbaseTestCase {
             $result = $c->mutateIn($key, [
                 new \Couchbase\MutateUpsertSpec('newDict', 'withWrongCAS'),
             ], $options);
-        }, '\Couchbase\KeyExistsException');
+        }, '\Couchbase\CasMismatchException');
 
         # once again with correct CAS
         $options = (new \Couchbase\MutateInOptions())->cas($cas);

@@ -368,6 +368,10 @@ void pcbc_create_lcb_exception(zval *return_value, long code, zend_string *conte
         exc_ce = pcbc_query_exception_ce;
         break;
 
+    case LCB_ERR_CAS_MISMATCH:
+        exc_ce = pcbc_cas_mismatch_exception_ce;
+        break;
+
     default:
         exc_ce = pcbc_base_exception_ce;
         break;
