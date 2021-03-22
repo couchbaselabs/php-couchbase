@@ -106,7 +106,7 @@ PHP_METHOD(CollectionManager, getAllScopes)
     lcb_CMDHTTP *cmd;
     lcb_cmdhttp_create(&cmd, LCB_HTTP_TYPE_MANAGEMENT);
     lcb_cmdhttp_method(cmd, LCB_HTTP_METHOD_GET);
-    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/collections", bucket->conn->bucketname);
+    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/scopes", bucket->conn->bucketname);
     lcb_cmdhttp_path(cmd, path, path_len);
     pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getAllScopes, NULL);
     efree(path);
@@ -157,7 +157,7 @@ PHP_METHOD(CollectionManager, getScope)
     lcb_CMDHTTP *cmd;
     lcb_cmdhttp_create(&cmd, LCB_HTTP_TYPE_MANAGEMENT);
     lcb_cmdhttp_method(cmd, LCB_HTTP_METHOD_GET);
-    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/collections", bucket->conn->bucketname);
+    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/scopes", bucket->conn->bucketname);
     lcb_cmdhttp_path(cmd, path, path_len);
     ZVAL_ZVAL(return_value, scope, 0, NULL);
     pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, httpcb_getSingleScope, NULL);
@@ -182,7 +182,7 @@ PHP_METHOD(CollectionManager, createScope)
     lcb_cmdhttp_method(cmd, LCB_HTTP_METHOD_POST);
     char *path;
     size_t path_len;
-    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/collections", bucket->conn->bucketname);
+    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/scopes", bucket->conn->bucketname);
     lcb_cmdhttp_path(cmd, path, path_len);
     char *payload;
     size_t payload_len;
@@ -214,7 +214,7 @@ PHP_METHOD(CollectionManager, dropScope)
     lcb_CMDHTTP *cmd;
     lcb_cmdhttp_create(&cmd, LCB_HTTP_TYPE_MANAGEMENT);
     lcb_cmdhttp_method(cmd, LCB_HTTP_METHOD_DELETE);
-    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/collections/%.*s", bucket->conn->bucketname,
+    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/scopes/%.*s", bucket->conn->bucketname,
                         (int)ZSTR_LEN(scope), ZSTR_VAL(scope));
     lcb_cmdhttp_path(cmd, path, path_len);
     pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL);
@@ -246,7 +246,7 @@ PHP_METHOD(CollectionManager, createCollection)
     lcb_cmdhttp_method(cmd, LCB_HTTP_METHOD_POST);
     char *path;
     size_t path_len;
-    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/collections/%.*s", bucket->conn->bucketname,
+    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/scopes/%.*s", bucket->conn->bucketname,
                         (int)Z_STRLEN_P(scope_name), Z_STRVAL_P(scope_name));
     lcb_cmdhttp_path(cmd, path, path_len);
     char *payload;
@@ -288,7 +288,7 @@ PHP_METHOD(CollectionManager, dropCollection)
     lcb_CMDHTTP *cmd;
     lcb_cmdhttp_create(&cmd, LCB_HTTP_TYPE_MANAGEMENT);
     lcb_cmdhttp_method(cmd, LCB_HTTP_METHOD_DELETE);
-    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/collections/%.*s/%.*s", bucket->conn->bucketname,
+    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/scopes/%.*s/collections/%.*s", bucket->conn->bucketname,
                         (int)Z_STRLEN_P(scope_name), Z_STRVAL_P(scope_name), (int)Z_STRLEN_P(name), Z_STRVAL_P(name));
     lcb_cmdhttp_path(cmd, path, path_len);
     pcbc_http_request(return_value, bucket->conn->lcb, cmd, 1, NULL, NULL, NULL);
