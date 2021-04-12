@@ -120,6 +120,30 @@ class BucketTest extends CouchbaseTestCase {
     }
 
     /**
+     * Bad CAS for unlock
+     *
+     * @depends testConnect
+     */
+    function testBadCasWithUnlock($c) {
+        $key = $this->makeKey('locks');
+
+        $res = $c->upsert($key, 'jog');
+        $this->assertNotNull($res->cas());
+
+        // lock for 10 seconds
+        $res = $c->getAndLock($key, 10);
+        $this->assertNotNull($res->content());
+        $this->assertNotNull($res->cas());
+        $lockedCas = $res->cas();
+        $badCas = "776t3g==";
+        $this->assertNotEquals($badCas, $lockedCas);
+
+        $this->wrapException(function() use($c, $key, $badCas) {
+            $c->unlock($key, $badCas);
+        }, '\Couchbase\BadInputException');
+    }
+
+    /**
      * Test reaction on empty value
      *
      * @depends testConnect

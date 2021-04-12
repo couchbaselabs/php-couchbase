@@ -94,11 +94,14 @@ PHP_METHOD(Collection, unlock)
     lcb_cmdunlock_collection(cmd, scope_str, scope_len, collection_str, collection_len);
     lcb_cmdunlock_key(cmd, ZSTR_VAL(id), ZSTR_LEN(id));
     zend_string *decoded = php_base64_decode_str(cas);
-    if (decoded) {
+    if (decoded && ZSTR_LEN(decoded) == sizeof(uint64_t)) {
         uint64_t cas_val = 0;
         memcpy(&cas_val, ZSTR_VAL(decoded), ZSTR_LEN(decoded));
         lcb_cmdunlock_cas(cmd, cas_val);
         zend_string_free(decoded);
+    } else {
+        throw_lcb_exception(LCB_ERR_INVALID_ARGUMENT, NULL);
+        RETURN_NULL();
     }
     if (options) {
         zval *prop, ret;
