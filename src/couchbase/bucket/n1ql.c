@@ -54,11 +54,15 @@ static void n1qlrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RES
         ZVAL_NULL(&value);
 
         int last_error;
-        PCBC_JSON_COPY_DECODE(&value, row, nrow, PHP_JSON_OBJECT_AS_ARRAY, last_error);
-        if (last_error != 0) {
-            pcbc_log(LOGARGS(instance, WARN), "Failed to decode N1QL response as JSON: json_last_error=%d", last_error);
-        }
+
         if (lcb_respquery_is_final(resp)) {
+            PCBC_JSON_COPY_DECODE(&value, row, nrow, PHP_JSON_OBJECT_AS_ARRAY, last_error);
+            if (last_error != 0) {
+                pcbc_log(LOGARGS(instance, WARN), "Failed to decode N1QL response as JSON: json_last_error=%d",
+                         last_error);
+                return;
+            }
+
             zval meta, *mval;
             object_init_ex(&meta, pcbc_query_meta_data_impl_ce);
             HashTable *marr = Z_ARRVAL(value);
@@ -100,6 +104,13 @@ static void n1qlrow_callback(lcb_INSTANCE *instance, int ignoreme, const lcb_RES
             zval_ptr_dtor(&meta);
             zval_dtor(&value);
         } else {
+            PCBC_JSON_COPY_DECODE(&value, row, nrow, PCBCG(dec_json_array) ? PHP_JSON_OBJECT_AS_ARRAY : 0, last_error);
+            if (last_error != 0) {
+                pcbc_log(LOGARGS(instance, WARN), "Failed to decode N1QL response as JSON: json_last_error=%d",
+                         last_error);
+                return;
+            }
+
             zval *rows, rv;
             rows = pcbc_read_property(pcbc_query_result_impl_ce, return_value, ("rows"), 0, &rv);
             add_next_index_zval(rows, &value);

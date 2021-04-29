@@ -103,4 +103,24 @@ class N1qlQueryTest extends CouchbaseTestCase {
         }
         $this->assertTrue($found, "The record \"$key\" is missing in the result set");
     }
+
+    function testRowsShape() {
+        if ($this->usingMock()) {
+            $this->markTestSkipped('N1QL queries are not supported by the CouchbaseMock');
+        }
+
+        ini_set("couchbase.decoder.json_arrays", "0");
+        $result = $this->cluster->query("SELECT 'Hello, PHP!' AS message");
+        $this->assertNotEmpty($result->rows());
+        $row = $result->rows()[0];
+        $this->assertIsNotArray($row);
+        $this->assertEquals("Hello, PHP!", $row->message);
+
+        ini_set("couchbase.decoder.json_arrays", "1");
+        $result = $this->cluster->query("SELECT 'Hello, PHP!' AS message");
+        $this->assertNotEmpty($result->rows());
+        $row = $result->rows()[0];
+        $this->assertIsArray($row);
+        $this->assertEquals("Hello, PHP!", $row["message"]);
+    }
 }
