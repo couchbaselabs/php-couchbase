@@ -18,9 +18,9 @@
         <active>yes</active>
     </lead>
 
-    <date>2021-03-04</date>
+    <date>2021-05-13</date>
     <version>
-        <release>3.1.1</release>
+        <release>3.1.2</release>
         <api>3.1.0</api>
     </version>
     <stability>
@@ -29,9 +29,11 @@
     </stability>
     <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2</license>
     <notes>
-        PCBC-745: throw BadInputException when string cannot be used as CAS
-        PCBC-746: add tests for transcoding empty value
-        PCBC-748: fix *Option#expiry() return value in documentation stubs
+        PCBC-761: fix return interface for expiryTime methods.
+        PCBC-760: expose error messages in query exceptions.
+        PCBC-759: take into account 'decoder.json_arrays' INI setting when decoding Query rows.
+        PCBC-758: raise exception if invalid CAS passed to unlock.
+        PCBC-729: update URLs for Collections management API.
     </notes>
     <contents>
         <dir name="/">
@@ -155,6 +157,23 @@
     <providesextension>couchbase</providesextension>
     <extsrcrelease/>
     <changelog>
+        <release>
+            <date>2021-03-04</date>
+            <version>
+                <release>3.1.1</release>
+                <api>3.1.0</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2</license>
+            <notes>
+                PCBC-745: throw BadInputException when string cannot be used as CAS
+                PCBC-746: add tests for transcoding empty value
+                PCBC-748: fix *Option#expiry() return value in documentation stubs
+            </notes>
+        </release>
         <release>
             <date>2021-01-20</date>
             <version>
