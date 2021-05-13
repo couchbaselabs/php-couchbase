@@ -70,6 +70,14 @@ zend_class_entry *pcbc_authentication_exception_ce;
 zend_class_entry *pcbc_bad_input_exception_ce;
 zend_class_entry *pcbc_durability_exception_ce;
 zend_class_entry *pcbc_subdocument_exception_ce;
+zend_class_entry *pcbc_parsing_failure_exception_ce;
+zend_class_entry *pcbc_index_not_found_exception_ce;
+zend_class_entry *pcbc_planning_failure_exception_ce;
+zend_class_entry *pcbc_index_failure_exception_ce;
+zend_class_entry *pcbc_keyspace_not_found_exception_ce;
+zend_class_entry *pcbc_prepared_statement_failure_exception_ce;
+zend_class_entry *pcbc_dml_failure_exception_ce;
+zend_class_entry *pcbc_request_canceled_exception_ce;
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BaseException_ref, IS_STRING, 1)
 ZEND_END_ARG_INFO()
@@ -112,12 +120,27 @@ PHP_MINIT_FUNCTION(CouchbaseException)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "HttpException", NULL);
     pcbc_http_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ParsingFailureException", NULL);
+    pcbc_parsing_failure_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "IndexNotFoundException", NULL);
+    pcbc_index_not_found_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "PlanningFailureException", NULL);
+    pcbc_planning_failure_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "IndexFailureException", NULL);
+    pcbc_index_failure_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "KeyspaceNotFoundException", NULL);
+    pcbc_keyspace_not_found_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
+
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryException", NULL);
     pcbc_query_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryErrorException", NULL);
     pcbc_query_error_exception_ce = zend_register_internal_class_ex(&ce, pcbc_query_exception_ce);
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QueryServiceException", NULL);
     pcbc_query_service_exception_ce = zend_register_internal_class_ex(&ce, pcbc_query_exception_ce);
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "PreparedStatementFailureException", NULL);
+    pcbc_prepared_statement_failure_exception_ce = zend_register_internal_class_ex(&ce, pcbc_query_exception_ce);
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "DmlFailureException", NULL);
+    pcbc_dml_failure_exception_ce = zend_register_internal_class_ex(&ce, pcbc_query_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchException", NULL);
     pcbc_search_exception_ce = zend_register_internal_class_ex(&ce, pcbc_http_exception_ce);
@@ -163,8 +186,12 @@ PHP_MINIT_FUNCTION(CouchbaseException)
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "InvalidConfigurationException", NULL);
     pcbc_invalid_configuration_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
-    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ServiceMissingException", NULL);
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "RequestCanceledException", NULL);
+    pcbc_request_canceled_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
+
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "ServiceNotAvailableException", NULL);
     pcbc_service_missing_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
+    zend_register_class_alias("Couchbase\\ServiceMissingException", pcbc_service_missing_exception_ce);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "NetworkException", NULL);
     pcbc_network_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
@@ -263,6 +290,8 @@ void pcbc_create_lcb_exception(zval *return_value, long code, zend_string *conte
     case LCB_ERR_SUBDOC_XATTR_UNKNOWN_VIRTUAL_ATTRIBUTE:
     case LCB_ERR_SUBDOC_XATTR_CANNOT_MODIFY_VIRTUAL_ATTRIBUTE:
     case LCB_ERR_SUBDOC_XATTR_INVALID_ORDER:
+    case LCB_ERR_VALUE_NOT_JSON:
+    case LCB_ERR_SUBDOC_NUMBER_TOO_BIG:
         exc_ce = pcbc_subdocument_exception_ce;
         break;
 
@@ -297,6 +326,11 @@ void pcbc_create_lcb_exception(zval *return_value, long code, zend_string *conte
     case LCB_ERR_SDK_INTERNAL:
     case LCB_ERR_KVENGINE_UNKNOWN_ERROR:
     case LCB_ERR_NO_COMMANDS:
+    case LCB_ERR_INVALID_HOST_FORMAT:
+    case LCB_ERR_KVENGINE_INVALID_PACKET:
+    case LCB_ERR_SHEDULE_FAILURE:
+    case LCB_ERR_SASLMECH_UNAVAILABLE:
+    case LCB_ERR_TOPOLOGY_CHANGE:
         exc_ce = pcbc_bindings_exception_ce;
         break;
 
@@ -370,6 +404,42 @@ void pcbc_create_lcb_exception(zval *return_value, long code, zend_string *conte
 
     case LCB_ERR_CAS_MISMATCH:
         exc_ce = pcbc_cas_mismatch_exception_ce;
+        break;
+
+    case LCB_ERR_REQUEST_CANCELED:
+        exc_ce = pcbc_request_canceled_exception_ce;
+        break;
+
+    case LCB_ERR_SERVICE_NOT_AVAILABLE:
+        exc_ce = pcbc_service_missing_exception_ce;
+        break;
+
+    case LCB_ERR_PARSING_FAILURE:
+        exc_ce = pcbc_parsing_failure_exception_ce;
+        break;
+
+    case LCB_ERR_INDEX_NOT_FOUND:
+        exc_ce = pcbc_index_not_found_exception_ce;
+        break;
+
+    case LCB_ERR_PLANNING_FAILURE:
+        exc_ce = pcbc_planning_failure_exception_ce;
+        break;
+
+    case LCB_ERR_INDEX_FAILURE:
+        exc_ce = pcbc_index_failure_exception_ce;
+        break;
+
+    case LCB_ERR_PREPARED_STATEMENT_FAILURE:
+        exc_ce = pcbc_prepared_statement_failure_exception_ce;
+        break;
+
+    case LCB_ERR_KEYSPACE_NOT_FOUND:
+        exc_ce = pcbc_keyspace_not_found_exception_ce;
+        break;
+
+    case LCB_ERR_DML_FAILURE:
+        exc_ce = pcbc_dml_failure_exception_ce;
         break;
 
     default:

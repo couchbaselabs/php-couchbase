@@ -678,10 +678,13 @@ void do_query(zval *return_value, lcb_INSTANCE *lcb, zend_string *statement, zva
     }
     if (err != LCB_SUCCESS) {
         int code = 0;
-        char msg[200] = {0};
+        char msg[400] = {0};
+        size_t msg_offset = 0;
+        sprintf(msg, "%s", lcb_strerror_short(err));
+
         zval *meta = NULL, mret;
         meta = pcbc_read_property(pcbc_query_result_impl_ce, return_value, ("meta"), 0, &mret);
-        if (meta && Z_TYPE_P(meta) == IS_ARRAY) {
+        if (meta && Z_TYPE_P(meta) == IS_OBJECT && instanceof_function(Z_OBJCE_P(meta), pcbc_query_meta_data_impl_ce)) {
             zval *prop, ret;
             prop = pcbc_read_property(pcbc_query_meta_data_impl_ce, meta, ("errors"), 0, &ret);
             if (Z_TYPE_P(prop) == IS_ARRAY) {
@@ -690,15 +693,19 @@ void do_query(zval *return_value, lcb_INSTANCE *lcb, zend_string *statement, zva
                 zval *val;
                 val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("code"));
                 if (val && Z_TYPE_P(val) == IS_LONG) {
-                    code = Z_LVAL_P(val);
+                    msg_offset = sprintf(msg, "(%d) ", (int)Z_LVAL_P(val));
+                    msg[msg_offset] = '\0';
                 }
                 val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("msg"));
                 if (val && Z_TYPE_P(val) == IS_STRING) {
-                    strncpy(msg, Z_STRVAL_P(val), Z_STRLEN_P(val));
+                    size_t buf_size = sizeof(msg) - msg_offset;
+                    size_t msg_len = buf_size > Z_STRLEN_P(val) ? Z_STRLEN_P(val) : buf_size;
+                    strncpy(msg + msg_offset, Z_STRVAL_P(val), msg_len);
+                    msg[msg_offset + msg_len] = '\0';
                 }
             }
         }
-        throw_http_exception(code ? LCB_ERR_QUERY : err, code, msg);
+        throw_http_exception(err, code, msg);
     }
 }
 

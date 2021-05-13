@@ -550,7 +550,7 @@ class BucketTest extends CouchbaseTestCase {
                 new \Couchbase\MutateUpsertSpec('created_at', time(), true, true),
                 new \Couchbase\MutateReplaceSpec('', ["duplicate" => "yes"])
             ], $options);
-        }, '\Couchbase\CasMismatchException');
+        }, '\Couchbase\KeyExistsException');
 
         $options = (new \Couchbase\MutateInOptions())->storeSemantics(\Couchbase\StoreSemantics::REPLACE);
         $result = $c->mutateIn($key, [

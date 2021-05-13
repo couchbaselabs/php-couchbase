@@ -649,10 +649,34 @@ namespace Couchbase {
         }
     }
 
+    class RequestCanceledException extends BaseException implements Throwable
+    {
+    }
+
     /**
     *  Thrown for exceptions that originate from underlying Http operations.
     */
     class HttpException extends BaseException implements Throwable
+    {
+    }
+
+    class ParsingFailureException extends HttpException implements Throwable
+    {
+    }
+
+    class IndexNotFoundException extends HttpException implements Throwable
+    {
+    }
+
+    class PlanningFailureException extends HttpException implements Throwable
+    {
+    }
+
+    class IndexFailureException extends HttpException implements Throwable
+    {
+    }
+
+    class KeyspaceNotFoundException extends HttpException implements Throwable
     {
     }
 
@@ -667,6 +691,14 @@ namespace Couchbase {
     *  Thrown for exceptions that originate from query operations.
     */
     class QueryErrorException extends QueryException implements Throwable
+    {
+    }
+
+    class DmlFailureException extends QueryException implements Throwable
+    {
+    }
+
+    class PreparedStatementException extends QueryException implements Throwable
     {
     }
 
