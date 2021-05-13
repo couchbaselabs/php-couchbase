@@ -207,7 +207,7 @@ static const zend_function_entry pcbc_result_impl_methods[] = {
 ZEND_BEGIN_ARG_INFO(ai_GetResult_content, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetResult_expiryTime, 0, 0, DateTimeImmutable, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetResult_expiryTime, 0, 0, DateTimeInterface, 1)
 ZEND_END_ARG_INFO()
 
 zend_class_entry *pcbc_get_result_ce;
@@ -335,7 +335,7 @@ static const zend_function_entry pcbc_counter_result_impl_methods[] = {
     PHP_FE_END
 };
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_LookupInResult_expiryTime, 0, 0, DateTimeImmutable, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_LookupInResult_expiryTime, 0, 0, DateTimeInterface, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_LookupInResult_content, 0, 0, 1)
