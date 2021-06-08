@@ -1505,6 +1505,15 @@ class Scope
      * @return QueryResult
      */
     public function query(string $statement, QueryOptions $options = null): QueryResult {}
+
+    /**
+     * Executes an analytics query against the cluster with scopeName set implicitly.
+     *
+     * @param string $statement the analytics query statement to execute
+     * @param AnalyticsOptions $options the options to use when executing the query
+     * @return AnalyticsResult
+     */
+    public function analyticsQuery(string $statement, AnalyticsOptions $options = null): AnalyticsResult {}
 }
 
 class ScopeSpec
