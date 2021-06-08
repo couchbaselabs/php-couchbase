@@ -320,7 +320,7 @@ ZEND_END_ARG_INFO()
 
 // clang-format off
 zend_function_entry collection_manager_methods[] = {
-    PHP_ME(CollectionManager, getScope, ai_CollectionManager_getScope, ZEND_ACC_PUBLIC)
+    PHP_ME(CollectionManager, getScope, ai_CollectionManager_getScope, ZEND_ACC_PUBLIC|ZEND_ACC_DEPRECATED)
     PHP_ME(CollectionManager, getAllScopes, ai_CollectionManager_getAllScopes, ZEND_ACC_PUBLIC)
     PHP_ME(CollectionManager, createScope, ai_CollectionManager_createScope, ZEND_ACC_PUBLIC)
     PHP_ME(CollectionManager, dropScope, ai_CollectionManager_dropScope, ZEND_ACC_PUBLIC)
