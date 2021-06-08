@@ -1930,6 +1930,15 @@ class SearchOptions implements JsonSerializable
      * @see \SearchHighlightMode::SIMPLE
      */
     public function highlight(string $style = null, array $fields = null): SearchOptions {}
+
+
+    /**
+     * Configures the list of collections to use for restricting results.
+     *
+     * @param string[] $collectionNames
+     * @return SearchOptions
+     */
+    public function collections(array $collectionNames): SearchOptions {}
 }
 
 interface SearchHighlightMode

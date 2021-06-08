@@ -150,6 +150,7 @@ PHP_METHOD(SearchOptions, fields)
         if (Z_TYPE_P(entry) != IS_STRING) {
             pcbc_log(LOGARGS(WARN), "Non-string value detected in fields array");
             zend_type_error("Expected string for a FTS field");
+            RETURN_NULL();
         }
     }
     ZEND_HASH_FOREACH_END();
@@ -201,6 +202,30 @@ PHP_METHOD(SearchOptions, highlight)
     if (fields) {
         pcbc_update_property(pcbc_search_options_ce, getThis(), ("highlight_fields"), fields);
     }
+
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
+PHP_METHOD(SearchOptions, collections)
+{
+    zval *collections = NULL;
+    int rv;
+
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "a", &collections);
+    if (rv == FAILURE) {
+        return;
+    }
+
+    zval *entry;
+    ZEND_HASH_FOREACH_VAL(HASH_OF(collections), entry)
+    {
+        if (Z_TYPE_P(entry) != IS_STRING) {
+            pcbc_log(LOGARGS(WARN), "Non-string value detected in collections array");
+            zend_type_error("Expected string for a FTS collection");
+        }
+    }
+    ZEND_HASH_FOREACH_END();
+    pcbc_update_property(pcbc_search_options_ce, getThis(), ("collections"), collections);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }
@@ -309,6 +334,12 @@ PHP_METHOD(SearchOptions, jsonSerialize)
     } else {
         zval_dtor(&control);
     }
+
+    prop = pcbc_read_property(pcbc_search_options_ce, getThis(), ("collections"), 0, &ret);
+    if (Z_TYPE_P(prop) != IS_NULL) {
+        add_assoc_zval(return_value, "collections", prop);
+        Z_TRY_ADDREF_P(prop);
+    }
 }
 
 ZEND_BEGIN_ARG_INFO_EX(ai_SearchOptions_none, 0, 0, 0)
@@ -356,6 +387,10 @@ ZEND_ARG_TYPE_INFO(0, style, IS_STRING, 1)
 ZEND_ARG_TYPE_INFO(0, fields, IS_ARRAY, 1)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchOptions_collections, 0, 1, Couchbase\\SearchOptions, 0)
+ZEND_ARG_TYPE_INFO(0, collections, IS_ARRAY, 0)
+ZEND_END_ARG_INFO()
+
 // clang-format off
 zend_function_entry search_options_methods[] = {
     PHP_ME(SearchOptions, jsonSerialize, ai_SearchOptions_none, ZEND_ACC_PUBLIC)
@@ -369,6 +404,7 @@ zend_function_entry search_options_methods[] = {
     PHP_ME(SearchOptions, facets, ai_SearchOptions_facets, ZEND_ACC_PUBLIC)
     PHP_ME(SearchOptions, sort, ai_SearchOptions_sort, ZEND_ACC_PUBLIC)
     PHP_ME(SearchOptions, highlight, ai_SearchOptions_highlight, ZEND_ACC_PUBLIC)
+    PHP_ME(SearchOptions, collections, ai_SearchOptions_collections, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 // clang-format on
@@ -395,6 +431,7 @@ PHP_MINIT_FUNCTION(SearchOptions)
     zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("highlight_style"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("highlight_fields"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("disable_scoring"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_search_options_ce, ZEND_STRL("collections"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SearchHighlightMode", pcbc_search_highlight_mode_methods);
     pcbc_search_highlight_mode_ce = zend_register_internal_interface(&ce);
