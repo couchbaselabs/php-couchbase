@@ -61,7 +61,7 @@ PHP_METHOD(BooleanSearchQuery, mustNot)
         return;
     }
 
-    pcbc_update_property(pcbc_boolean_search_query_ce, getThis(), ("mustNot"), disjunct);
+    pcbc_update_property(pcbc_boolean_search_query_ce, getThis(), ("must_not"), disjunct);
 
     RETURN_ZVAL(getThis(), 1, 0);
 }

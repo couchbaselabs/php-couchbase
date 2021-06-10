@@ -84,4 +84,15 @@ class SearchQueryTest extends CouchbaseTestCase {
                                 $result);
 
     }
+
+    function testBooleanSearchQuery() {
+        $match_query = new \Couchbase\MatchSearchQuery('hello world');
+
+        $disjunction_query = new \Couchbase\DisjunctionSearchQuery([$match_query]);
+        $bool_query = (new \Couchbase\BooleanSearchQuery())->mustNot($disjunction_query);
+
+        $result = json_encode($bool_query);
+        $this->assertEquals(JSON_ERROR_NONE, json_last_error());
+        $this->assertEquals('{"must_not":{"disjuncts":[{"match":"hello world"}]}}', $result);
+    }
 }
