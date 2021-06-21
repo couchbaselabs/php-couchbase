@@ -48,7 +48,7 @@ class ViewQueryTest extends CouchbaseTestCase {
         $ddocName = $this->makeKey('ViewQueryTest');
         $view = new \Couchbase\View();
         $view->setName('test');
-        $view->setMap("function(doc, meta) { if (doc.ddoc == \"{$ddocName}\") emit([doc.country, doc.city]); }");
+        $view->setMap("function(doc, meta) { if (doc && doc.ddoc == \"{$ddocName}\") emit([doc.country, doc.city]); }");
         $view->setReduce('_count');
         $ddoc = new \Couchbase\DesignDocument();
         $ddoc->setName("_design/" . $ddocName);
