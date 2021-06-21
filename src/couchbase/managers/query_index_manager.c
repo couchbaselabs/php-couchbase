@@ -72,6 +72,10 @@ static void httpcb_getAllIndexes(void *ctx, zval *return_value, zval *response)
             if (val && Z_TYPE_P(val) == IS_STRING) {
                 pcbc_update_property(pcbc_query_index_ce, &index, ("condition"), val);
             }
+            val = zend_symtable_str_find(Z_ARRVAL_P(entry), ZEND_STRL("partition"));
+            if (val && Z_TYPE_P(val) == IS_STRING) {
+                pcbc_update_property(pcbc_query_index_ce, &index, ("partition"), val);
+            }
             add_next_index_zval(return_value, &index);
         }
         ZEND_HASH_FOREACH_END();
@@ -926,6 +930,7 @@ PHP_MINIT_FUNCTION(QueryIndexManager)
     zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("keyspace"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("index_key"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("condition"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_query_index_ce, ZEND_STRL("partition"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "CreateQueryIndexOptions", create_query_index_options_methods);
     pcbc_create_query_index_options_ce = zend_register_internal_class(&ce);
