@@ -15,6 +15,7 @@
  */
 
 #include "couchbase.h"
+#include <ext/standard/md5.h>
 #include <ext/standard/url.h>
 
 static int pcbc_res_couchbase;
@@ -286,6 +287,20 @@ static void pcbc_destroy_connection_resource(zend_resource *res)
     }
 }
 
+static void append_hashed(smart_str *str, const char *data, size_t data_len)
+{
+    PHP_MD5_CTX md5;
+    unsigned char digest[16];
+    char digest_str[33] = {0};
+
+    smart_str_appendc(str, '|');
+    PHP_MD5Init(&md5);
+    PHP_MD5Update(&md5, data, data_len);
+    PHP_MD5Final(digest, &md5);
+    make_digest(digest_str, digest);
+    smart_str_appends(str, digest_str);
+}
+
 lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE type, const char *connstr,
                                const char *bucketname, const char *username, const char *password)
 {
@@ -308,6 +323,8 @@ lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE typ
     smart_str_appends(&plist_key, cstr);
     smart_str_appendc(&plist_key, '|');
     smart_str_appends(&plist_key, username);
+    append_hashed(&plist_key, password, strlen(password));
+
     res = pcbc_connection_lookup(&plist_key);
     if (res) {
         conn = res->ptr;
