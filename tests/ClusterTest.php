@@ -7,7 +7,6 @@ use \Couchbase\NetworkException;
 
 class ClusterTest extends CouchbaseTestCase {
     function testBadHost() {
-        ini_set('couchbase.log_level', 'FATAL');
         $options = new ClusterOptions();
         $options->credentials($this->testUser, $this->testPassword);
         $this->expectException(NetworkException::class);

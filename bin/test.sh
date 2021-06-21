@@ -60,4 +60,4 @@ ${PHP_EXECUTABLE} \
     -d extension=${COUCHBASE_EXT} \
     ${CB_PHPUNIT_PHAR} \
     --cache-result-file=${PHPUNIT_RESULT_CACHE} \
-    ${CB_TESTS}
+    ${CB_TESTS} --debug

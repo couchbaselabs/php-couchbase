@@ -5,7 +5,6 @@ require_once('CouchbaseTestCase.php');
 class ExpiryTest extends CouchbaseTestCase {
 
     function defaultCollection() {
-        ini_set('couchbase.log_level', 'WARN');
         $options = new \Couchbase\ClusterOptions();
         $options->credentials($this->testUser, $this->testPassword);
         $h = new \Couchbase\Cluster($this->testDsn, $options);

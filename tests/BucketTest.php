@@ -14,7 +14,6 @@ class BucketTest extends CouchbaseTestCase {
      * Test that connections with invalid details fail.
      */
     function testBadPass() {
-        ini_set('couchbase.log_level', 'FATAL');
         $options = new ClusterOptions();
         $options->credentials($this->testUser, 'bad_pass');
         $this->wrapException(function() use($options) {
@@ -26,7 +25,6 @@ class BucketTest extends CouchbaseTestCase {
      * Test that connections with invalid details fail.
      */
     function testBadBucket() {
-        ini_set('couchbase.log_level', 'FATAL');
         $options = new ClusterOptions();
         $options->credentials($this->testUser, $this->testPassword);
         $h = new Cluster($this->testDsn, $options);
@@ -45,7 +43,6 @@ class BucketTest extends CouchbaseTestCase {
      * Test that a connection with accurate details works.
      */
     function testConnect() {
-        ini_set('couchbase.log_level', 'WARN');
         $options = new ClusterOptions();
         $options->credentials($this->testUser, $this->testPassword);
         $h = new Cluster($this->testDsn, $options);
