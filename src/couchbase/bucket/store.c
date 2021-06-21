@@ -285,6 +285,17 @@ PHP_METHOD(UpsertOptions, expiry)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(UpsertOptions, preserveExpiry)
+{
+    zend_bool arg;
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "b", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+    pcbc_update_property_bool(pcbc_upsert_options_ce, getThis(), ("preserve_expiry"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 PHP_METHOD(UpsertOptions, durabilityLevel)
 {
     zend_long arg;
@@ -320,6 +331,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_expiry, 0, 1, Couchbase\
 ZEND_ARG_INFO(0, arg)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_preserveExpiry, 0, 1, Couchbase\\UpsertOptions, 0)
+ZEND_ARG_TYPE_INFO(0, shouldPreserve, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_UpsertOptions_durabilityLevel, 0, 1, Couchbase\\UpsertOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -333,6 +348,7 @@ static const zend_function_entry pcbc_upsert_options_methods[] = {
     PHP_ME(UpsertOptions, cas, ai_UpsertOptions_cas, ZEND_ACC_PUBLIC|ZEND_ACC_DEPRECATED)
     PHP_ME(UpsertOptions, timeout, ai_UpsertOptions_timeout, ZEND_ACC_PUBLIC)
     PHP_ME(UpsertOptions, expiry, ai_UpsertOptions_expiry, ZEND_ACC_PUBLIC)
+    PHP_ME(UpsertOptions, preserveExpiry, ai_UpsertOptions_preserveExpiry, ZEND_ACC_PUBLIC)
     PHP_ME(UpsertOptions, durabilityLevel, ai_UpsertOptions_durabilityLevel, ZEND_ACC_PUBLIC)
     PHP_ME(UpsertOptions, encoder, ai_UpsertOptions_encoder, ZEND_ACC_PUBLIC)
     PHP_FE_END
@@ -365,6 +381,10 @@ PHP_METHOD(Collection, upsert)
         prop = pcbc_read_property(pcbc_upsert_options_ce, options, ("expiry"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdstore_expiry(cmd, Z_LVAL_P(prop));
+        }
+        prop = pcbc_read_property(pcbc_upsert_options_ce, options, ("preserve_expiry"), 0, &ret);
+        if (Z_TYPE_P(prop) == IS_TRUE) {
+            lcb_cmdstore_preserve_expiry(cmd, 1);
         }
         prop = pcbc_read_property(pcbc_upsert_options_ce, options, ("durability_level"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
@@ -485,6 +505,17 @@ PHP_METHOD(ReplaceOptions, expiry)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(ReplaceOptions, preserveExpiry)
+{
+    zend_bool arg;
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "b", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+    pcbc_update_property_bool(pcbc_replace_options_ce, getThis(), ("preserve_expiry"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 PHP_METHOD(ReplaceOptions, durabilityLevel)
 {
     zend_long arg;
@@ -520,6 +551,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_expiry, 0, 1, Couchbase
 ZEND_ARG_INFO(0, arg)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_preserveExpiry, 0, 1, Couchbase\\ReplaceOptions, 0)
+ZEND_ARG_TYPE_INFO(0, shouldPreserve, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_ReplaceOptions_durabilityLevel, 0, 1, Couchbase\\ReplaceOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -533,6 +568,7 @@ static const zend_function_entry pcbc_replace_options_methods[] = {
     PHP_ME(ReplaceOptions, cas, ai_ReplaceOptions_cas, ZEND_ACC_PUBLIC)
     PHP_ME(ReplaceOptions, timeout, ai_ReplaceOptions_timeout, ZEND_ACC_PUBLIC)
     PHP_ME(ReplaceOptions, expiry, ai_ReplaceOptions_expiry, ZEND_ACC_PUBLIC)
+    PHP_ME(ReplaceOptions, preserveExpiry, ai_ReplaceOptions_preserveExpiry, ZEND_ACC_PUBLIC)
     PHP_ME(ReplaceOptions, durabilityLevel, ai_ReplaceOptions_durabilityLevel, ZEND_ACC_PUBLIC)
     PHP_ME(ReplaceOptions, encoder, ai_ReplaceOptions_encoder, ZEND_ACC_PUBLIC)
     PHP_FE_END
@@ -565,6 +601,10 @@ PHP_METHOD(Collection, replace)
         prop = pcbc_read_property(pcbc_replace_options_ce, options, ("expiry"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdstore_expiry(cmd, Z_LVAL_P(prop));
+        }
+        prop = pcbc_read_property(pcbc_replace_options_ce, options, ("preserve_expiry"), 0, &ret);
+        if (Z_TYPE_P(prop) == IS_TRUE) {
+            lcb_cmdstore_preserve_expiry(cmd, 1);
         }
         prop = pcbc_read_property(pcbc_replace_options_ce, options, ("durability_level"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
@@ -915,6 +955,7 @@ PHP_MINIT_FUNCTION(CollectionStore)
     zend_declare_property_null(pcbc_upsert_options_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_upsert_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_upsert_options_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_upsert_options_ce, ZEND_STRL("preserve_expiry"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_upsert_options_ce, ZEND_STRL("durability_level"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_upsert_options_ce, ZEND_STRL("encoder"), ZEND_ACC_PRIVATE);
 
@@ -923,6 +964,7 @@ PHP_MINIT_FUNCTION(CollectionStore)
     zend_declare_property_null(pcbc_replace_options_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_replace_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_replace_options_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_replace_options_ce, ZEND_STRL("preserve_expiry"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_replace_options_ce, ZEND_STRL("durability_level"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_replace_options_ce, ZEND_STRL("encoder"), ZEND_ACC_PRIVATE);
 

@@ -3039,6 +3039,14 @@ class UpsertOptions
     public function expiry(mixed $arg): UpsertOptions {}
 
     /**
+     * Sets whether the original expiration should be preserved (by default Replace operation updates expiration).
+     *
+     * @param bool $shouldPreserve if true, the expiration time will not be updated
+     * @return UpsertOptions
+     */
+    public function preserveExpiry(bool $shouldPreserve): UpsertOptions {}
+
+    /**
      * Sets the durability level to enforce when writing the document.
      *
      * @param int $arg the durability level to enforce
@@ -3073,6 +3081,14 @@ class ReplaceOptions
      * @return ReplaceOptions
      */
     public function expiry(mixed $arg): ReplaceOptions {}
+
+    /**
+     * Sets whether the original expiration should be preserved (by default Replace operation updates expiration).
+     *
+     * @param bool $shouldPreserve if true, the expiration time will not be updated
+     * @return ReplaceOptions
+     */
+    public function preserveExpiry(bool $shouldPreserve): ReplaceOptions {}
 
     /**
      * Sets the cas value for the operation.
@@ -3344,6 +3360,14 @@ class MutateInOptions
      * @return MutateInOptions
      */
     public function expiry(mixed $arg): MutateInOptions {}
+
+    /**
+     * Sets whether the original expiration should be preserved (by default Replace operation updates expiration).
+     *
+     * @param bool $shouldPreserve if true, the expiration time will not be updated
+     * @return MutateInOptions
+     */
+    public function preserveExpiry(bool $shouldPreserve): MutateInOptions {}
 
     /**
      * Sets the durability level to enforce when writing the document.

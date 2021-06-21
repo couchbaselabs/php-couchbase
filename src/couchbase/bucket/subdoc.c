@@ -369,6 +369,17 @@ PHP_METHOD(MutateInOptions, expiry)
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
+PHP_METHOD(MutateInOptions, preserveExpiry)
+{
+    zend_bool arg;
+    int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "b", &arg);
+    if (rv == FAILURE) {
+        RETURN_NULL();
+    }
+    pcbc_update_property_bool(pcbc_mutate_in_options_ce, getThis(), ("preserve_expiry"), arg);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
 PHP_METHOD(MutateInOptions, durabilityLevel)
 {
     zend_long arg;
@@ -403,6 +414,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MutateInOptions_expiry, 0, 1, Couchbas
 ZEND_ARG_INFO(0, arg)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MutateInOptions_preserveExpiry, 0, 1, Couchbase\\MutateInOptions, 0)
+ZEND_ARG_TYPE_INFO(0, shouldPreserve, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_MutateInOptions_durabilityLevel, 0, 1, Couchbase\\MutateInOptions, 0)
 ZEND_ARG_TYPE_INFO(0, arg, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -416,6 +431,7 @@ static const zend_function_entry pcbc_mutate_in_options_methods[] = {
     PHP_ME(MutateInOptions, cas, ai_MutateInOptions_cas, ZEND_ACC_PUBLIC)
     PHP_ME(MutateInOptions, timeout, ai_MutateInOptions_timeout, ZEND_ACC_PUBLIC)
     PHP_ME(MutateInOptions, expiry, ai_MutateInOptions_expiry, ZEND_ACC_PUBLIC)
+    PHP_ME(MutateInOptions, preserveExpiry, ai_MutateInOptions_preserveExpiry, ZEND_ACC_PUBLIC)
     PHP_ME(MutateInOptions, durabilityLevel, ai_MutateInOptions_durabilityLevel, ZEND_ACC_PUBLIC)
     PHP_ME(MutateInOptions, storeSemantics, ai_MutateInOptions_storeSemantics, ZEND_ACC_PUBLIC)
     PHP_FE_END
@@ -577,6 +593,10 @@ PHP_METHOD(Collection, mutateIn)
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdsubdoc_expiry(cmd, Z_LVAL_P(prop));
         }
+        prop = pcbc_read_property(pcbc_mutate_in_options_ce, options, ("preserve_expiry"), 0, &ret);
+        if (Z_TYPE_P(prop) == IS_TRUE) {
+            lcb_cmdsubdoc_preserve_expiry(cmd, 1);
+        }
         prop = pcbc_read_property(pcbc_mutate_in_options_ce, options, ("durability_level"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdsubdoc_durability(cmd, Z_LVAL_P(prop));
@@ -642,6 +662,7 @@ PHP_MINIT_FUNCTION(CollectionSubdoc)
     zend_declare_property_null(pcbc_mutate_in_options_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_mutate_in_options_ce, ZEND_STRL("timeout"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_mutate_in_options_ce, ZEND_STRL("expiry"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_mutate_in_options_ce, ZEND_STRL("preserve_expiry"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_mutate_in_options_ce, ZEND_STRL("durability_level"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_mutate_in_options_ce, ZEND_STRL("store_semantics"), ZEND_ACC_PRIVATE);
 
