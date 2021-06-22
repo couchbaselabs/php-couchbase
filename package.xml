@@ -100,6 +100,7 @@
             <file role="src" name="src/couchbase/lookup_spec.c" />
             <file role="src" name="src/couchbase/managers/bucket_manager.c" />
             <file role="src" name="src/couchbase/managers/collection_manager.c" />
+            <file role="src" name="src/couchbase/managers/analytics_index_manager.c" />
             <file role="src" name="src/couchbase/managers/query_index_manager.c" />
             <file role="src" name="src/couchbase/managers/search_index_manager.c" />
             <file role="src" name="src/couchbase/managers/user_manager.c" />

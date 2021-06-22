@@ -105,6 +105,7 @@ COUCHBASE_FILES=" \
     src/couchbase/lookup_spec.c \
     src/couchbase/managers/bucket_manager.c \
     src/couchbase/managers/collection_manager.c \
+    src/couchbase/managers/analytics_index_manager.c \
     src/couchbase/managers/query_index_manager.c \
     src/couchbase/managers/search_index_manager.c \
     src/couchbase/managers/user_manager.c \

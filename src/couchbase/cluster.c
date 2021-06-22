@@ -25,6 +25,7 @@ extern zend_class_entry *pcbc_cluster_options_ce;
 extern zend_class_entry *pcbc_bucket_manager_ce;
 extern zend_class_entry *pcbc_search_index_manager_ce;
 extern zend_class_entry *pcbc_query_index_manager_ce;
+extern zend_class_entry *pcbc_analytics_index_manager_ce;
 
 PHP_METHOD(Cluster, query);
 PHP_METHOD(Cluster, analyticsQuery);
@@ -150,6 +151,16 @@ PHP_METHOD(Cluster, buckets)
     pcbc_update_property(pcbc_bucket_manager_ce, return_value, ("cluster"), getThis());
 }
 
+PHP_METHOD(Cluster, analyticsIndexes)
+{
+    if (zend_parse_parameters_none_throw() == FAILURE) {
+        RETURN_NULL();
+    }
+
+    object_init_ex(return_value, pcbc_analytics_index_manager_ce);
+    pcbc_update_property(pcbc_analytics_index_manager_ce, return_value, ("cluster"), getThis());
+}
+
 PHP_METHOD(Cluster, queryIndexes)
 {
     if (zend_parse_parameters_none_throw() == FAILURE) {
@@ -193,6 +204,9 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_users, 0, 0, Couchbase\\UserManager, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_analyticsIndexes, 0, 0, Couchbase\\AnalyticsIndexManager, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Cluster_queryIndexes, 0, 0, Couchbase\\QueryIndexManager, 0)
 ZEND_END_ARG_INFO()
 
@@ -221,6 +235,7 @@ zend_function_entry cluster_methods[] = {
     PHP_ME(Cluster, bucket, ai_Cluster_bucket, ZEND_ACC_PUBLIC)
     PHP_ME(Cluster, buckets, ai_Cluster_buckets, ZEND_ACC_PUBLIC)
     PHP_ME(Cluster, users, ai_Cluster_users, ZEND_ACC_PUBLIC)
+    PHP_ME(Cluster, analyticsIndexes, ai_Cluster_analyticsIndexes, ZEND_ACC_PUBLIC)
     PHP_ME(Cluster, queryIndexes, ai_Cluster_queryIndexes, ZEND_ACC_PUBLIC)
     PHP_ME(Cluster, searchIndexes, ai_Cluster_searchIndexes, ZEND_ACC_PUBLIC)
     PHP_ME(Cluster, query, ai_Cluster_query, ZEND_ACC_PUBLIC)

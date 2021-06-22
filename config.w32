@@ -54,6 +54,7 @@ if (PHP_COUCHBASE != "no") {
         src_couchbase_managers_sources =
             "bucket_manager.c " +
             "collection_manager.c " +
+            "analytics_index_manager.c " +
             "query_index_manager.c " +
             "search_index_manager.c " +
             "user_manager.c " +

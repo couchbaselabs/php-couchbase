@@ -871,6 +871,85 @@ class QueryIndexManager
     public function buildDeferredIndexes(string $bucketName) {}
 }
 
+class CreateAnalyticsDataverseOptions
+{
+    public function ignoreIfExists(bool $shouldIgnore): CreateAnalyticsDataverseOptions {}
+}
+
+class DropAnalyticsDataverseOptions
+{
+    public function ignoreIfNotExists(bool $shouldIgnore): DropAnalyticsDataverseOptions {}
+}
+
+class CreateAnalyticsDatasetOptions
+{
+    public function ignoreIfExists(bool $shouldIgnore): CreateAnalyticsDatasetOptions {}
+
+    public function condition(string $condition): CreateAnalyticsDatasetOptions {}
+
+    public function dataverseName(string $dataverseName): CreateAnalyticsDatasetOptions {}
+}
+
+class DropAnalyticsDatasetOptions
+{
+    public function ignoreIfNotExists(bool $shouldIgnore): DropAnalyticsDatasetOptions {}
+
+    public function dataverseName(string $dataverseName): DropAnalyticsDatasetOptions {}
+}
+
+class CreateAnalyticsIndexOptions
+{
+    public function ignoreIfExists(bool $shouldIgnore): CreateAnalyticsIndexOptions {}
+
+    public function dataverseName(string $dataverseName): CreateAnalyticsIndexOptions {}
+}
+
+class DropAnalyticsIndexOptions
+{
+    public function ignoreIfNotExists(bool $shouldIgnore): DropAnalyticsIndexOptions {}
+
+    public function dataverseName(string $dataverseName): DropAnalyticsIndexOptions {}
+}
+
+class ConnectAnalyticsLinkOptions
+{
+    public function linkName(bstring $linkName): ConnectAnalyticsLinkOptions {}
+
+    public function dataverseName(string $dataverseName): ConnectAnalyticsLinkOptions {}
+}
+
+class DisconnectAnalyticsLinkOptions
+{
+    public function linkName(bstring $linkName): DisconnectAnalyticsLinkOptions {}
+
+    public function dataverseName(string $dataverseName): DisconnectAnalyticsLinkOptions {}
+}
+
+class AnalyticsIndexManager
+{
+    public function createDataverse(string $dataverseName, CreateAnalyticsDataverseOptions $options = null) {}
+
+    public function dropDataverse(string $dataverseName, DropAnalyticsDataverseOptions $options = null) {}
+
+    public function createDataset(string $datasetName, string $bucketName, CreateAnalyticsDatasetOptions $options = null) {}
+
+    public function dropDataset(string $datasetName, DropAnalyticsDatasetOptions $options = null) {}
+
+    public function getAllDatasets() {}
+
+    public function createIndex(string $datasetName, string $indexName, array $fields, CreateAnalyticsIndexOptions $options = null) {}
+
+    public function dropIndex(string $datasetName, string $indexName, DropAnalyticsIndexOptions $options = null) {}
+
+    public function getAllIndexes() {}
+
+    public function connectLink(ConnectAnalyticsLinkOptions $options = null) {}
+
+    public function disconnectLink(DisconnectAnalyticsLinkOptions $options = null) {}
+
+    public function getPendingMutations() {}
+}
+
 class SearchIndex implements JsonSerializable
 {
     public function jsonSerialize() {}
@@ -991,6 +1070,13 @@ class Cluster
      * @return UserManager
      */
     public function users(): UserManager {}
+
+    /**
+     * Creates a new query index manager object for managing analytics query indexes.
+     *
+     * @return AnalyticsIndexManager
+     */
+    public function analyticsIndexes(): AnalyticsIndexManager {}
 
     /**
      * Creates a new query index manager object for managing N1QL query indexes.
