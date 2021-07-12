@@ -48,6 +48,7 @@ void http_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPHTTP *resp)
             PCBC_JSON_COPY_DECODE(&result->bytes, body, nbody, PHP_JSON_OBJECT_AS_ARRAY, last_error);
             if (last_error != 0) {
                 pcbc_log(LOGARGS(instance, WARN), "Failed to decode value as JSON: json_last_error=%d", last_error);
+                pcbc_log(LOGARGS(instance, DEBUG), "Expected JSON response, but received: <%.*s>", (int)nbody, body);
                 ZVAL_NULL(&result->bytes);
             }
         } else {

@@ -61,7 +61,7 @@ void pcbc_log_formatter(char *buf, int buf_size, const char *severity, const cha
     vsnprintf(msg, PCBC_LOG_MSG_SIZE, fmt, ap);
     msg[PCBC_LOG_MSG_SIZE - 1] = '\0';
     for (i = 0; i < PCBC_LOG_MSG_SIZE; i++) {
-        if (msg[i] == '\n') {
+        if (msg[i] == '\n' || msg[i] == '\r') {
             msg[i] = ' ';
         }
     }
