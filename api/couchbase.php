@@ -925,6 +925,269 @@ class DisconnectAnalyticsLinkOptions
     public function dataverseName(string $dataverseName): DisconnectAnalyticsLinkOptions {}
 }
 
+class CreateAnalyticsLinkOptions
+{
+    public function timeout(int $arg): CreateAnalyticsLinkOptions {}
+}
+
+class ReplaceAnalyticsLinkOptions
+{
+    public function timeout(int $arg): ReplaceAnalyticsLinkOptions {}
+}
+
+class DropAnalyticsLinkOptions
+{
+    public function timeout(int $arg): DropAnalyticsLinkOptions {}
+}
+
+interface AnalyticsLinkType
+{
+    public const COUCHBASE = "couchbase";
+    public const S3 = "s3";
+    public const AZURE_BLOB = "azureblob";
+}
+
+class GetAnalyticsLinksOptions
+{
+    public function timeout(int $arg): DropAnalyticsLinkOptions {}
+
+    /**
+     * @param string $tupe restricts the results to the given link type.
+     *
+     * @see AnalyticsLinkType::COUCHBASE
+     * @see AnalyticsLinkType::S3
+     * @see AnalyticsLinkType::AZURE_BLOB
+     */
+    public function linkType(string $type): DropAnalyticsLinkOptions {}
+
+    /**
+     * @param string $dataverse restricts the results to a given dataverse, can be given in the form of "namepart" or "namepart1/namepart2".
+     */
+    public function dataverse(string $dataverse): DropAnalyticsLinkOptions {}
+
+    /**
+     * @param string $name restricts the results to the link with the specified name. If set then dataverse must also be set.
+     */
+    public function name(string $name): DropAnalyticsLinkOptions {}
+}
+
+interface AnalyticsEncryptionLevel
+{
+    public const NONE = "none";
+    public const HALF = "half";
+    public const FULL = "full";
+}
+
+
+class EncryptionSettings
+{
+    /**
+     * Sets encryption level.
+     *
+     * @param string $level Accepted values are 'none', 'half', 'full'.
+     *
+     * @see AnalyticsEncryptionLevel::NONE
+     * @see AnalyticsEncryptionLevel::HALF
+     * @see AnalyticsEncryptionLevel::FULL
+     *
+     * @return EncryptionSettings
+     */
+    public function level(string $level) {}
+
+    public function certificate(string $certificate) {}
+
+    public function clientCertificate(string $certificate) {}
+
+    public function clientKey(string $key) {}
+}
+
+interface AnalyticsLink
+{
+}
+
+class CouchbaseRemoteAnalyticsLink implements AnalyticsLink
+{
+    /**
+     * Sets name of the link
+     *
+     * @param string $name
+     * @return CouchbaseRemoteAnalyticsLink
+     */
+    public function name(string $name): CouchbaseRemoteAnalyticsLink {}
+
+    /**
+     * Sets dataverse this link belongs to
+     *
+     * @param string $dataverse
+     * @return CouchbaseRemoteAnalyticsLink
+     */
+    public function dataverse(string $dataverse): CouchbaseRemoteAnalyticsLink {}
+
+    /**
+     * Sets the hostname of the target Couchbase cluster
+     *
+     * @param string $hostname
+     * @return CouchbaseRemoteAnalyticsLink
+     */
+    public function hostname(string $hostname): CouchbaseRemoteAnalyticsLink {}
+
+    /**
+     * Sets the username to use for authentication with the remote cluster.
+     *
+     * Optional if client-certificate authentication is being used.
+     *
+     * @param string $username
+     * @return CouchbaseRemoteAnalyticsLink
+     */
+    public function username(string $username): CouchbaseRemoteAnalyticsLink {}
+
+    /**
+     * Sets the password to use for authentication with the remote cluster.
+     *
+     * Optional if client-certificate authentication is being used.
+     *
+     * @param string $password
+     * @return CouchbaseRemoteAnalyticsLink
+     */
+    public function password(string $password): CouchbaseRemoteAnalyticsLink {}
+
+    /**
+     * Sets settings for connection encryption
+     *
+     * @param EncryptionSettings $settings
+     * @return CouchbaseRemoteAnalyticsLink
+     */
+    public function encryption(EncryptionSettings $settings): CouchbaseRemoteAnalyticsLink {}
+}
+
+class AzureBlobExternalAnalyticsLink implements AnalyticsLink
+{
+    /**
+     * Sets name of the link
+     *
+     * @param string $name
+     * @return AzureBlobExternalAnalyticsLink
+     */
+    public function name(string $name): AzureBlobExternalAnalyticsLink {}
+
+    /**
+     * Sets dataverse this link belongs to
+     *
+     * @param string $dataverse
+     * @return AzureBlobExternalAnalyticsLink
+     */
+    public function dataverse(string $dataverse): AzureBlobExternalAnalyticsLink {}
+
+    /**
+     * Sets the connection string can be used as an authentication method, '$connectionString' contains other
+     * authentication methods embedded inside the string. Only a single authentication method can be used.
+     * (e.g. "AccountName=myAccountName;AccountKey=myAccountKey").
+     *
+     * @param string $connectionString
+     * @return AzureBlobExternalAnalyticsLink
+     */
+    public function connectionString(string $connectionString): AzureBlobExternalAnalyticsLink {}
+
+    /**
+     * Sets Azure blob storage account name
+     *
+     * @param string $accountName
+     * @return AzureBlobExternalAnalyticsLink
+     */
+    public function accountName(string $accountName): AzureBlobExternalAnalyticsLink {}
+
+    /**
+     * Sets Azure blob storage account key
+     *
+     * @param string $accountKey
+     * @return AzureBlobExternalAnalyticsLink
+     */
+    public function accountKey(string $accountKey): AzureBlobExternalAnalyticsLink {}
+
+    /**
+     * Sets token that can be used for authentication
+     *
+     * @param string $signature
+     * @return AzureBlobExternalAnalyticsLink
+     */
+    public function sharedAccessSignature(string $signature): AzureBlobExternalAnalyticsLink {}
+
+    /**
+     * Sets Azure blob storage endpoint
+     *
+     * @param string $blobEndpoint
+     * @return AzureBlobExternalAnalyticsLink
+     */
+    public function blobEndpoint(string $blobEndpoint): AzureBlobExternalAnalyticsLink {}
+
+    /**
+     * Sets Azure blob endpoint suffix
+     *
+     * @param string $suffix
+     * @return AzureBlobExternalAnalyticsLink
+     */
+    public function endpointSuffix(string $suffix): AzureBlobExternalAnalyticsLink {}
+}
+
+class S3ExternalAnalyticsLink implements AnalyticsLink
+{
+    /**
+     * Sets name of the link
+     *
+     * @param string $name
+     * @return S3ExternalAnalyticsLink
+     */
+    public function name(string $name): S3ExternalAnalyticsLink {}
+
+    /**
+     * Sets dataverse this link belongs to
+     *
+     * @param string $dataverse
+     * @return S3ExternalAnalyticsLink
+     */
+    public function dataverse(string $dataverse): S3ExternalAnalyticsLink {}
+
+    /**
+     * Sets AWS S3 access key ID
+     *
+     * @param string $accessKeyId
+     * @return S3ExternalAnalyticsLink
+     */
+    public function accessKeyId(string $accessKeyId): S3ExternalAnalyticsLink {}
+
+    /**
+     * Sets AWS S3 secret key
+     *
+     * @param string $secretAccessKey
+     * @return S3ExternalAnalyticsLink
+     */
+    public function secretAccessKey(string $secretAccessKey): S3ExternalAnalyticsLink {}
+
+    /**
+     * Sets AWS S3 region
+     *
+     * @param string $region
+     * @return S3ExternalAnalyticsLink
+     */
+    public function region(string $region): S3ExternalAnalyticsLink {}
+
+    /**
+     * Sets AWS S3 token if temporary credentials are provided. Only available in 7.0+
+     *
+     * @param string $sessionToken
+     * @return S3ExternalAnalyticsLink
+     */
+    public function sessionToken(string $sessionToken): S3ExternalAnalyticsLink {}
+
+    /**
+     * Sets AWS S3 service endpoint
+     *
+     * @param string $serviceEndpoint
+     * @return S3ExternalAnalyticsLink
+     */
+    public function serviceEndpoint(string $serviceEndpoint): S3ExternalAnalyticsLink {}
+}
+
 class AnalyticsIndexManager
 {
     public function createDataverse(string $dataverseName, CreateAnalyticsDataverseOptions $options = null) {}
@@ -948,6 +1211,14 @@ class AnalyticsIndexManager
     public function disconnectLink(DisconnectAnalyticsLinkOptions $options = null) {}
 
     public function getPendingMutations() {}
+
+    public function createLink(AnalyticsLink $link, CreateAnalyticsLinkOptions $options = null) {}
+
+    public function replaceLink(AnalyticsLink $link, ReplaceAnalyticsLinkOptions $options = null) {}
+
+    public function dropLink(string $linkName, string $dataverseName, DropAnalyticsLinkOptions $options = null) {}
+
+    public function getLinks(GetAnalyticsLinksOptions $options = null) {}
 }
 
 class SearchIndex implements JsonSerializable
