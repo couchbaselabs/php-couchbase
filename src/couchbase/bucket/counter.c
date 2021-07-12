@@ -224,16 +224,6 @@ PHP_METHOD(BinaryCollection, increment)
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdcounter_initial(cmd, Z_LVAL_P(prop));
         }
-        prop = pcbc_read_property(pcbc_increment_options_ce, options, ("cas"), 0, &ret);
-        if (Z_TYPE_P(prop) == IS_STRING) {
-            zend_string *decoded = php_base64_decode_str(Z_STR_P(prop));
-            if (decoded) {
-                uint64_t cas = 0;
-                memcpy(&cas, ZSTR_VAL(decoded), ZSTR_LEN(decoded));
-                lcb_cmdcounter_cas(cmd, cas);
-                zend_string_free(decoded);
-            }
-        }
     }
 
     lcbtrace_SPAN *span = NULL;
@@ -406,16 +396,6 @@ PHP_METHOD(BinaryCollection, decrement)
         if (Z_TYPE_P(prop) == IS_LONG) {
             lcb_cmdcounter_initial(cmd, Z_LVAL_P(prop));
         }
-        prop = pcbc_read_property(pcbc_decrement_options_ce, options, ("cas"), 0, &ret);
-        if (Z_TYPE_P(prop) == IS_STRING) {
-            zend_string *decoded = php_base64_decode_str(Z_STR_P(prop));
-            if (decoded) {
-                uint64_t cas = 0;
-                memcpy(&cas, ZSTR_VAL(decoded), ZSTR_LEN(decoded));
-                lcb_cmdcounter_cas(cmd, cas);
-                zend_string_free(decoded);
-            }
-        }
     }
 
     lcbtrace_SPAN *span = NULL;
@@ -456,7 +436,6 @@ PHP_MINIT_FUNCTION(CollectionCounter)
     zend_declare_property_null(pcbc_increment_options_ce, ZEND_STRL("durability_level"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_increment_options_ce, ZEND_STRL("delta"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_increment_options_ce, ZEND_STRL("initial"), ZEND_ACC_PRIVATE);
-    zend_declare_property_null(pcbc_increment_options_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "DecrementOptions", pcbc_decrement_options_methods);
     pcbc_decrement_options_ce = zend_register_internal_class(&ce);
@@ -465,7 +444,6 @@ PHP_MINIT_FUNCTION(CollectionCounter)
     zend_declare_property_null(pcbc_decrement_options_ce, ZEND_STRL("durability_level"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_decrement_options_ce, ZEND_STRL("delta"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_decrement_options_ce, ZEND_STRL("initial"), ZEND_ACC_PRIVATE);
-    zend_declare_property_null(pcbc_decrement_options_ce, ZEND_STRL("cas"), ZEND_ACC_PRIVATE);
 
     return SUCCESS;
 }
