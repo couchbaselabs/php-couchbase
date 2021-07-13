@@ -246,7 +246,7 @@ PHP_METHOD(CollectionManager, createCollection)
     lcb_cmdhttp_method(cmd, LCB_HTTP_METHOD_POST);
     char *path;
     size_t path_len;
-    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/scopes/%.*s", bucket->conn->bucketname,
+    path_len = spprintf(&path, 0, "/pools/default/buckets/%s/scopes/%.*s/collections", bucket->conn->bucketname,
                         (int)Z_STRLEN_P(scope_name), Z_STRVAL_P(scope_name));
     lcb_cmdhttp_path(cmd, path, path_len);
     char *payload;
