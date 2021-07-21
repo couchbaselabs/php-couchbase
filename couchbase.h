@@ -243,11 +243,18 @@ void pcbc_exception_init(zval *return_value, long code, const char *message);
 #define PCBC_ALLOC_OBJECT_T(obj_t, class_type)                                                                         \
     (obj_t *)ecalloc(1, sizeof(obj_t) + zend_object_properties_size(class_type))
 
+#if PHP_VERSION_ID < 80100
 #define PCBC_CE_DISABLE_SERIALIZATION(ce)                                                                              \
     do {                                                                                                               \
         ce->serialize = zend_class_serialize_deny;                                                                     \
         ce->unserialize = zend_class_unserialize_deny;                                                                 \
     } while (0);
+#else
+#define PCBC_CE_DISABLE_SERIALIZATION(ce)                                                                              \
+    do {                                                                                                               \
+        ce->ce_flags |= ZEND_ACC_NOT_SERIALIZABLE;                                                                        \
+    } while (0);
+#endif
 
 #define PCBC_STRLEN_P(__pcbc_zval) Z_STRLEN((__pcbc_zval))
 #define PCBC_STRVAL_P(__pcbc_zval) Z_STRVAL((__pcbc_zval))
