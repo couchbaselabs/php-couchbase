@@ -124,7 +124,7 @@ struct pcbc_connection {
 };
 typedef struct pcbc_connection pcbc_connection_t;
 lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE type, const char *connstr,
-                               const char *bucketname, const char *username, const char *password);
+                               const char *bucketname, const char *username, const char *password, zval *meter);
 void pcbc_connection_addref(pcbc_connection_t *conn);
 void pcbc_connection_delref(pcbc_connection_t *conn);
 void pcbc_connection_cleanup();
@@ -318,6 +318,7 @@ typedef struct {
     char *username;
     char *password;
     pcbc_connection_t *conn;
+    zval meter;
     zend_object std;
 } pcbc_cluster_t;
 

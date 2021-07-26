@@ -20,6 +20,10 @@
 
 static int pcbc_res_couchbase;
 
+extern zend_class_entry *pcbc_logging_meter_ce;
+extern zend_class_entry *pcbc_noop_meter_ce;
+extern zend_class_entry *pcbc_meter_ce;
+
 extern struct pcbc_logger_st pcbc_logger;
 #define LOGARGS(conn, lvl) LCB_LOG_##lvl, conn, "pcbc/pool", __FILE__, __LINE__
 
@@ -45,8 +49,10 @@ void http_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPHTTP *rb);
 void ping_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPPING *rb);
 void diag_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPDIAG *rb);
 
+lcbmetrics_METER *meter_wrapper_constructor(zval *php_meter);
+
 static lcb_STATUS pcbc_establish_connection(lcb_INSTANCE_TYPE type, lcb_INSTANCE **result, const char *connstr,
-                                            const char *username, const char *password)
+                                            const char *username, const char *password, zval *php_meter)
 {
     lcb_LOGGER *logger = NULL;
     lcb_logger_create(&logger, &pcbc_logger);
@@ -57,6 +63,24 @@ static lcb_STATUS pcbc_establish_connection(lcb_INSTANCE_TYPE type, lcb_INSTANCE
     lcb_createopts_connstr(options, connstr, strlen(connstr));
     lcb_createopts_logger(options, logger);
     lcb_createopts_credentials(options, username, strlen(username), password, strlen(password));
+    int enable_metrics = 1;
+    uint32_t flush_interval = 0;
+    if (php_meter && Z_TYPE_P(php_meter) == IS_OBJECT) {
+        if (instanceof_function(Z_OBJCE_P(php_meter), pcbc_noop_meter_ce)) {
+            enable_metrics = 0;
+            lcb_createopts_meter(options, NULL);
+        } else if (instanceof_function(Z_OBJCE_P(php_meter), pcbc_logging_meter_ce)) {
+            enable_metrics = 1;
+            zval ret;
+            zval *prop;
+            prop = pcbc_read_property(pcbc_logging_meter_ce, php_meter, ("flush_interval"), 0, &ret);
+            if (prop && Z_TYPE_P(prop) == IS_LONG) {
+                flush_interval = (uint32_t)Z_LVAL_P(prop);
+            }
+        } else if (instanceof_function(Z_OBJCE_P(php_meter), pcbc_meter_ce)) {
+            lcb_createopts_meter(options, meter_wrapper_constructor(php_meter));
+        }
+    }
 
     lcb_INSTANCE *conn;
     lcb_STATUS err;
@@ -74,6 +98,14 @@ static lcb_STATUS pcbc_establish_connection(lcb_INSTANCE_TYPE type, lcb_INSTANCE
         lcb_destroy(conn);
         lcb_logger_destroy(logger);
         return err;
+    }
+    if (enable_metrics) {
+        lcb_cntl_string(conn, "enable_operation_metrics", "on");
+        if (flush_interval > 0) {
+            lcb_cntl_setu32(conn, LCB_CNTL_OP_METRICS_FLUSH_INTERVAL, flush_interval);
+        }
+    } else {
+        lcb_cntl_string(conn, "enable_operation_metrics", "off");
     }
 
     lcb_install_callback(conn, LCB_CALLBACK_GET, (lcb_RESPCALLBACK)get_callback);
@@ -302,7 +334,7 @@ static void append_hashed(smart_str *str, const char *data, size_t data_len)
 }
 
 lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE type, const char *connstr,
-                               const char *bucketname, const char *username, const char *password)
+                               const char *bucketname, const char *username, const char *password, zval *meter)
 {
     char *cstr = NULL;
     lcb_STATUS rv;
@@ -347,7 +379,7 @@ lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE typ
         }
     }
 
-    rv = pcbc_establish_connection(type, &lcb, cstr, username, password);
+    rv = pcbc_establish_connection(type, &lcb, cstr, username, password, meter);
     if (rv != LCB_SUCCESS) {
         efree(cstr);
         smart_str_free(&plist_key);

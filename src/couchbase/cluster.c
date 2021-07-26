@@ -26,6 +26,7 @@ extern zend_class_entry *pcbc_bucket_manager_ce;
 extern zend_class_entry *pcbc_search_index_manager_ce;
 extern zend_class_entry *pcbc_query_index_manager_ce;
 extern zend_class_entry *pcbc_analytics_index_manager_ce;
+extern zend_class_entry *pcbc_meter_ce;
 
 PHP_METHOD(Cluster, query);
 PHP_METHOD(Cluster, analyticsQuery);
@@ -37,8 +38,8 @@ static void pcbc_bucket_init(zval *return_value, pcbc_cluster_t *cluster, const 
     pcbc_connection_t *conn;
     lcb_STATUS err;
 
-    err =
-        pcbc_connection_get(&conn, LCB_TYPE_BUCKET, cluster->connstr, bucketname, cluster->username, cluster->password);
+    err = pcbc_connection_get(&conn, LCB_TYPE_BUCKET, cluster->connstr, bucketname, cluster->username,
+                              cluster->password, &cluster->meter);
     if (err) {
         throw_lcb_exception(err, NULL);
         return;
@@ -79,7 +80,8 @@ static void pcbc_cluster_connection_init(zval *return_value, pcbc_cluster_t *clu
         }
     }
 
-    err = pcbc_connection_get(&conn, type, cluster->connstr, bucket, cluster->username, cluster->password);
+    err = pcbc_connection_get(&conn, type, cluster->connstr, bucket, cluster->username, cluster->password,
+                              &cluster->meter);
     if (url) {
         php_url_free(url);
     }
@@ -118,6 +120,15 @@ PHP_METHOD(Cluster, __construct)
     obj->password = estrndup(Z_STRVAL_P(prop), Z_STRLEN_P(prop));
     obj->connstr = estrndup(ZSTR_VAL(connstr), ZSTR_LEN(connstr));
     obj->conn = NULL;
+
+    prop = pcbc_read_property(pcbc_cluster_options_ce, options, ("meter"), 0, &ret);
+    if ((Z_TYPE_P(prop) != IS_OBJECT && Z_TYPE_P(prop) != IS_NULL) ||
+        (Z_TYPE_P(prop) == IS_OBJECT && !instanceof_function(Z_OBJCE_P(prop), pcbc_meter_ce))) {
+        zend_type_error("Invalid meter specified");
+        RETURN_NULL();
+    }
+    ZVAL_ZVAL(&obj->meter, prop, 1, 0);
+
     pcbc_cluster_connection_init(return_value, obj);
 
     pcbc_log(LOGARGS(DEBUG), "Initialize Cluster. C=%p connstr=\"%s\"", (void *)obj, obj->connstr);
@@ -135,6 +146,7 @@ PHP_METHOD(Cluster, bucket)
     if (rv == FAILURE) {
         return;
     }
+
     pcbc_bucket_init(return_value, obj, ZSTR_VAL(bucketname));
 }
 
@@ -260,6 +272,10 @@ static void pcbc_cluster_free_object(zend_object *object)
     if (obj->password != NULL) {
         efree(obj->password);
     }
+    if (!Z_ISUNDEF(obj->meter)) {
+        zval_ptr_dtor(&obj->meter);
+        ZVAL_UNDEF(&obj->meter);
+    }
 
     zend_object_std_dtor(&obj->std);
 }
@@ -274,6 +290,7 @@ static zend_object *pcbc_cluster_create_object(zend_class_entry *class_type)
     object_properties_init(&obj->std, class_type);
 
     obj->std.handlers = &pcbc_cluster_handlers;
+    ZVAL_UNDEF(&obj->meter);
     return &obj->std;
 }
 

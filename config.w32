@@ -29,6 +29,7 @@ if (PHP_COUCHBASE != "no") {
             "collection.c " +
             "log_formatter.c " +
             "lookup_spec.c " +
+            "metrics.c " +
             "mutate_spec.c " +
             "mutation_state.c " +
             "pool.c " +

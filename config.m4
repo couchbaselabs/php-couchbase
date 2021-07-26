@@ -110,6 +110,7 @@ COUCHBASE_FILES=" \
     src/couchbase/managers/search_index_manager.c \
     src/couchbase/managers/user_manager.c \
     src/couchbase/managers/view_index_manager.c \
+    src/couchbase/metrics.c \
     src/couchbase/mutate_spec.c \
     src/couchbase/mutation_state.c \
     src/couchbase/password_authenticator.c \

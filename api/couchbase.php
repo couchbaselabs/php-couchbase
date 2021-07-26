@@ -3921,5 +3921,62 @@ class ClusterOptions
 }
 
 /**
+ * Provides an interface for recording values.
+ */
+interface ValueRecorder
+{
+    /**
+     * Records a new value.
+     *
+     * @param int $value The value to record.
+     */
+    public function recordValue(int $value): void;
+}
+
+/**
+ * Providers an interface to create value recorders for recording metrics.
+ */
+interface Meter
+{
+
+    /**
+     * Creates a new value recorder for a metric with the specified tags.
+     *
+     * @param string $name The name of the metric.
+     * @param array $tags The tags to associate with the metric.
+     *
+     * @return ValueRecorder
+     */
+    public function valueRecorder(string $name, array $tags): ValueRecorder;
+}
+
+/**
+ * Implements a no-op meter which performs no metrics instrumentation.  Note that
+ * to reduce the performance impact of using this meter, this class is not
+ * actually used by the SDK, and simply acts as a placeholder which triggers a
+ * native implementation to be used instead.
+ */
+class NoopMeter implements Meter
+{
+    public function valueRecorder(string $name, array $tags): ValueRecorder {}
+}
+
+/**
+ * Implements a default meter which logs metrics on a regular basis.  Note that
+ * to reduce the performance impact of using this meter, this class is not
+ * actually used by the SDK, and simply acts as a placeholder which triggers a
+ * native implementation to be used instead.
+ */
+class LoggingMeter implements Meter
+{
+    /**
+     * @param int $duration duration in microseconds how often the metrics should be flushed in the log.
+     */
+    public function flushInterval(int $duration): LoggingMeter {}
+
+    public function valueRecorder(string $name, array $tags): ValueRecorder {}
+}
+
+/**
  * vim: ts=4 sts=4 sw=4 et
  */
