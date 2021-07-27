@@ -17,7 +17,7 @@
 #ifndef PHP_COUCHBASE_H_
 #define PHP_COUCHBASE_H_
 
-#define PHP_COUCHBASE_VERSION "3.1.2"
+#define PHP_COUCHBASE_VERSION "3.2.0"
 #define PHP_COUCHBASE_EXTNAME "couchbase"
 
 extern zend_module_entry couchbase_module_entry;

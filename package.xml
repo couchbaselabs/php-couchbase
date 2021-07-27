@@ -18,10 +18,10 @@
         <active>yes</active>
     </lead>
 
-    <date>2021-05-13</date>
+    <date>2021-07-27</date>
     <version>
-        <release>3.1.2</release>
-        <api>3.1.0</api>
+        <release>3.2.0</release>
+        <api>3.2.0</api>
     </version>
     <stability>
         <release>stable</release>
@@ -29,11 +29,18 @@
     </stability>
     <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2</license>
     <notes>
-        PCBC-761: fix return interface for expiryTime methods.
-        PCBC-760: expose error messages in query exceptions.
-        PCBC-759: take into account 'decoder.json_arrays' INI setting when decoding Query rows.
-        PCBC-758: raise exception if invalid CAS passed to unlock.
-        PCBC-729: update URLs for Collections management API.
+        PCBC-750: Deprecate `getScope` in collections manager.
+        PCBC-725: Add support for collections to Full Text Search.
+        PCBC-764: Serialize `BooleanSearchQuery->mustNot` to `"must_not"`.
+        PCBC-709: Add scope level analytics queries.
+        PCBC-732: Expose partition information for query indexes.
+        PCBC-733: Add analytics index manager.
+        PCBC-769: Do not allow using CAS with counter operations, which are always atomic.
+        PCBC-767: Fix URL for collection create method.
+        PCBC-738: Add `preserveExpiry` support for mutations (`replace`, `upsert` and `mutateIn`).
+        PCBC-700: Manage remote links for analytics service.
+        PCBC-706: Provide tracing interface.
+        PCBC-743: Provide metrics interface.
     </notes>
     <contents>
         <dir name="/">
@@ -160,6 +167,25 @@
     <providesextension>couchbase</providesextension>
     <extsrcrelease/>
     <changelog>
+        <release>
+            <date>2021-05-13</date>
+            <version>
+                <release>3.1.2</release>
+                <api>3.1.0</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2</license>
+            <notes>
+                PCBC-761: fix return interface for expiryTime methods.
+                PCBC-760: expose error messages in query exceptions.
+                PCBC-759: take into account 'decoder.json_arrays' INI setting when decoding Query rows.
+                PCBC-758: raise exception if invalid CAS passed to unlock.
+                PCBC-729: update URLs for Collections management API.
+            </notes>
+        </release>
         <release>
             <date>2021-03-04</date>
             <version>
