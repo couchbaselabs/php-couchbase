@@ -18,12 +18,12 @@ if test "$PHP_COUCHBASE" != "no"; then
   elif test -x "$PKG_CONFIG" && $PKG_CONFIG --exists libcouchbase; then
     LIBCOUCHBASE_VERSION=`$PKG_CONFIG libcouchbase --modversion`
 
-    if $PKG_CONFIG libcouchbase --atleast-version 3.1.3; then
+    if $PKG_CONFIG libcouchbase --atleast-version 3.2.0; then
       LIBCOUCHBASE_CFLAGS=`$PKG_CONFIG libcouchbase --cflags`
       LIBCOUCHBASE_LIBS=`$PKG_CONFIG libcouchbase --libs`
       AC_MSG_RESULT(from pkgconfig: version $LIBCOUCHBASE_VERSION found)
     else
-      AC_MSG_ERROR([libcouchbase version $LIBCOUCHBASE_VERSION found, must be upgraded to version >= 3.1.3])
+      AC_MSG_ERROR([libcouchbase version $LIBCOUCHBASE_VERSION found, must be upgraded to version >= 3.2.0])
     fi
 
   dnl fallback on standard directory
@@ -50,14 +50,14 @@ if test "$PHP_COUCHBASE" != "no"; then
 
   dnl found in directory
   else
-    AC_MSG_CHECKING([for libcouchbase version >= 3.1.3])
+    AC_MSG_CHECKING([for libcouchbase version >= 3.2.0])
     LCB_VERSION=$($EGREP "define LCB_VERSION " $LIBCOUCHBASE_DIR/include/libcouchbase/configuration.h | $SED -e 's/[[^0-9x]]//g')
     AC_MSG_RESULT([$LCB_VERSION])
     if test "x$LCB_VERSION" = "x0x000000"; then
       AC_MSG_ERROR([seems like libcouchbase is not installed from official tarball or git clone. Do not use github tags to download releases.])
     fi
-    if test $(printf %d $LCB_VERSION) -lt $(printf %d 0x030103); then
-      AC_MSG_ERROR([libcouchbase greater or equal to 3.1.3 required])
+    if test $(printf %d $LCB_VERSION) -lt $(printf %d 0x030200); then
+      AC_MSG_ERROR([libcouchbase greater or equal to 3.2.0 required])
     fi
 
     PHP_ADD_INCLUDE($LIBCOUCHBASE_DIR/include)
