@@ -21,20 +21,21 @@ if (PHP_COUCHBASE != "no") {
             "fastlz.c";
         src_couchbase_sources  =
             "authenticator.c " +
-            "cert_authenticator.c " +
-            "password_authenticator.c " +
-            "cluster_options.c " +
             "bucket.c " +
+            "cert_authenticator.c " +
             "cluster.c " +
+            "cluster_options.c " +
             "collection.c " +
             "log_formatter.c " +
             "lookup_spec.c " +
             "metrics.c " +
             "mutate_spec.c " +
             "mutation_state.c " +
+            "password_authenticator.c " +
             "pool.c " +
             "result.c " +
-            "search_options.c ";
+            "search_options.c " +
+            "tracing.c ";
         src_couchbase_bucket_sources =
             "cbas.c " +
             "cbft.c " +

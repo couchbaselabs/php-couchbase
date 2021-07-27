@@ -27,6 +27,7 @@ extern zend_class_entry *pcbc_search_index_manager_ce;
 extern zend_class_entry *pcbc_query_index_manager_ce;
 extern zend_class_entry *pcbc_analytics_index_manager_ce;
 extern zend_class_entry *pcbc_meter_ce;
+extern zend_class_entry *pcbc_request_tracer_ce;
 
 PHP_METHOD(Cluster, query);
 PHP_METHOD(Cluster, analyticsQuery);
@@ -39,7 +40,7 @@ static void pcbc_bucket_init(zval *return_value, pcbc_cluster_t *cluster, const 
     lcb_STATUS err;
 
     err = pcbc_connection_get(&conn, LCB_TYPE_BUCKET, cluster->connstr, bucketname, cluster->username,
-                              cluster->password, &cluster->meter);
+                              cluster->password, &cluster->meter, &cluster->tracer);
     if (err) {
         throw_lcb_exception(err, NULL);
         return;
@@ -81,7 +82,7 @@ static void pcbc_cluster_connection_init(zval *return_value, pcbc_cluster_t *clu
     }
 
     err = pcbc_connection_get(&conn, type, cluster->connstr, bucket, cluster->username, cluster->password,
-                              &cluster->meter);
+                              &cluster->meter, &cluster->tracer);
     if (url) {
         php_url_free(url);
     }
@@ -128,6 +129,14 @@ PHP_METHOD(Cluster, __construct)
         RETURN_NULL();
     }
     ZVAL_ZVAL(&obj->meter, prop, 1, 0);
+
+    prop = pcbc_read_property(pcbc_cluster_options_ce, options, ("tracer"), 0, &ret);
+    if ((Z_TYPE_P(prop) != IS_OBJECT && Z_TYPE_P(prop) != IS_NULL) ||
+        (Z_TYPE_P(prop) == IS_OBJECT && !instanceof_function(Z_OBJCE_P(prop), pcbc_request_tracer_ce))) {
+        zend_type_error("Invalid tracer specified");
+        RETURN_NULL();
+    }
+    ZVAL_ZVAL(&obj->tracer, prop, 1, 0);
 
     pcbc_cluster_connection_init(return_value, obj);
 
@@ -276,6 +285,10 @@ static void pcbc_cluster_free_object(zend_object *object)
         zval_ptr_dtor(&obj->meter);
         ZVAL_UNDEF(&obj->meter);
     }
+    if (!Z_ISUNDEF(obj->tracer)) {
+        zval_ptr_dtor(&obj->tracer);
+        ZVAL_UNDEF(&obj->tracer);
+    }
 
     zend_object_std_dtor(&obj->std);
 }
@@ -291,6 +304,7 @@ static zend_object *pcbc_cluster_create_object(zend_class_entry *class_type)
 
     obj->std.handlers = &pcbc_cluster_handlers;
     ZVAL_UNDEF(&obj->meter);
+    ZVAL_UNDEF(&obj->tracer);
     return &obj->std;
 }
 

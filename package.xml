@@ -143,6 +143,7 @@
             <file role="src" name="src/couchbase/search/term_range_query.c" />
             <file role="src" name="src/couchbase/search/wildcard_query.c" />
             <file role="src" name="src/couchbase/search_options.c" />
+            <file role="src" name="src/couchbase/tracing.c" />
             <file role="src" name="transcoding.c" />
         </dir>
     </contents>

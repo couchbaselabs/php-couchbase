@@ -3978,5 +3978,99 @@ class LoggingMeter implements Meter
 }
 
 /**
+ * Represents a span of time an event occurs over.
+ */
+interface RequestSpan {
+    /**
+     * Adds an tag to this span.
+     *
+     * @param string $key The key of the tag to add.
+     * @param int|string $value The value to assign to the tag.
+     */
+    public function addTag(string $key, $value): void;
+
+    /**
+     * Ends this span.
+     */
+    public function end(): void;
+}
+
+/**
+ * Represents a tracer capable of creating trace spans.
+ */
+interface RequestTracer {
+    /**
+     * Creates a new request span.
+     *
+     * @param string $name The name of the span.
+     * @param string|null $parent The parent of the span, if one exists.
+     */
+    public function requestSpan(string $name, RequestSpan $parent = null);
+}
+
+/**
+ * This implements a basic default tracer which keeps track of operations
+ * which falls outside a specified threshold.  Note that to reduce the
+ * performance impact of using this tracer, this class is not actually
+ * used by the SDK, and simply acts as a placeholder which triggers a
+ * native implementation to be used instead.
+ */
+class ThresholdLoggingTracer implements RequestTracer {
+    public function requestSpan(string $name, RequestSpan $parent = null) {}
+
+    /**
+     * Specifies how often aggregated trace information should be logged,
+     * specified in microseconds.
+     */
+    public function emitInterval(int $duration) {}
+
+    /**
+     * Specifies the threshold for when a kv request should be included
+     * in the aggregated metrics, specified in microseconds.
+     */
+    public function kvThreshold(int $duration) {}
+
+    /**
+     * Specifies the threshold for when a query request should be included
+     * in the aggregated metrics, specified in microseconds.
+     */
+    public function queryThreshold(int $duration) {}
+
+    /**
+     * Specifies the threshold for when a views request should be included
+     * in the aggregated metrics, specified in microseconds.
+     */
+    public function viewsThreshold(int $duration) {}
+
+    /**
+     * Specifies the threshold for when a search request should be included
+     * in the aggregated metrics, specified in microseconds.
+     */
+    public function searchThreshold(int $duration) {}
+
+    /**
+     * Specifies the threshold for when an analytics request should be included
+     * in the aggregated metrics, specified in microseconds.
+     */
+    public function analyticsThreshold(int $duration) {}
+
+    /**
+     * Specifies the number of entries which should be kept between each
+     * logging interval.
+     */
+    public function sampleSize(int $size) {}
+}
+
+/**
+ * Implements a no-op tracer which performs no work.  Note that to reduce the
+ * performance impact of using this tracer, this class is not actually
+ * used by the SDK, and simply acts as a placeholder which triggers a
+ * native implementation to be used instead.
+ */
+class NoopTracer implements RequestTracer {
+    public function requestSpan(string $name, RequestSpan $parent = null) {}
+}
+
+/**
  * vim: ts=4 sts=4 sw=4 et
  */

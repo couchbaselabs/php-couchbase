@@ -23,6 +23,9 @@ static int pcbc_res_couchbase;
 extern zend_class_entry *pcbc_logging_meter_ce;
 extern zend_class_entry *pcbc_noop_meter_ce;
 extern zend_class_entry *pcbc_meter_ce;
+extern zend_class_entry *pcbc_threshold_logging_tracer_ce;
+extern zend_class_entry *pcbc_noop_tracer_ce;
+extern zend_class_entry *pcbc_request_tracer_ce;
 
 extern struct pcbc_logger_st pcbc_logger;
 #define LOGARGS(conn, lvl) LCB_LOG_##lvl, conn, "pcbc/pool", __FILE__, __LINE__
@@ -50,9 +53,11 @@ void ping_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPPING *rb);
 void diag_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPDIAG *rb);
 
 lcbmetrics_METER *meter_wrapper_constructor(zval *php_meter);
+lcbtrace_TRACER *tracer_wrapper_constructor(zval *php_tracer);
 
 static lcb_STATUS pcbc_establish_connection(lcb_INSTANCE_TYPE type, lcb_INSTANCE **result, const char *connstr,
-                                            const char *username, const char *password, zval *php_meter)
+                                            const char *username, const char *password, zval *php_meter,
+                                            zval *php_tracer)
 {
     lcb_LOGGER *logger = NULL;
     lcb_logger_create(&logger, &pcbc_logger);
@@ -81,6 +86,56 @@ static lcb_STATUS pcbc_establish_connection(lcb_INSTANCE_TYPE type, lcb_INSTANCE
             lcb_createopts_meter(options, meter_wrapper_constructor(php_meter));
         }
     }
+    int enable_tracing = 1;
+    uint32_t emit_interval = 0;
+    uint32_t kv_threshold = 0;
+    uint32_t query_threshold = 0;
+    uint32_t views_threshold = 0;
+    uint32_t search_threshold = 0;
+    uint32_t analytics_threshold = 0;
+    uint32_t sample_size = 0;
+    if (php_tracer && Z_TYPE_P(php_tracer) == IS_OBJECT) {
+        if (instanceof_function(Z_OBJCE_P(php_tracer), pcbc_noop_tracer_ce)) {
+            enable_tracing = 0;
+            lcb_createopts_tracer(options, NULL);
+        } else if (instanceof_function(Z_OBJCE_P(php_tracer), pcbc_threshold_logging_tracer_ce)) {
+            enable_tracing = 1;
+
+            zval ret;
+            zval *prop;
+            prop = pcbc_read_property(pcbc_threshold_logging_tracer_ce, php_tracer, ("emit_interval"), 0, &ret);
+            if (prop && Z_TYPE_P(prop) == IS_LONG) {
+                emit_interval = (uint32_t)Z_LVAL_P(prop);
+            }
+            prop = pcbc_read_property(pcbc_threshold_logging_tracer_ce, php_tracer, ("kv_threshold"), 0, &ret);
+            if (prop && Z_TYPE_P(prop) == IS_LONG) {
+                kv_threshold = (uint32_t)Z_LVAL_P(prop);
+            }
+            prop = pcbc_read_property(pcbc_threshold_logging_tracer_ce, php_tracer, ("query_threshold"), 0, &ret);
+            if (prop && Z_TYPE_P(prop) == IS_LONG) {
+                query_threshold = (uint32_t)Z_LVAL_P(prop);
+            }
+            prop = pcbc_read_property(pcbc_threshold_logging_tracer_ce, php_tracer, ("views_threshold"), 0, &ret);
+            if (prop && Z_TYPE_P(prop) == IS_LONG) {
+                views_threshold = (uint32_t)Z_LVAL_P(prop);
+            }
+            prop = pcbc_read_property(pcbc_threshold_logging_tracer_ce, php_tracer, ("search_threshold"), 0, &ret);
+            if (prop && Z_TYPE_P(prop) == IS_LONG) {
+                search_threshold = (uint32_t)Z_LVAL_P(prop);
+            }
+            prop = pcbc_read_property(pcbc_threshold_logging_tracer_ce, php_tracer, ("analytics_threshold"), 0, &ret);
+            if (prop && Z_TYPE_P(prop) == IS_LONG) {
+                analytics_threshold = (uint32_t)Z_LVAL_P(prop);
+            }
+            prop = pcbc_read_property(pcbc_threshold_logging_tracer_ce, php_tracer, ("sample_size"), 0, &ret);
+            if (prop && Z_TYPE_P(prop) == IS_LONG) {
+                sample_size = (uint32_t)Z_LVAL_P(prop);
+            }
+        } else if (instanceof_function(Z_OBJCE_P(php_tracer), pcbc_request_tracer_ce)) {
+            enable_tracing = 1;
+            lcb_createopts_tracer(options, tracer_wrapper_constructor(php_tracer));
+        }
+    }
 
     lcb_INSTANCE *conn;
     lcb_STATUS err;
@@ -106,6 +161,32 @@ static lcb_STATUS pcbc_establish_connection(lcb_INSTANCE_TYPE type, lcb_INSTANCE
         }
     } else {
         lcb_cntl_string(conn, "enable_operation_metrics", "off");
+    }
+    if (enable_tracing) {
+        lcb_cntl_string(conn, "enable_tracing", "on");
+        if (emit_interval > 0) {
+            lcb_cntl_setu32(conn, LCB_CNTL_TRACING_THRESHOLD_QUEUE_FLUSH_INTERVAL, emit_interval);
+        }
+        if (kv_threshold > 0) {
+            lcb_cntl_setu32(conn, LCB_CNTL_TRACING_THRESHOLD_KV, kv_threshold);
+        }
+        if (query_threshold > 0) {
+            lcb_cntl_setu32(conn, LCB_CNTL_TRACING_THRESHOLD_QUERY, query_threshold);
+        }
+        if (views_threshold > 0) {
+            lcb_cntl_setu32(conn, LCB_CNTL_TRACING_THRESHOLD_VIEW, views_threshold);
+        }
+        if (search_threshold > 0) {
+            lcb_cntl_setu32(conn, LCB_CNTL_TRACING_THRESHOLD_SEARCH, search_threshold);
+        }
+        if (analytics_threshold > 0) {
+            lcb_cntl_setu32(conn, LCB_CNTL_TRACING_THRESHOLD_ANALYTICS, analytics_threshold);
+        }
+        if (sample_size > 0) {
+            lcb_cntl_setu32(conn, LCB_CNTL_TRACING_THRESHOLD_QUEUE_SIZE, sample_size);
+        }
+    } else {
+        lcb_cntl_string(conn, "enable_tracing", "off");
     }
 
     lcb_install_callback(conn, LCB_CALLBACK_GET, (lcb_RESPCALLBACK)get_callback);
@@ -334,7 +415,8 @@ static void append_hashed(smart_str *str, const char *data, size_t data_len)
 }
 
 lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE type, const char *connstr,
-                               const char *bucketname, const char *username, const char *password, zval *meter)
+                               const char *bucketname, const char *username, const char *password, zval *meter,
+                               zval *tracer)
 {
     char *cstr = NULL;
     lcb_STATUS rv;
@@ -379,7 +461,7 @@ lcb_STATUS pcbc_connection_get(pcbc_connection_t **result, lcb_INSTANCE_TYPE typ
         }
     }
 
-    rv = pcbc_establish_connection(type, &lcb, cstr, username, password, meter);
+    rv = pcbc_establish_connection(type, &lcb, cstr, username, password, meter, tracer);
     if (rv != LCB_SUCCESS) {
         efree(cstr);
         smart_str_free(&plist_key);

@@ -148,6 +148,7 @@ COUCHBASE_FILES=" \
     src/couchbase/search/term_range_query.c \
     src/couchbase/search/wildcard_query.c \
     src/couchbase/search_options.c \
+    src/couchbase/tracing.c \
     transcoding.c \
 "
 
