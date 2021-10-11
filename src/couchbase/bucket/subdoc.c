@@ -103,6 +103,9 @@ void subdoc_lookup_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPSU
             }
         }
         pcbc_update_property(pcbc_lookup_in_result_entry_ce, &entry, ("value"), &value);
+        if (!Z_ISNULL(value)) {
+            zval_ptr_dtor(&value);
+        }
         add_index_zval(&data, idx, &entry);
     }
 }

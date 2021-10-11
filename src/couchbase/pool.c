@@ -145,6 +145,7 @@ static lcb_STATUS pcbc_establish_connection(lcb_INSTANCE_TYPE type, lcb_INSTANCE
         lcb_logger_destroy(logger);
         return err;
     }
+    lcb_createopts_destroy(options);
     lcb_set_cookie(conn, logger);
     pcbc_log(LOGARGS(conn, INFO), "New lcb_INSTANCE * instance has been initialized");
     err = lcb_cntl(conn, LCB_CNTL_SET, LCB_CNTL_CLIENT_STRING, pcbc_client_string);
