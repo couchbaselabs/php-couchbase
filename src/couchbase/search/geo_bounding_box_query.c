@@ -89,7 +89,6 @@ PHP_METHOD(GeoBoundingBoxSearchQuery, jsonSerialize)
     prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("top_left_latitude"), 0, &ret);
     add_next_index_zval(&top_left, prop);
     add_assoc_zval(return_value, "top_left", &top_left);
-    Z_TRY_ADDREF(top_left);
 
     zval bottom_right;
     array_init(&bottom_right);
@@ -98,7 +97,6 @@ PHP_METHOD(GeoBoundingBoxSearchQuery, jsonSerialize)
     prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("bottom_right_latitude"), 0, &ret);
     add_next_index_zval(&bottom_right, prop);
     add_assoc_zval(return_value, "bottom_right", &bottom_right);
-    Z_TRY_ADDREF(bottom_right);
 
     prop = pcbc_read_property(pcbc_geo_bounding_box_search_query_ce, getThis(), ("field"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {

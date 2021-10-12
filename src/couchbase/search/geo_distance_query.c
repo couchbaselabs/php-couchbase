@@ -90,7 +90,6 @@ PHP_METHOD(GeoDistanceSearchQuery, jsonSerialize)
     prop = pcbc_read_property(pcbc_geo_distance_search_query_ce, getThis(), ("latitude"), 0, &ret);
     add_next_index_zval(&location, prop);
     add_assoc_zval(return_value, "location", &location);
-    Z_TRY_ADDREF(location);
 
     prop = pcbc_read_property(pcbc_geo_distance_search_query_ce, getThis(), ("distance"), 0, &ret);
     if (Z_TYPE_P(prop) != IS_NULL) {
