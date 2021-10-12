@@ -134,6 +134,7 @@ PHP_METHOD(InsertOptions, encoder)
     }
 
     pcbc_update_property(pcbc_insert_options_ce, getThis(), ("encoder"), arg);
+    zval_ptr_dtor(arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -316,6 +317,7 @@ PHP_METHOD(UpsertOptions, encoder)
     }
 
     pcbc_update_property(pcbc_upsert_options_ce, getThis(), ("encoder"), arg);
+    zval_ptr_dtor(arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
@@ -536,6 +538,7 @@ PHP_METHOD(ReplaceOptions, encoder)
     }
 
     pcbc_update_property(pcbc_replace_options_ce, getThis(), ("encoder"), arg);
+    zval_ptr_dtor(arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 

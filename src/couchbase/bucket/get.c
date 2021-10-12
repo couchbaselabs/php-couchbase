@@ -134,6 +134,7 @@ PHP_METHOD(GetOptions, decoder)
     }
 
     pcbc_update_property(pcbc_get_options_ce, getThis(), ("decoder"), arg);
+    zval_ptr_dtor(arg);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 
