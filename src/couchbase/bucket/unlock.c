@@ -80,7 +80,8 @@ PHP_METHOD(Collection, unlock)
 {
     lcb_STATUS err;
 
-    zend_string *id, *cas;
+    zend_string *id;
+    zend_string *cas;
     zval *options = NULL;
 
     int rv = zend_parse_parameters(ZEND_NUM_ARGS(), "SS|O!", &id, &cas, &options, pcbc_unlock_options_ce);
@@ -100,6 +101,10 @@ PHP_METHOD(Collection, unlock)
         lcb_cmdunlock_cas(cmd, cas_val);
         zend_string_free(decoded);
     } else {
+        if (decoded) {
+            zend_string_free(decoded);
+        }
+        lcb_cmdunlock_destroy(cmd);
         throw_lcb_exception(LCB_ERR_INVALID_ARGUMENT, NULL);
         RETURN_NULL();
     }
