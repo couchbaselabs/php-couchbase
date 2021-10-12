@@ -353,7 +353,6 @@ void do_analytics_query(zval *return_value, lcb_INSTANCE *lcb, zend_string *stat
         }
         prop = pcbc_read_property(pcbc_analytics_options_ce, options, ("positional_params"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_ARRAY) {
-#if LCB_VERSION > 0x030200
             HashTable *ht = HASH_OF(prop);
             zval *entry;
             ZEND_HASH_FOREACH_VAL(ht, entry)
@@ -363,26 +362,6 @@ void do_analytics_query(zval *return_value, lcb_INSTANCE *lcb, zend_string *stat
                 }
             }
             ZEND_HASH_FOREACH_END();
-#else
-            smart_str buf = {0};
-            HashTable *ht = HASH_OF(prop);
-            zval *entry;
-            smart_str_appendc(&buf, '[');
-            ZEND_HASH_FOREACH_VAL(ht, entry)
-            {
-                if (Z_TYPE_P(entry) == IS_STRING) {
-                    smart_str_appendl(&buf, Z_STRVAL_P(entry), Z_STRLEN_P(entry));
-                    smart_str_appendc(&buf, ',');
-                }
-            }
-            if (ZSTR_LEN(buf.s) > 1) {
-                ZSTR_LEN(buf.s) = ZSTR_LEN(buf.s) - 1; /* remove last comma */
-            }
-            smart_str_appendc(&buf, ']');
-            lcb_cmdanalytics_positional_param(cmd, ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
-            smart_str_free(&buf);
-            ZEND_HASH_FOREACH_END();
-#endif
         }
         prop = pcbc_read_property(pcbc_analytics_options_ce, options, ("raw_params"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_ARRAY) {

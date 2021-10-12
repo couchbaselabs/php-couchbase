@@ -18,7 +18,7 @@ class BucketTest extends CouchbaseTestCase {
         $options->credentials($this->testUser, 'bad_pass');
         $this->wrapException(function() use($options) {
             new Cluster($this->testDsn, $options);
-        }, '\Couchbase\NetworkException', COUCHBASE_ERR_CONNECT_ERROR);
+        }, '\Couchbase\AuthenticationException', COUCHBASE_ERR_AUTHENTICATION_FAILURE);
     }
 
     /**
@@ -29,14 +29,9 @@ class BucketTest extends CouchbaseTestCase {
         $options->credentials($this->testUser, $this->testPassword);
         $h = new Cluster($this->testDsn, $options);
 
-        $exceptionClass = '\Couchbase\BucketMissingException';
-        if ($this->usingMock()) {
-            $exceptionClass = '\Couchbase\NetworkException';
-        }
-
         $this->wrapException(function() use($h) {
             $h->bucket('bad_bucket');
-        }, $exceptionClass);
+        }, '\Couchbase\BucketMissingException');
     }
 
     /**
