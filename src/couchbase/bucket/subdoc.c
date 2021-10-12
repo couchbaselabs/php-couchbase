@@ -265,29 +265,33 @@ PHP_METHOD(Collection, lookupIn)
     }
     ZEND_HASH_FOREACH_VAL(spec, val)
     {
+        lcb_STATUS rc = LCB_SUCCESS;
         flags = 0;
         if (Z_OBJCE_P(val) == pcbc_lookup_get_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(pcbc_lookup_get_spec_ce, val, ("is_xattr"), 0, &tmp)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
             }
             prop = pcbc_read_property(pcbc_lookup_get_spec_ce, val, ("path"), 0, &tmp);
-            lcb_subdocspecs_get(operations, idx, flags, Z_STRVAL_P(prop), Z_STRLEN_P(prop));
+            rc = lcb_subdocspecs_get(operations, idx, flags, Z_STRVAL_P(prop), Z_STRLEN_P(prop));
         } else if (Z_OBJCE_P(val) == pcbc_lookup_count_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(pcbc_lookup_count_spec_ce, val, ("is_xattr"), 0, &tmp)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
             }
             prop = pcbc_read_property(pcbc_lookup_count_spec_ce, val, ("path"), 0, &tmp);
-            lcb_subdocspecs_get_count(operations, idx, flags, Z_STRVAL_P(prop), Z_STRLEN_P(prop));
+            rc = lcb_subdocspecs_get_count(operations, idx, flags, Z_STRVAL_P(prop), Z_STRLEN_P(prop));
         } else if (Z_OBJCE_P(val) == pcbc_lookup_exists_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(pcbc_lookup_exists_spec_ce, val, ("is_xattr"), 0, &tmp)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
             }
             prop = pcbc_read_property(pcbc_lookup_exists_spec_ce, val, ("path"), 0, &tmp);
-            lcb_subdocspecs_exists(operations, idx, flags, Z_STRVAL_P(prop), Z_STRLEN_P(prop));
+            rc = lcb_subdocspecs_exists(operations, idx, flags, Z_STRVAL_P(prop), Z_STRLEN_P(prop));
         } else {
-            /* TODO: raise argument exception */
+            rc = LCB_ERR_INVALID_ARGUMENT;
+        }
+        if (rc != LCB_SUCCESS) {
             lcb_subdocspecs_destroy(operations);
-            return;
+            throw_lcb_exception_ex(rc, PCBC_OPCODE_UNSPEC, NULL);
+            RETURN_NULL();
         }
         idx++;
     }
@@ -461,6 +465,7 @@ PHP_METHOD(Collection, mutateIn)
     uint32_t flags;
     ZEND_HASH_FOREACH_VAL(spec, entry)
     {
+        lcb_STATUS rc = LCB_SUCCESS;
         flags = 0;
         if (Z_OBJCE_P(entry) == pcbc_mutate_insert_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(Z_OBJCE_P(entry), entry, ("is_xattr"), 0, &rv1)) == IS_TRUE) {
@@ -474,8 +479,8 @@ PHP_METHOD(Collection, mutateIn)
             }
             path = pcbc_read_property(Z_OBJCE_P(entry), entry, ("path"), 0, &rv1);
             value = pcbc_read_property(Z_OBJCE_P(entry), entry, ("value"), 0, &rv2);
-            lcb_subdocspecs_dict_add(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path), Z_STRVAL_P(value),
-                                     Z_STRLEN_P(value));
+            rc = lcb_subdocspecs_dict_add(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path), Z_STRVAL_P(value),
+                                          Z_STRLEN_P(value));
         } else if (Z_OBJCE_P(entry) == pcbc_mutate_upsert_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(Z_OBJCE_P(entry), entry, ("is_xattr"), 0, &rv1)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
@@ -488,8 +493,8 @@ PHP_METHOD(Collection, mutateIn)
             }
             path = pcbc_read_property(Z_OBJCE_P(entry), entry, ("path"), 0, &rv1);
             value = pcbc_read_property(Z_OBJCE_P(entry), entry, ("value"), 0, &rv2);
-            lcb_subdocspecs_dict_upsert(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path), Z_STRVAL_P(value),
-                                        Z_STRLEN_P(value));
+            rc = lcb_subdocspecs_dict_upsert(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path),
+                                             Z_STRVAL_P(value), Z_STRLEN_P(value));
         } else if (Z_OBJCE_P(entry) == pcbc_mutate_replace_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(Z_OBJCE_P(entry), entry, ("is_xattr"), 0, &rv1)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
@@ -499,14 +504,14 @@ PHP_METHOD(Collection, mutateIn)
             }
             path = pcbc_read_property(Z_OBJCE_P(entry), entry, ("path"), 0, &rv1);
             value = pcbc_read_property(Z_OBJCE_P(entry), entry, ("value"), 0, &rv2);
-            lcb_subdocspecs_replace(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path), Z_STRVAL_P(value),
-                                    Z_STRLEN_P(value));
+            rc = lcb_subdocspecs_replace(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path), Z_STRVAL_P(value),
+                                         Z_STRLEN_P(value));
         } else if (Z_OBJCE_P(entry) == pcbc_mutate_remove_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(Z_OBJCE_P(entry), entry, ("is_xattr"), 0, &rv1)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
             }
             path = pcbc_read_property(Z_OBJCE_P(entry), entry, ("path"), 0, &rv1);
-            lcb_subdocspecs_remove(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path));
+            rc = lcb_subdocspecs_remove(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path));
         } else if (Z_OBJCE_P(entry) == pcbc_mutate_array_append_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(Z_OBJCE_P(entry), entry, ("is_xattr"), 0, &rv1)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
@@ -519,8 +524,8 @@ PHP_METHOD(Collection, mutateIn)
             }
             path = pcbc_read_property(Z_OBJCE_P(entry), entry, ("path"), 0, &rv1);
             value = pcbc_read_property(Z_OBJCE_P(entry), entry, ("value"), 0, &rv2);
-            lcb_subdocspecs_array_add_last(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path),
-                                           Z_STRVAL_P(value), Z_STRLEN_P(value));
+            rc = lcb_subdocspecs_array_add_last(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path),
+                                                Z_STRVAL_P(value), Z_STRLEN_P(value));
         } else if (Z_OBJCE_P(entry) == pcbc_mutate_array_prepend_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(Z_OBJCE_P(entry), entry, ("is_xattr"), 0, &rv1)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
@@ -533,8 +538,8 @@ PHP_METHOD(Collection, mutateIn)
             }
             path = pcbc_read_property(Z_OBJCE_P(entry), entry, ("path"), 0, &rv1);
             value = pcbc_read_property(Z_OBJCE_P(entry), entry, ("value"), 0, &rv2);
-            lcb_subdocspecs_array_add_first(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path),
-                                            Z_STRVAL_P(value), Z_STRLEN_P(value));
+            rc = lcb_subdocspecs_array_add_first(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path),
+                                                 Z_STRVAL_P(value), Z_STRLEN_P(value));
         } else if (Z_OBJCE_P(entry) == pcbc_mutate_array_insert_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(Z_OBJCE_P(entry), entry, ("is_xattr"), 0, &rv1)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
@@ -547,8 +552,8 @@ PHP_METHOD(Collection, mutateIn)
             }
             path = pcbc_read_property(Z_OBJCE_P(entry), entry, ("path"), 0, &rv1);
             value = pcbc_read_property(Z_OBJCE_P(entry), entry, ("value"), 0, &rv2);
-            lcb_subdocspecs_array_insert(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path), Z_STRVAL_P(value),
-                                         Z_STRLEN_P(value));
+            rc = lcb_subdocspecs_array_insert(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path),
+                                              Z_STRVAL_P(value), Z_STRLEN_P(value));
         } else if (Z_OBJCE_P(entry) == pcbc_mutate_array_add_unique_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(Z_OBJCE_P(entry), entry, ("is_xattr"), 0, &rv1)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
@@ -561,8 +566,8 @@ PHP_METHOD(Collection, mutateIn)
             }
             path = pcbc_read_property(Z_OBJCE_P(entry), entry, ("path"), 0, &rv1);
             value = pcbc_read_property(Z_OBJCE_P(entry), entry, ("value"), 0, &rv2);
-            lcb_subdocspecs_array_add_unique(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path),
-                                             Z_STRVAL_P(value), Z_STRLEN_P(value));
+            rc = lcb_subdocspecs_array_add_unique(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path),
+                                                  Z_STRVAL_P(value), Z_STRLEN_P(value));
         } else if (Z_OBJCE_P(entry) == pcbc_mutate_counter_spec_ce) {
             if (Z_TYPE_P(pcbc_read_property(Z_OBJCE_P(entry), entry, ("is_xattr"), 0, &rv1)) == IS_TRUE) {
                 flags |= LCB_SUBDOCSPECS_F_XATTRPATH;
@@ -572,11 +577,14 @@ PHP_METHOD(Collection, mutateIn)
             }
             path = pcbc_read_property(Z_OBJCE_P(entry), entry, ("path"), 0, &rv1);
             value = pcbc_read_property(Z_OBJCE_P(entry), entry, ("delta"), 0, &rv2);
-            lcb_subdocspecs_counter(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path), Z_LVAL_P(value));
+            rc = lcb_subdocspecs_counter(operations, idx, flags, Z_STRVAL_P(path), Z_STRLEN_P(path), Z_LVAL_P(value));
         } else {
-            /* TODO: raise argument exception */
+            rc = LCB_ERR_INVALID_ARGUMENT;
+        }
+        if (rc != LCB_SUCCESS) {
             lcb_subdocspecs_destroy(operations);
-            return;
+            throw_lcb_exception_ex(rc, PCBC_OPCODE_UNSPEC, NULL);
+            RETURN_NULL();
         }
         idx++;
     }

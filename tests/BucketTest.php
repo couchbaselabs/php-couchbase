@@ -667,12 +667,39 @@ class BucketTest extends CouchbaseTestCase {
     /**
      * @depends testConnect
      */
-    function testMutationInWithEmptyPath($c) {
-        $key = $this->makeKey('lookup_in_with_empty_path');
+    function testSubdocUpsertWithEmptyPath($c) {
+        $key = $this->makeKey('upsert_in_with_empty_path');
         $c->upsert($key, ['path1' => 'value1']);
 
         $this->expectException(\Couchbase\BadInputException::class);
         $result = $c->mutateIn($key, [new \Couchbase\MutateUpsertSpec('', 'value')]);
+    }
+
+    /**
+     * @depends testConnect
+     */
+    function testSubdocReplaceWithEmptyPath($c) {
+        $key = $this->makeKey('replace_in_with_empty_path');
+        $c->upsert($key, ['path1' => 'value1']);
+
+        $c->mutateIn($key, [new \Couchbase\MutateReplaceSpec('', ['path2' => 'value2'])]);
+        $result = $c->get($key);
+        $this->assertEquals($result->content(), ['path2' => 'value2']);
+    }
+
+    /**
+     * @depends testConnect
+     */
+    function testSubdocRemoveWithEmptyPath($c) {
+        if ($this->usingMock()) {
+            $this->markTestSkipped('CouchbaseMock does not support remove with empty path');
+        }
+        $key = $this->makeKey('remove_in_with_empty_path');
+        $c->upsert($key, ['path1' => 'value1']);
+
+        $c->mutateIn($key, [new \Couchbase\MutateRemoveSpec('')]);
+        $this->expectException(\Couchbase\DocumentNotFoundException::class);
+        $c->get($key);
     }
 
     /**
