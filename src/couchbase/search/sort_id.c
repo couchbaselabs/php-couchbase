@@ -55,7 +55,7 @@ PHP_METHOD(SearchSortId, jsonSerialize)
     }
 }
 
-ZEND_BEGIN_ARG_INFO_EX(ai_SearchSortId_none, 0, 0, 0)
+ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(ai_SearchSortId_none, 0, 0, IS_MIXED, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchSortId_descending, 0, 1, Couchbase\\SearchSortId, 0)

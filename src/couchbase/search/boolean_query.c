@@ -116,7 +116,7 @@ PHP_METHOD(BooleanSearchQuery, jsonSerialize)
     }
 }
 
-ZEND_BEGIN_ARG_INFO_EX(ai_BooleanSearchQuery_none, 0, 0, 0)
+ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(ai_BooleanSearchQuery_none, 0, 0, IS_MIXED, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_BooleanSearchQuery_boost, 0, 1, Couchbase\\BooleanSearchQuery, 0)

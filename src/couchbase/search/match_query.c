@@ -153,7 +153,7 @@ PHP_METHOD(MatchSearchQuery, jsonSerialize)
     }
 }
 
-ZEND_BEGIN_ARG_INFO_EX(ai_MatchSearchQuery_jsonSerialize, 0, 0, 0)
+ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(ai_MatchSearchQuery_jsonSerialize, 0, 0, IS_MIXED, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_MatchSearchQuery_construct, 0, 0, 1)
