@@ -783,7 +783,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_SearchIndex_setSourceParams, 0, 1, Cou
 ZEND_ARG_TYPE_INFO(0, params, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
+#if PHP_VERSION_ID < 80100
+ZEND_BEGIN_ARG_INFO_EX(ai_SearchIndex_jsonSerialize, 0, 0, 0)
+#else
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(ai_SearchIndex_jsonSerialize, 0, 0, IS_MIXED, 0)
+#endif
 ZEND_END_ARG_INFO()
 
 // clang-format off

@@ -93,7 +93,11 @@ PHP_METHOD(GeoPolygonSearchQuery, jsonSerialize)
     }
 }
 
+#if PHP_VERSION_ID < 80100
+ZEND_BEGIN_ARG_INFO_EX(ai_GeoPolygonSearchQuery_jsonSerialize, 0, 0, 0)
+#else
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(ai_GeoPolygonSearchQuery_jsonSerialize, 0, 0, IS_MIXED, 0)
+#endif
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_GeoPolygonSearchQuery_construct, 0, 0, 1)
@@ -159,7 +163,11 @@ ZEND_ARG_TYPE_INFO(0, longitude, IS_DOUBLE, 0)
 ZEND_ARG_TYPE_INFO(0, latitude, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
+#if PHP_VERSION_ID < 80100
+ZEND_BEGIN_ARG_INFO_EX(ai_Coordinate_jsonSerialize, 0, 0, 0)
+#else
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(ai_Coordinate_jsonSerialize, 0, 0, IS_MIXED, 0)
+#endif
 ZEND_END_ARG_INFO()
 
 // clang-format off
