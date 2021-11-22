@@ -62,7 +62,7 @@ version from git, make sure you have PHP development tools and headers
 installed, and run the following commands:
 
 ```bash
-git clone git://github.com/couchbase/php-couchbase.git
+git clone https://github.com/couchbase/php-couchbase.git
 cd php-couchbase
 phpize
 ./configure --with-couchbase
