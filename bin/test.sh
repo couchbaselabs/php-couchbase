@@ -30,7 +30,7 @@ CB_PASSWORD=${CB_PASSWORD:-password}
 CB_PHPUNIT_PHAR=${CB_PHPUNIT_PHAR:-"${PROJECT_ROOT}/build/phpunit.phar"}
 if [ ! -f "${CB_PHPUNIT_PHAR}" ]
 then
-    curl -L -o "${CB_PHPUNIT_PHAR}" https://phar.phpunit.de/phpunit-9.4.3.phar
+    curl -L -o "${CB_PHPUNIT_PHAR}" https://phar.phpunit.de/phpunit-9.5.10.phar
 fi
 
 ${CB_PHP_PREFIX}/bin/php --version

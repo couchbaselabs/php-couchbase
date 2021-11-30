@@ -2,6 +2,7 @@
 *.lo
 *.loT
 *.o
+*.dep
 *.swp
 *~
 .deps
