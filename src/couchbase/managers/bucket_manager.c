@@ -49,6 +49,10 @@ static void httpcb_getBucket(void *ctx, zval *return_value, zval *response)
     if (mval && Z_TYPE_P(mval) == IS_STRING) {
         pcbc_update_property(pcbc_bucket_settings_ce, return_value, ("eviction_policy"), mval);
     }
+    mval = zend_symtable_str_find(marr, ZEND_STRL("storageBackend"));
+    if (mval && Z_TYPE_P(mval) == IS_STRING) {
+        pcbc_update_property(pcbc_bucket_settings_ce, return_value, ("storage_backend"), mval);
+    }
     mval = zend_symtable_str_find(marr, ZEND_STRL("maxTTL"));
     if (mval && Z_TYPE_P(mval) == IS_LONG) {
         pcbc_update_property(pcbc_bucket_settings_ce, return_value, ("max_ttl"), mval);
@@ -205,6 +209,10 @@ PHP_METHOD(BucketManager, createBucket)
         prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("compression_mode"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_STRING) {
             add_assoc_zval(&payload, "compressionMode", prop);
+        }
+        prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("storage_backend"), 0, &ret);
+        if (Z_TYPE_P(prop) == IS_STRING) {
+            add_assoc_zval(&payload, "storageBackend", prop);
         }
         prop = pcbc_read_property(pcbc_bucket_settings_ce, settings, ("minimal_durability_level"), 0, &ret);
         if (Z_TYPE_P(prop) == IS_LONG) {
@@ -457,6 +465,9 @@ zend_function_entry bucket_settings_methods[] = {
 zend_class_entry *pcbc_eviction_policy_ce;
 static const zend_function_entry pcbc_eviction_policy_methods[] = {PHP_FE_END};
 
+zend_class_entry *pcbc_storage_backend_ce;
+static const zend_function_entry pcbc_storage_backend_methods[] = {PHP_FE_END};
+
 PHP_MINIT_FUNCTION(BucketManager)
 {
     zend_class_entry ce;
@@ -476,6 +487,7 @@ PHP_MINIT_FUNCTION(BucketManager)
     zend_declare_property_null(pcbc_bucket_settings_ce, ZEND_STRL("eviction_policy"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_bucket_settings_ce, ZEND_STRL("max_ttl"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_bucket_settings_ce, ZEND_STRL("compression_mode"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_bucket_settings_ce, ZEND_STRL("storage_backend"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_bucket_settings_ce, ZEND_STRL("minimal_durability_level"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "EvictionPolicy", pcbc_eviction_policy_methods);
@@ -485,6 +497,11 @@ PHP_MINIT_FUNCTION(BucketManager)
     zend_declare_class_constant_stringl(pcbc_eviction_policy_ce, ZEND_STRL("NO_EVICTION"), ZEND_STRL("noEviction"));
     zend_declare_class_constant_stringl(pcbc_eviction_policy_ce, ZEND_STRL("NOT_RECENTLY_USED"),
                                         ZEND_STRL("nruEviction"));
+
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "StorageBackend", pcbc_storage_backend_methods);
+    pcbc_storage_backend_ce = zend_register_internal_interface(&ce);
+    zend_declare_class_constant_stringl(pcbc_storage_backend_ce, ZEND_STRL("COUCHSTORE"), ZEND_STRL("couchstore"));
+    zend_declare_class_constant_stringl(pcbc_storage_backend_ce, ZEND_STRL("MAGMA"), ZEND_STRL("magma"));
     return SUCCESS;
 }
 
@@ -639,6 +656,28 @@ PHP_METHOD(BucketSettings, setEvictionPolicy)
     }
 
     pcbc_update_property_str(pcbc_bucket_settings_ce, getThis(), ("eviction_policy"), val);
+    RETURN_ZVAL(getThis(), 1, 0);
+}
+
+PHP_METHOD(BucketSettings, storageBackend)
+{
+    if (zend_parse_parameters_none_throw() == FAILURE) {
+        RETURN_NULL();
+    }
+
+    zval *prop, rv;
+    prop = pcbc_read_property(pcbc_bucket_settings_ce, getThis(), ("storage_backend"), 0, &rv);
+    ZVAL_COPY(return_value, prop);
+}
+
+PHP_METHOD(BucketSettings, setStorageBackend)
+{
+    zend_string *val;
+    if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &val) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    pcbc_update_property_str(pcbc_bucket_settings_ce, getThis(), ("storage_backend"), val);
     RETURN_ZVAL(getThis(), 1, 0);
 }
 

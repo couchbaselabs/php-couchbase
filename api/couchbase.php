@@ -1404,6 +1404,13 @@ interface EvictionPolicy
     public const NOT_RECENTLY_USED = "nruEviction";
 }
 
+
+interface StorageBackend
+{
+    public const COUCHSTORE = "couchstore";
+    public const MAGMA = "magma";
+}
+
 class BucketSettings
 {
     public function name(): string {}
@@ -1419,6 +1426,8 @@ class BucketSettings
     public function bucketType(): string {}
 
     public function evictionPolicy(): string {}
+
+    public function storageBackend(): string {}
 
     public function maxTtl(): int {}
 
@@ -1448,6 +1457,16 @@ class BucketSettings
      * @see \EvictionPolicy::NOT_RECENTLY_USED
      */
     public function setEvictionPolicy(string $policy): BucketSettings {}
+
+    /**
+     * Configures storage backend for the bucket.
+     *
+     * @param string $policy storage backend. Use constants COUCHSTORE, MAGMA.
+     *
+     * @see \StorageBackend::COUCHSTORE
+     * @see \StorageBackend::MAGMA
+     */
+    public function setStorageBackend(string $policy): BucketSettings {}
 
     public function setMaxTtl(int $ttlSeconds): BucketSettings {}
 
