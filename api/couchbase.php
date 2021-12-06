@@ -636,6 +636,10 @@ class BaseException extends Exception implements Throwable
 
 class RequestCanceledException extends BaseException implements Throwable {}
 
+class RateLimitedException extends BaseException implements Throwable {}
+
+class QuotaLimitedException extends BaseException implements Throwable {}
+
 /**
  *  Thrown for exceptions that originate from underlying Http operations.
  */

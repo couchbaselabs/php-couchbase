@@ -78,6 +78,8 @@ zend_class_entry *pcbc_keyspace_not_found_exception_ce;
 zend_class_entry *pcbc_prepared_statement_failure_exception_ce;
 zend_class_entry *pcbc_dml_failure_exception_ce;
 zend_class_entry *pcbc_request_canceled_exception_ce;
+zend_class_entry *pcbc_rate_limited_exception_ce;
+zend_class_entry *pcbc_quota_limited_exception_ce;
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO(ai_BaseException_ref, IS_STRING, 1)
 ZEND_END_ARG_INFO()
@@ -219,6 +221,12 @@ PHP_MINIT_FUNCTION(CouchbaseException)
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "SubdocumentException", NULL);
     pcbc_subdocument_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
+
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "RateLimitedException", NULL);
+    pcbc_rate_limited_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
+
+    INIT_NS_CLASS_ENTRY(ce, "Couchbase", "QuotaLimitedException", NULL);
+    pcbc_quota_limited_exception_ce = zend_register_internal_class_ex(&ce, pcbc_base_exception_ce);
 
     return SUCCESS;
 }
@@ -440,6 +448,14 @@ void pcbc_create_lcb_exception(zval *return_value, long code, zend_string *conte
 
     case LCB_ERR_DML_FAILURE:
         exc_ce = pcbc_dml_failure_exception_ce;
+        break;
+
+    case LCB_ERR_RATE_LIMITED:
+        exc_ce = pcbc_rate_limited_exception_ce;
+        break;
+
+    case LCB_ERR_QUOTA_LIMITED:
+        exc_ce = pcbc_quota_limited_exception_ce;
         break;
 
     default:
