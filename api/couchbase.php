@@ -1825,6 +1825,35 @@ class Collection
     public function mutateIn(string $id, array $specs, MutateInOptions $options = null): MutateInResult {}
 
     /**
+     * Retrieves a group of documents. If the document does not exist, it will not raise an exception, but rather fill
+     * non-null value in error() property of the corresponding result object.
+     *
+     * @param array $ids array of IDs, organized like this ["key1", "key2", ...]
+     * @param GetOptions $options the options to use for the operation
+     * @return array array of GetResult, one for each of the entries
+     */
+    public function getMulti(array $ids, RemoveOptions $options = null): array {}
+
+    /**
+     * Removes a group of documents. If second element of the entry (CAS) is null, then the operation will
+     * remove the document unconditionally.
+     *
+     * @param array $entries array of arrays, organized like this [["key1", "encodedCas1"], ["key2", , "encodedCas2"], ...] or ["key1", "key2", ...]
+     * @param RemoveOptions $options the options to use for the operation
+     * @return array array of MutationResult, one for each of the entries
+     */
+    public function removeMulti(array $entries, RemoveOptions $options = null): array {}
+
+    /**
+     * Creates a group of documents if they don't exist, otherwise updates them.
+     *
+     * @param array $entries array of arrays, organized like this [["key1", $value1], ["key2", $value2], ...]
+     * @param UpsertOptions $options the options to use for the operation
+     * @return array array of MutationResult, one for each of the entries
+     */
+    public function upsertMulti(array $entries, UpsertOptions $options = null): array {}
+
+    /**
      * Creates and returns a BinaryCollection object for use with binary type documents.
      *
      * @return BinaryCollection

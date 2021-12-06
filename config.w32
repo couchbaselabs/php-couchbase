@@ -43,15 +43,18 @@ if (PHP_COUCHBASE != "no") {
             "exists.c " +
             "expiry_util.c " +
             "get.c " +
+            "get_multi.c " +
             "get_replica.c " +
             "health.c " +
             "http.c " +
             "n1ql.c " +
             "remove.c " +
+            "remove_multi.c " +
             "store.c " +
             "subdoc.c " +
             "touch.c " +
             "unlock.c " +
+            "upsert_multi.c " +
             "view.c ";
         src_couchbase_managers_sources =
             "bucket_manager.c " +

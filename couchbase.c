@@ -246,6 +246,9 @@ PHP_MINIT_FUNCTION(CollectionTouch);
 PHP_MINIT_FUNCTION(CollectionCounter);
 PHP_MINIT_FUNCTION(CollectionRemove);
 PHP_MINIT_FUNCTION(CollectionSubdoc);
+PHP_MINIT_FUNCTION(CollectionGetMulti);
+PHP_MINIT_FUNCTION(CollectionRemoveMulti);
+PHP_MINIT_FUNCTION(CollectionUpsertMulti);
 PHP_MINIT_FUNCTION(BucketView);
 PHP_MINIT_FUNCTION(N1qlQuery);
 PHP_MINIT_FUNCTION(ViewIndexManager);
@@ -329,6 +332,9 @@ PHP_MINIT_FUNCTION(couchbase)
     PHP_MINIT(CollectionCounter)(INIT_FUNC_ARGS_PASSTHRU);
     PHP_MINIT(CollectionRemove)(INIT_FUNC_ARGS_PASSTHRU);
     PHP_MINIT(CollectionSubdoc)(INIT_FUNC_ARGS_PASSTHRU);
+    PHP_MINIT(CollectionGetMulti)(INIT_FUNC_ARGS_PASSTHRU);
+    PHP_MINIT(CollectionRemoveMulti)(INIT_FUNC_ARGS_PASSTHRU);
+    PHP_MINIT(CollectionUpsertMulti)(INIT_FUNC_ARGS_PASSTHRU);
     PHP_MINIT(BucketView)(INIT_FUNC_ARGS_PASSTHRU);
     PHP_MINIT(N1qlQuery)(INIT_FUNC_ARGS_PASSTHRU);
     PHP_MINIT(ViewIndexManager)(INIT_FUNC_ARGS_PASSTHRU);
@@ -367,8 +373,7 @@ PHP_MINIT_FUNCTION(couchbase)
 #define X(name, value, cls, f, s)                                                                                      \
     {                                                                                                                  \
         ap_php_snprintf(buf, sizeof(buf), "COUCHBASE_%s", #name + 4);                                                  \
-        zend_register_long_constant(buf, PCBC_CONST_LENGTH(buf), value, CONST_CS | CONST_PERSISTENT,                   \
-                                    module_number);                                                          \
+        zend_register_long_constant(buf, PCBC_CONST_LENGTH(buf), value, CONST_CS | CONST_PERSISTENT, module_number);   \
     }
 
         LCB_XERROR(X)
@@ -942,8 +947,7 @@ PHP_FUNCTION(zlibCompress)
     ZVAL_STRINGL(return_value, dataOut, 4 + dataOutSize);
     efree(dataOut);
 #else
-    zend_throw_exception(NULL, "The zlib library was not available when the couchbase extension was built.",
-                         0);
+    zend_throw_exception(NULL, "The zlib library was not available when the couchbase extension was built.", 0);
 #endif
 }
 
@@ -967,8 +971,7 @@ PHP_FUNCTION(zlibDecompress)
     ZVAL_STRINGL(return_value, dataOut, dataOutSize);
     efree(dataOut);
 #else
-    zend_throw_exception(NULL, "The zlib library was not available when the couchbase extension was built.",
-                         0);
+    zend_throw_exception(NULL, "The zlib library was not available when the couchbase extension was built.", 0);
 #endif
 }
 

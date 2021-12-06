@@ -210,10 +210,14 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetResult_expiryTime, 0, 0, DateTimeInterface, 1)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_GetResult_error, 0, 0, Exception, 1)
+ZEND_END_ARG_INFO()
+
 zend_class_entry *pcbc_get_result_ce;
 static const zend_function_entry pcbc_get_result_methods[] = {
     PHP_ABSTRACT_ME(GetResult, content, ai_GetResult_content)
     PHP_ABSTRACT_ME(GetResult, expiryTime, ai_GetResult_expiryTime)
+    PHP_ABSTRACT_ME(GetResult, error, ai_GetResult_error)
     PHP_FE_END
 };
 
@@ -221,6 +225,7 @@ PHP_METHOD(GetResultImpl, cas);
 PHP_METHOD(GetResultImpl, expiry);
 PHP_METHOD(GetResultImpl, expiryTime);
 PHP_METHOD(GetResultImpl, content);
+PHP_METHOD(GetResultImpl, error);
 
 zend_class_entry *pcbc_get_result_impl_ce;
 static const zend_function_entry pcbc_get_result_impl_methods[] = {
@@ -228,6 +233,7 @@ static const zend_function_entry pcbc_get_result_impl_methods[] = {
     PHP_ME(GetResultImpl, expiry, ai_Result_expiry, ZEND_ACC_PUBLIC|ZEND_ACC_DEPRECATED)
     PHP_ME(GetResultImpl, expiryTime, ai_GetResult_expiryTime, ZEND_ACC_PUBLIC)
     PHP_ME(GetResultImpl, content, ai_GetResult_content, ZEND_ACC_PUBLIC)
+    PHP_ME(GetResultImpl, error, ai_GetResult_error, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 
@@ -282,33 +288,42 @@ static const zend_function_entry pcbc_exists_result_impl_methods[] = {
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_MutationResult_mutationToken, Couchbase\\MutationToken, 1)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO(ai_MutationResult_error, Exception, 1)
+ZEND_END_ARG_INFO()
+
+
 zend_class_entry *pcbc_mutation_result_ce;
 static const zend_function_entry pcbc_mutation_result_methods[] = {
     PHP_ABSTRACT_ME(MutationResult, mutationToken, ai_MutationResult_mutationToken)
+    PHP_ABSTRACT_ME(MutationResult, error, ai_MutationResult_error)
     PHP_FE_END
 };
 
 PHP_METHOD(MutationResultImpl, cas);
 PHP_METHOD(MutationResultImpl, expiry);
 PHP_METHOD(MutationResultImpl, mutationToken);
+PHP_METHOD(MutationResultImpl, error);
 
 zend_class_entry *pcbc_mutation_result_impl_ce;
 static const zend_function_entry pcbc_mutation_result_impl_methods[] = {
     PHP_ME(MutationResultImpl, cas, ai_Result_cas, ZEND_ACC_PUBLIC)
     PHP_ME(MutationResultImpl, expiry, ai_Result_expiry, ZEND_ACC_PUBLIC)
     PHP_ME(MutationResultImpl, mutationToken, ai_MutationResult_mutationToken, ZEND_ACC_PUBLIC)
+    PHP_ME(MutationResultImpl, error, ai_MutationResult_error, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 
 PHP_METHOD(StoreResultImpl, cas);
 PHP_METHOD(StoreResultImpl, expiry);
 PHP_METHOD(StoreResultImpl, mutationToken);
+PHP_METHOD(StoreResultImpl, error);
 
 zend_class_entry *pcbc_store_result_impl_ce;
 static const zend_function_entry pcbc_store_result_impl_methods[] = {
     PHP_ME(StoreResultImpl, cas, ai_Result_cas, ZEND_ACC_PUBLIC)
     PHP_ME(StoreResultImpl, expiry, ai_Result_expiry, ZEND_ACC_PUBLIC)
     PHP_ME(StoreResultImpl, mutationToken, ai_MutationResult_mutationToken, ZEND_ACC_PUBLIC)
+    PHP_ME(StoreResultImpl, error, ai_MutationResult_error, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 
@@ -325,12 +340,14 @@ PHP_METHOD(CounterResultImpl, cas);
 PHP_METHOD(CounterResultImpl, expiry);
 PHP_METHOD(CounterResultImpl, mutationToken);
 PHP_METHOD(CounterResultImpl, content);
+PHP_METHOD(CounterResultImpl, error);
 
 zend_class_entry *pcbc_counter_result_impl_ce;
 static const zend_function_entry pcbc_counter_result_impl_methods[] = {
     PHP_ME(CounterResultImpl, cas, ai_Result_cas, ZEND_ACC_PUBLIC)
     PHP_ME(CounterResultImpl, expiry, ai_Result_expiry, ZEND_ACC_PUBLIC)
     PHP_ME(CounterResultImpl, mutationToken, ai_MutationResult_mutationToken, ZEND_ACC_PUBLIC)
+    PHP_ME(CounterResultImpl, error, ai_MutationResult_error, ZEND_ACC_PUBLIC)
     PHP_ME(CounterResultImpl, content, ai_CounterResult_content, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
@@ -401,6 +418,7 @@ PHP_METHOD(MutateInResultImpl, expiry);
 PHP_METHOD(MutateInResultImpl, mutationToken);
 PHP_METHOD(MutateInResultImpl, content);
 PHP_METHOD(MutateInResultImpl, status);
+PHP_METHOD(MutateInResultImpl, error);
 
 zend_class_entry *pcbc_mutate_in_result_impl_ce;
 static const zend_function_entry pcbc_mutate_in_result_impl_methods[] = {
@@ -409,6 +427,7 @@ static const zend_function_entry pcbc_mutate_in_result_impl_methods[] = {
     PHP_ME(MutateInResultImpl, mutationToken, ai_MutationResult_mutationToken, ZEND_ACC_PUBLIC)
     PHP_ME(MutateInResultImpl, content, ai_MutateInResult_content, ZEND_ACC_PUBLIC)
     PHP_ME(MutateInResultImpl, status, ai_MutateInResult_status, ZEND_ACC_PUBLIC)
+    PHP_ME(MutateInResultImpl, error, ai_MutationResult_error, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 
@@ -769,6 +788,8 @@ PHP_MINIT_FUNCTION(Result)
     zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("err_ctx"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("err_ref"), ZEND_ACC_PRIVATE);
     zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("decoder"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("flags"), ZEND_ACC_PRIVATE);
+    zend_declare_property_null(pcbc_get_result_impl_ce, ZEND_STRL("datatype"), ZEND_ACC_PRIVATE);
 
     INIT_NS_CLASS_ENTRY(ce, "Couchbase", "GetReplicaResult", pcbc_get_replica_result_methods);
     pcbc_get_replica_result_ce = zend_register_internal_interface(&ce);
@@ -1043,6 +1064,22 @@ PHP_METHOD(ResultImpl, cas)
     ZVAL_COPY_DEREF(return_value, prop);
 }
 
+PHP_METHOD(GetResultImpl, error)
+{
+    if (zend_parse_parameters_none_throw() == FAILURE) {
+        return;
+    }
+
+    const zval *prop;
+    zval rv;
+    prop = pcbc_read_property(pcbc_get_result_impl_ce, getThis(), ("status"), 0, &rv);
+    if (Z_TYPE_P(prop) == IS_LONG && Z_LVAL_P(prop) != LCB_SUCCESS) {
+        pcbc_create_lcb_exception(return_value, Z_LVAL_P(prop), NULL, NULL, 0, NULL, PCBC_OPCODE_UNSPEC);
+        return;
+    }
+    RETURN_NULL();
+}
+
 PHP_METHOD(GetResultImpl, cas)
 {
     if (zend_parse_parameters_none_throw() == FAILURE) {
@@ -1217,6 +1254,22 @@ PHP_METHOD(MutationResultImpl, mutationToken)
     ZVAL_COPY_DEREF(return_value, prop);
 }
 
+PHP_METHOD(MutationResultImpl, error)
+{
+    if (zend_parse_parameters_none_throw() == FAILURE) {
+        return;
+    }
+
+    const zval *prop;
+    zval rv;
+    prop = pcbc_read_property(pcbc_mutation_result_impl_ce, getThis(), ("status"), 0, &rv);
+    if (Z_TYPE_P(prop) == IS_LONG && Z_LVAL_P(prop) != LCB_SUCCESS) {
+        pcbc_create_lcb_exception(return_value, Z_LVAL_P(prop), NULL, NULL, 0, NULL, PCBC_OPCODE_UNSPEC);
+        return;
+    }
+    RETURN_NULL();
+}
+
 PHP_METHOD(StoreResultImpl, cas)
 {
     if (zend_parse_parameters_none_throw() == FAILURE) {
@@ -1250,6 +1303,22 @@ PHP_METHOD(StoreResultImpl, mutationToken)
     ZVAL_COPY_DEREF(return_value, prop);
 }
 
+PHP_METHOD(StoreResultImpl, error)
+{
+    if (zend_parse_parameters_none_throw() == FAILURE) {
+        return;
+    }
+
+    const zval *prop;
+    zval rv;
+    prop = pcbc_read_property(pcbc_store_result_impl_ce, getThis(), ("status"), 0, &rv);
+    if (Z_TYPE_P(prop) == IS_LONG && Z_LVAL_P(prop) != LCB_SUCCESS) {
+        pcbc_create_lcb_exception(return_value, Z_LVAL_P(prop), NULL, NULL, 0, NULL, PCBC_OPCODE_UNSPEC);
+        return;
+    }
+    RETURN_NULL();
+}
+
 PHP_METHOD(CounterResultImpl, cas)
 {
     if (zend_parse_parameters_none_throw() == FAILURE) {
@@ -1281,6 +1350,22 @@ PHP_METHOD(CounterResultImpl, mutationToken)
     zval *prop, rv;
     prop = pcbc_read_property(pcbc_counter_result_impl_ce, getThis(), ("mutation_token"), 0, &rv);
     ZVAL_COPY_DEREF(return_value, prop);
+}
+
+PHP_METHOD(CounterResultImpl, error)
+{
+    if (zend_parse_parameters_none_throw() == FAILURE) {
+        return;
+    }
+
+    const zval *prop;
+    zval rv;
+    prop = pcbc_read_property(pcbc_counter_result_impl_ce, getThis(), ("status"), 0, &rv);
+    if (Z_TYPE_P(prop) == IS_LONG && Z_LVAL_P(prop) != LCB_SUCCESS) {
+        pcbc_create_lcb_exception(return_value, Z_LVAL_P(prop), NULL, NULL, 0, NULL, PCBC_OPCODE_UNSPEC);
+        return;
+    }
+    RETURN_NULL();
 }
 
 PHP_METHOD(CounterResultImpl, content)
@@ -1478,6 +1563,22 @@ PHP_METHOD(MutateInResultImpl, status)
             ZVAL_COPY_DEREF(return_value, code);
             return;
         }
+    }
+    RETURN_NULL();
+}
+
+PHP_METHOD(MutateInResultImpl, error)
+{
+    if (zend_parse_parameters_none_throw() == FAILURE) {
+        return;
+    }
+
+    const zval *prop;
+    zval rv;
+    prop = pcbc_read_property(pcbc_mutate_in_result_impl_ce, getThis(), ("status"), 0, &rv);
+    if (Z_TYPE_P(prop) == IS_LONG && Z_LVAL_P(prop) != LCB_SUCCESS) {
+        pcbc_create_lcb_exception(return_value, Z_LVAL_P(prop), NULL, NULL, 0, NULL, PCBC_OPCODE_UNSPEC);
+        return;
     }
     RETURN_NULL();
 }

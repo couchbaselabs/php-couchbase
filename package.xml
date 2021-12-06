@@ -78,16 +78,19 @@
             <file role="src" name="src/couchbase/bucket/expiry_util.c" />
             <file role="src" name="src/couchbase/bucket/expiry_util.h" />
             <file role="src" name="src/couchbase/bucket/get.c" />
+            <file role="src" name="src/couchbase/bucket/get_multi.c" />
             <file role="src" name="src/couchbase/bucket/get_replica.c" />
             <file role="src" name="src/couchbase/bucket/health.c" />
             <file role="src" name="src/couchbase/bucket/http.c" />
             <file role="src" name="src/couchbase/bucket/n1ql.c" />
             <file role="src" name="src/couchbase/bucket/remove.c" />
+            <file role="src" name="src/couchbase/bucket/remove_multi.c" />
             <file role="src" name="src/couchbase/bucket/store.c" />
             <file role="src" name="src/couchbase/bucket/subdoc.c" />
             <file role="src" name="src/couchbase/bucket/subdoc_cookie.h" />
             <file role="src" name="src/couchbase/bucket/touch.c" />
             <file role="src" name="src/couchbase/bucket/unlock.c" />
+            <file role="src" name="src/couchbase/bucket/upsert_multi.c" />
             <file role="src" name="src/couchbase/bucket/view.c" />
             <file role="src" name="src/couchbase/cert_authenticator.c" />
             <file role="src" name="src/couchbase/cluster.c" />

@@ -263,6 +263,24 @@ ZEND_ARG_TYPE_INFO(0, specs, IS_ARRAY, 0)
 ZEND_ARG_OBJ_INFO(0, options, Couchbase\\MutateInOptions, 1)
 ZEND_END_ARG_INFO()
 
+PHP_METHOD(Collection, getMulti);
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(ai_Collection_getMulti, 0, 1, IS_ARRAY, 0)
+ZEND_ARG_TYPE_INFO(0, ids, IS_ARRAY, 0)
+ZEND_ARG_OBJ_INFO(0, options, Couchbase\\GetOptions, 1)
+ZEND_END_ARG_INFO()
+
+PHP_METHOD(Collection, upsertMulti);
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(ai_Collection_upsertMulti, 0, 1, IS_ARRAY, 0)
+ZEND_ARG_TYPE_INFO(0, ids, IS_ARRAY, 0)
+ZEND_ARG_OBJ_INFO(0, options, Couchbase\\UpsertOptions, 1)
+ZEND_END_ARG_INFO()
+
+PHP_METHOD(Collection, removeMulti);
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(ai_Collection_removeMulti, 0, 1, IS_ARRAY, 0)
+ZEND_ARG_TYPE_INFO(0, ids, IS_ARRAY, 0)
+ZEND_ARG_OBJ_INFO(0, options, Couchbase\\RemoveOptions, 1)
+ZEND_END_ARG_INFO()
+
 PHP_METHOD(Collection, binary);
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(ai_Collection_binary, 0, 0, Couchbase\\BinaryCollection, 0)
 ZEND_END_ARG_INFO()
@@ -323,6 +341,9 @@ static zend_function_entry collection_methods[] = {
     PHP_ME(Collection, touch, ai_Collection_touch, ZEND_ACC_PUBLIC)
     PHP_ME(Collection, lookupIn, ai_Collection_lookupIn, ZEND_ACC_PUBLIC)
     PHP_ME(Collection, mutateIn, ai_Collection_mutateIn, ZEND_ACC_PUBLIC)
+    PHP_ME(Collection, getMulti, ai_Collection_getMulti, ZEND_ACC_PUBLIC)
+    PHP_ME(Collection, removeMulti, ai_Collection_removeMulti, ZEND_ACC_PUBLIC)
+    PHP_ME(Collection, upsertMulti, ai_Collection_upsertMulti, ZEND_ACC_PUBLIC)
     PHP_ME(Collection, binary, ai_Collection_binary, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };

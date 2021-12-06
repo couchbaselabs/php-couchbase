@@ -87,15 +87,18 @@ COUCHBASE_FILES=" \
     src/couchbase/bucket/exists.c \
     src/couchbase/bucket/expiry_util.c \
     src/couchbase/bucket/get.c \
+    src/couchbase/bucket/get_multi.c \
     src/couchbase/bucket/get_replica.c \
     src/couchbase/bucket/health.c \
     src/couchbase/bucket/http.c \
     src/couchbase/bucket/n1ql.c \
     src/couchbase/bucket/remove.c \
+    src/couchbase/bucket/remove_multi.c \
     src/couchbase/bucket/store.c \
     src/couchbase/bucket/subdoc.c \
     src/couchbase/bucket/touch.c \
     src/couchbase/bucket/unlock.c \
+    src/couchbase/bucket/upsert_multi.c \
     src/couchbase/bucket/view.c \
     src/couchbase/cert_authenticator.c \
     src/couchbase/cluster.c \
