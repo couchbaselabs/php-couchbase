@@ -18,9 +18,9 @@
         <active>yes</active>
     </lead>
 
-    <date>2021-10-14</date>
+    <date>2021-12-08</date>
     <version>
-        <release>3.2.1</release>
+        <release>3.2.2</release>
         <api>3.2.0</api>
     </version>
     <stability>
@@ -29,9 +29,10 @@
     </stability>
     <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2</license>
     <notes>
-        PCBC-770: Fixed memory leak while decoding subdoc JSON.
-        PCBC-782: Updated minimal requirement for libcouchbase to 3.2.2.
-        Other memory fixes and improvements.
+        PCBC-796: add storage backend option for bucket manager
+        PCBC-788: handle rate/quota limit error codes
+        PCBC-799: implement {get,upsert,remove}Multi
+        Update jsonSerialize methods to stop deprecations errors in php 8.1
     </notes>
     <contents>
         <dir name="/">
@@ -161,6 +162,23 @@
     <providesextension>couchbase</providesextension>
     <extsrcrelease/>
     <changelog>
+        <release>
+            <date>2021-10-14</date>
+            <version>
+                <release>3.2.1</release>
+                <api>3.2.0</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache V2</license>
+            <notes>
+                PCBC-770: Fixed memory leak while decoding subdoc JSON.
+                PCBC-782: Updated minimal requirement for libcouchbase to 3.2.2.
+                Other memory fixes and improvements.
+            </notes>
+        </release>
         <release>
             <date>2021-07-27</date>
             <version>
