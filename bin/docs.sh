@@ -25,7 +25,7 @@ CB_PHP_PREFIX=${CB_PHP_PREFIX:-/usr}
 CB_PHPDOC_PHAR=${CB_PHPDOC_PHAR:-"${PROJECT_ROOT}/build/phpdoc.phar"}
 if [ ! -f "${CB_PHPDOC_PHAR}" ]
 then
-    curl -L -o "${CB_PHPDOC_PHAR}" https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.0.0/phpDocumentor.phar
+    curl -L -o "${CB_PHPDOC_PHAR}" https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.1.2/phpDocumentor.phar
 fi
 
 cd ${PROJECT_ROOT}
