@@ -3,6 +3,10 @@
 [![license](https://img.shields.io/github/license/couchbase/php-couchbase?color=brightgreen)](https://opensource.org/licenses/Apache-2.0)
 [![jenkins](https://img.shields.io/jenkins/build?jobUrl=http%3A%2F%2Fsdk.jenkins.couchbase.com%2Fjob%2Fphp%2Fjob%2Fsdk%2Fjob%2Fphp-nightly%2F&label=jenkins)](http://sdk.jenkins.couchbase.com/job/php/job/sdk/job/php-nightly/)
 
+> This repository contains source code for Couchbase PHP SDK 3.2 branch.
+> Current development is going in [couchbase/couchbase-php-client](https://github.com/couchbase/couchbase-php-client).
+> Visit [Couchbase Support Policy](https://www.couchbase.com/support-policy) page for more details about maintenance and EOL dates.
+
 This library allows you to connect to a Couchbase cluster from PHP.
 It is a native PHP extension and uses the very fast libcouchbase library to
 handle communicating to the cluster over the Couchbase binary protocol.
