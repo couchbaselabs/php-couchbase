@@ -70,11 +70,12 @@ void ping_callback(lcb_INSTANCE *instance, int cbtype, const lcb_RESPPING *resp)
 PHP_METHOD(Bucket, ping)
 {
     pcbc_bucket_t *obj = Z_BUCKET_OBJ_P(getThis());
-    zval *options = NULL;
+    zval *services = NULL;
+    zend_string *report_id = NULL;
     int rv;
     lcb_STATUS err;
 
-    rv = zend_parse_parameters(ZEND_NUM_ARGS(), "|z", &options);
+    rv = zend_parse_parameters_throw(ZEND_NUM_ARGS(), "|aS", &services, &report_id);
     if (rv == FAILURE) {
         RETURN_NULL();
     }
@@ -82,7 +83,35 @@ PHP_METHOD(Bucket, ping)
     lcb_CMDPING *cmd;
 
     lcb_cmdping_create(&cmd);
-    lcb_cmdping_all(cmd);
+
+    if (services && Z_TYPE_P(services) == IS_ARRAY) {
+        zval *service;
+        ZEND_HASH_FOREACH_VAL(HASH_OF(services), service)
+        {
+            if (service == NULL || Z_TYPE_P(service) != IS_STRING) {
+                continue;
+            }
+            if (zend_binary_strcmp(Z_STRVAL_P(service), Z_STRLEN_P(service), ZEND_STRL("kv")) == 0) {
+                lcb_cmdping_kv(cmd, 1);
+            } else if (zend_binary_strcmp(Z_STRVAL_P(service), Z_STRLEN_P(service), ZEND_STRL("query")) == 0) {
+                lcb_cmdping_query(cmd, 1);
+            } else if (zend_binary_strcmp(Z_STRVAL_P(service), Z_STRLEN_P(service), ZEND_STRL("analytics")) == 0) {
+                lcb_cmdping_analytics(cmd, 1);
+            } else if (zend_binary_strcmp(Z_STRVAL_P(service), Z_STRLEN_P(service), ZEND_STRL("search")) == 0) {
+                lcb_cmdping_search(cmd, 1);
+            } else if (zend_binary_strcmp(Z_STRVAL_P(service), Z_STRLEN_P(service), ZEND_STRL("views")) == 0) {
+                lcb_cmdping_views(cmd, 1);
+            }
+        }
+        ZEND_HASH_FOREACH_END();
+    } else {
+        lcb_cmdping_all(cmd);
+    }
+
+    if (report_id) {
+        lcb_cmdping_report_id(cmd, ZSTR_VAL(report_id), ZSTR_LEN(report_id));
+    }
+
     lcb_cmdping_encode_json(cmd, 1, 0, 1);
     opcookie *cookie = opcookie_init();
     err = lcb_ping(obj->conn->lcb, cookie, cmd);

@@ -252,9 +252,9 @@ ZEND_ARG_TYPE_INFO(0, viewName, IS_STRING, 0)
 ZEND_ARG_OBJ_INFO(0, viewOptions, Couchbase\\ViewOptions, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(ai_Bucket_ping, 0, 0, 2)
-ZEND_ARG_INFO(0, services)
-ZEND_ARG_INFO(0, reportId)
+ZEND_BEGIN_ARG_INFO_EX(ai_Bucket_ping, 0, 0, 0)
+ZEND_ARG_TYPE_INFO(0, services, IS_ARRAY, 1)
+ZEND_ARG_TYPE_INFO(0, reportId, IS_STRING, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(ai_Bucket_diag, 0, 0, 1)
