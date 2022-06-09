@@ -53,7 +53,8 @@ static char *uncompoundDataverseName(const char *name, size_t name_len)
     const size_t dot_len = 3;   /* strlen("`.`") */
 
     int slash_count = 0;
-    for (size_t i = 0; i < name_len; i++) {
+    size_t i;
+    for (i = 0; i < name_len; i++) {
         if (name[i] == '/') {
             slash_count++;
         }
@@ -64,7 +65,7 @@ static char *uncompoundDataverseName(const char *name, size_t name_len)
     result[0] = '`';
     result[result_len - 1] = '`';
 
-    for (size_t i = name_len; i != 0; --i) {
+    for (i = name_len; i != 0; --i) {
         if (name[i - 1] == '/') {
             result[i - 1 + slash_count * (dot_len - slash_len) + 1] = '`';
             result[i - 1 + slash_count * (dot_len - slash_len)] = '.';

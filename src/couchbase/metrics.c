@@ -220,7 +220,8 @@ const lcbmetrics_VALUERECORDER *meter_value_recorder(const lcbmetrics_METER *lcb
 
     ZVAL_STRING(&params[0], name);
     array_init_size(&params[1], ntags);
-    for (int i = 0; i < ntags; ++i) {
+    int i;
+    for (i = 0; i < ntags; ++i) {
         add_assoc_string(&params[1], tags[i].key, tags[i].value);
     }
 
